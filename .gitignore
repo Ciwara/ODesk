@@ -4,3 +4,4 @@ sources/
 migrations/
 *.pyc
 OIMDesk/settings_local.py
+deployment.fad
