@@ -1,0 +1,6 @@
+
+*.sqlite3
+sources/
+migrations/
+*.pyc
+OIMDesk/settings_local.py

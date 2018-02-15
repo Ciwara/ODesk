@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load i18n staticfiles widget_tweaks %}
+
+{% block title %} {% trans "Identification" %}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <!-- <h1 class="page-header">Identification</h1> -->
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            {% if form.errors %}
+            <p class="alert alert-danger"> Votre nom d'utilisateur et votre mot de passe ne correspondent pas. Veuillez réessayer. </p>
+            {% endif %}
+            <div class="login">
+                <form "form-horizontal" method="POST">
+                    {% csrf_token %}
+                    <h3>Merci de vous identifier</h3>
+                    <div  class="form-group">
+                        <label>{{form.username.label}}</label>
+                        {{form.username|add_class:"form-control"}}
+                    </div>
+                    <div  class="form-group">
+                        <label>{{form.password.label}}</label>
+                        {{form.password|add_class:"form-control"}}
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Log in" %}</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="1" model="desk.entity">
+        <field type="CharField" name="name">Mali</field>
+        <field type="SlugField" name="slug">mali</field>
+        <field to="desk.entitytype" name="type" rel="ManyToOneRel">country</field>
+        <field to="desk.entity" name="parent" rel="ManyToOneRel"><None></None></field>
+        <field type="PositiveIntegerField" name="lft">1</field>
+        <field type="PositiveIntegerField" name="rght">2</field>
+        <field type="PositiveIntegerField" name="tree_id">1</field>
+        <field type="PositiveIntegerField" name="level">0</field>
+    </object>
+</django-objects>
