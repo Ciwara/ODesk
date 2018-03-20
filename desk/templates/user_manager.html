@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles i18n %}
-{% block content_lg %}
+{% block content %}
     <h1>Gestion des utilisateurs</h1>
         <div>
-            <a class="btn btn-default" href="{% url 'new-user' %}"><em class="glyphicon glyphicon-plus"></em> Nouvel utilisation</a>
+            <a class="btn btn-primary" href="{% url 'user_new' %}"><em class="fa fa-user-plus"></em> Nouvel utilisation</a>
         </div>
         <hr>
         <div class="col-md-12">
@@ -22,7 +22,7 @@
                         <td>{{member.date_of_birth}}</td>
                         <td>{{member.email}}</td>
                         <td align="center">
-                          <a class="btn btn-default" href="{{member.url_change}}"><em class="glyphicon glyphicon-edit"></em></a>
+                          <a class="btn btn-default" href="{{member.url_change}}"><em class="fa fa-edit"></em></a>
                         </td>
                     </tr>
                 {% endfor %}

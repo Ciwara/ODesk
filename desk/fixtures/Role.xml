@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="agent_collecteur" model="desk.role">
+        <field type="CharField" name="slug">agent_collecteur</field>
+        <field type="CharField" name="name">Desk Collecteur</field>
+    </object>
+    <object pk="agent_controle" model="desk.role">
+        <field type="CharField" name="slug">agent_controle</field>
+        <field type="CharField" name="name">Desk Controle</field>
+    </object>
+    <object pk="guest" model="desk.role">
+        <field type="CharField" name="slug">guest</field>
+        <field type="CharField" name="name">Invité</field>
+    </object>
+    <object pk="partner" model="desk.role">
+        <field type="CharField" name="slug">partner</field>
+        <field type="CharField" name="name">Partenaire</field>
+    </object>
+    <object pk="desk_admin" model="desk.role">
+        <field type="CharField" name="slug">desk_admin</field>
+        <field type="CharField" name="name">Admin</field>
+    </object>
+    <object pk="desk_assistant_admin" model="desk.role">
+        <field type="CharField" name="slug">desk_assistant_admin</field>
+        <field type="CharField" name="name">Assistant Admin</field>
+    </object>
+    <object pk="desk_tech" model="desk.role">
+        <field type="CharField" name="slug">desk_tech</field>
+        <field type="CharField" name="name">Technicien</field>
+    </object>
+</django-objects>

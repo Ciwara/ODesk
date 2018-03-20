@@ -17,23 +17,28 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+# from desk.views import admin as admin_
+from desk.views import dashboard
 
-from desk.views import (
-    dashboard, index, table, person_table, survey_table, person)
+admin.site.site_header = 'DNDS-Desk admin'
+admin.site.site_title = 'DNDS-Desk admin'
+# admin.site.site_url = 'http://coffeehouse.com/'
+admin.site.index_title = 'DNDS-Desk administration'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index, name='index'),
-    url(r'^table$', table, name='table'),
-    url(r'^person/(?P<pk>.*)', person, name='person'),
-    url(r'^person-table/(?P<iid>.*)', person_table, name='person_table'),
-    url(r'^survey-table/$', survey_table, name='survey_table'),
-    # url(r'^chart/$', chart, name='chart'),
-    url(r'^dashboard/$', dashboard, name='dashboard'),
+    url(r'^$', dashboard.user_dashboard, name='index'),
+    # url(r'^user-new/$', views.user_new, name='user_new'),
+    # url(r'^user-manager/$', views.user_manager, name='user_manager'),
+    # url(r'^user-change/(?P<pk>.*)$', views.user_change, name='user_change'),
+
+    url(r'^migrants/', include('migrants.urls')),
+    url(r'^rapatrie/', include('repatriate.urls')),
+
     url(r'^login/$',
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

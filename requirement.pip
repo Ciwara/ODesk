@@ -2,3 +2,7 @@ Django==1.11.7
 django-mptt==0.8.7
 django-widget-tweaks==1.4.1
 Pillow==4.1.0
+humanfriendly
+django-reversion==2.0.13
+qrcode
+jsonfield

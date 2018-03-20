@@ -31,14 +31,21 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    # 'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'widget_tweaks',
-    'desk'
+    'reversion',
+    'rolepermissions',
+    'mptt',
+    'desk',
+    'migrants',
+    'repatriate'
 ]
 
 MIDDLEWARE = [
@@ -106,10 +113,13 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 EMAIL_SENDER = 'root@localhost'
 
-AUTH_USER_MODEL = 'desk.Member'
+AUTH_USER_MODEL = 'desk.Provider'
+# ROLEPERMISSIONS_MODULE = 'OIMDesk.roles'
+# LOGIN_URL = 'login'
+# LOGIN_REDIRECT_URL = '/dashboard'
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -123,6 +133,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+ORANGE = 'orange'
+MALITEL = 'malitel'
+FOREIGN = 'foreign'
+OPERATORS = {ORANGE: ("Orange MALI", [7, 9, 4, 8, 90, 91]),
+             MALITEL: ("Malitel", [2, 6, 98, 99]),
+             FOREIGN: ("Extérieur", [])}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -130,11 +147,11 @@ USE_TZ = True
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static')
 # ]
-
+SITE_ID = 1
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 # print(STATIC_URL, " RRRRR")
-print(STATIC_ROOT, "  TTTTT")
+# print(STATIC_ROOT, "  TTTTT")
 try:
     from OIMDesk.settings_local import *
 except ImportError:

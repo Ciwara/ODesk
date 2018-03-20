@@ -1,0 +1,32 @@
+[{
+  "fields": {
+  	"key": "ona-server",
+    "value": "http://ona-msah.ml"
+  },
+  "model": "repatriate.Settings",
+  "pk": 0
+},
+{
+  "fields": {
+  	"key": "ona-username",
+    "value": "dnds"
+  },
+  "model": "repatriate.Settings",
+  "pk": 1
+},
+{
+  "fields": {
+  	"key": "ona-token",
+    "value": "f291d1c1122c5d331f566bb41101bd4ae0677460"
+  },
+  "model": "repatriate.Settings",
+  "pk": 2
+},
+{
+  "fields": {
+  	"key": "dataentry-username",
+    "value": "agent"
+  },
+  "model": "repatriate.Settings",
+  "pk": 4
+}]

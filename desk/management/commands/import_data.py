@@ -11,7 +11,7 @@ import json
 from django.core.management.base import BaseCommand
 
 
-from desk.models import Survey, Person, Country
+from desk.models import Survey, Person, Country, Entity
 
 
 class Command(BaseCommand):
@@ -32,7 +32,8 @@ class Command(BaseCommand):
 
     def get_bol(self, value):
         print("", value)
-        value = value.strip()
+        if value:
+            value = value.strip()
         if value in ["OUI", "oui", "yes"]:
             return True
         else:
@@ -58,6 +59,10 @@ class Command(BaseCommand):
             data = json.loads(data_f.read())
         for famille in data:
             sv = Survey()
+            localite = famille.get("localite")
+            if not localite:
+                localite = "90000000"
+            sv.locality = Entity.objects.get(slug=localite)
             sv.instanceID = str(famille.get("instanceID"))
             sv.uuid = famille.get("uuid")
             sv.date = famille.get("date")
@@ -77,7 +82,7 @@ class Command(BaseCommand):
             sv.menage_point_entrer = famille.get("menage-point-entrer")
             sv.menage_doc_voyage = famille.get("menage-doc-voyage")
             sv.menage_numero_doc_voyage = famille.get("menage-numero-doc-voyage")
-            sv.menage_bien_pays_provenance = self.get_bol(famille.get("menage-bien-pays-provenance"))
+            sv.menage_bien_pays_provenance = self.get_bol(famille.get("menage-bien-pays-provenance", ""))
             sv.membre_pays_provenance = self.get_bol(famille.get("membre-pays-provenance"))
             nb_membre = famille.get("nb-membre")
             if nb_membre:
@@ -101,9 +106,9 @@ class Command(BaseCommand):
             sv.domaine = famille.get("domaine")
             sv.metier = self.get_bol(famille.get("metier"))
             sv.secteur = famille.get("secteur")
-            sv.f1 = self.get_bol(famille.get("f1"))
+            sv.f1 = self.get_bol(famille.get("f1", "non"))
             sv.f2 = famille.get("f2")
-            sv.f3 = self.get_bol(famille.get("f3"))
+            sv.f3 = self.get_bol(famille.get("f3", "non"))
             sv.f4 = famille.get("f4")
             sv.f5 = famille.get("f5")
             sv.activite_region = str(famille.get("activite-region"))

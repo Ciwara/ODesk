@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="perso_malitel" model="desk.phonenumbertype">
+        <field type="CharField" name="name">Perso. Malitel</field>
+        <field type="CharField" name="abbr">PM</field>
+        <field type="PositiveIntegerField" name="priority">20</field>
+    </object>
+    <object pk="perso_orange" model="desk.phonenumbertype">
+        <field type="CharField" name="name">Perso. Orange</field>
+        <field type="CharField" name="abbr">PO</field>
+        <field type="PositiveIntegerField" name="priority">50</field>
+    </object>
+    <object pk="perso_other" model="desk.phonenumbertype">
+        <field type="CharField" name="name">Perso.</field>
+        <field type="CharField" name="abbr">P</field>
+        <field type="PositiveIntegerField" name="priority">0</field>
+    </object>
+</django-objects>

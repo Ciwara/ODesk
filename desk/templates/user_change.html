@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles i18n widget_tweaks %}
-{% block content_lg %}
+{% block content %}
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       {% include "_message.html" with msg=user_change_form.errors %}
       <div class="new-user">
@@ -26,7 +26,7 @@
                   <label>{{user_change_form.first_name.label}}</label>
                   {{user_change_form.first_name|add_class:"form-control"}}
               </div>
-              <button type="submit" name="_user_change" class="btn btn-default">{% trans "Save" %}</button>
+              <button type="submit" name="_user_change" class="btn btn-primary">{% trans "Save" %}</button>
           </form>
       </div>
     </div>

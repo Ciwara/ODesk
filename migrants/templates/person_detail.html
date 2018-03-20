@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard' %}">Menage</a>
+        </li>
+        <li class="breadcrumb-item active">Tables</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1><i class="fa fa-user"></i> {{ person.display_name }}</h1></div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <tbody>
+                  <tr><th>Nationalité </th><td>{{person.nationalite}}</td></tr>
+                  <tr><th>Prenoms </th><td>{{person.prenoms}}</td></tr>
+                  <tr><th>Nom </th><td>{{person.nom}}</td></tr>
+                  <tr><th>Sexe </th><td>{{person.gender}}</td></tr>
+                  <tr><th>Type naissance</th><td>{{person.type_naissance}}</td></tr>
+                  <tr><th>Annee naissance</th><td>{{person.annee_naissance}}</td></tr>
+                  <tr><th>ddn </th><td>{{person.ddn}}</td></tr>
+                  <tr><th>Àge</th><td>{{person.age}}</td></tr>
+                  <tr><th>Profession</th><td>{{person.profession}}</td></tr>
+                  <tr><th>Etat Civil</th><td>{{person.etat_civil}}</td></tr>
+                  <tr><th>Lien</th><td>{{person.lien}}</td></tr>
+                  <tr><th>Niveau Scolaire</th><td>{{person.niveau_scolaire}}</td></tr>
+                  <tr><th>Document</th><td>{{person.document}}</td></tr>
+                  <tr><th>Num Doc</th><td>{{person.num_doc}}</td></tr>
+                  <tr><th>Nina</th><td>{{person.nina}}</td></tr>
+                  <tr><th>Biometric</th><td>{{person.biometric}}</td></tr>
+                  <tr><th>Saisie Nina</th><td>{{person.saisie_nina}}</td></tr>
+                  <tr><th>Saisie Biometric</th><td>{{person.saisie_biometric}}</td></tr>
+                  <tr><th>vulnerabilité</th><td>{{person.membre_vulnerabilite}}</td></tr>
+                  <tr><th>vulnerabilité 1</th><td>{{person.membre_vul1}}</td></tr>
+                  <tr><th>vulnerabilité 2</th><td>{{person.membre_vul2}}</td></tr>
+                  <tr><th>vulnerabilité 3</th><td>{{person.membre_vul3}}</td></tr>
+                  <tr><th>Photo</th><td><a target="_blank" href="{{person.membre_photo_url_odk}}">Voir la photo</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+
+{% endblock %}

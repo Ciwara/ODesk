@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="1" model="sites.site">
+        <field type="CharField" name="domain">msah.ml</field>
+        <field type="CharField" name="name">DNDS Tableau de bord</field>
+    </object>
+</django-objects>

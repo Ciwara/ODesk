@@ -1,0 +1,1 @@
+[{"model": "repatriate.collect", "pk": 1, "fields": {"name": "Formulaire rapatiment", "started_on": "2018-03-07T15:38:05.434Z", "ona_form_pk": 61, "nb_submissions": null, "nb_medias_form": null, "nb_medias_scan_form": null, "medias_size_form": null, "medias_size_scan_form": null}}]

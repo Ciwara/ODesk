@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load staticfiles i18n %}
-
+{% block vertical_menu %}
+  {% include "_vertical_menu.html" %}
+{% endblock %}
 {% block content %}
       <!-- Area Chart Example-->
       <div class="card mb-3">

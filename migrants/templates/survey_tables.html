@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Survey Tables</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Data Table </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Date début</th>
+                  <th>Pays</th>
+                  <th>Type operation</th>
+                  <th>cause</th>
+                  <th>Point d'entre</th>
+                  <th>Nb personne menage</th>
+                  <th>Numéro de tel</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Date début</th>
+                  <th>Pays</th>
+                  <th>Type operation</th>
+                  <th>cause</th>
+                  <th>Point d'entre</th>
+                  <th>Nb personne menage</th>
+                  <th>Numéro de tel</th>
+                  <th>ID</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for svr in surveys %}
+                  <tr>
+                    <td>{{ svr.debut }}</td>
+                    <td>{{ svr.menage_pays_provenance }}</td>
+                    <td>{{ svr.type_operation }}</td>
+                    <td>{{ svr.cause }}</td>
+                    <td>{{ svr.menage_point_entrer }}</td>
+                    <td>{{ svr.nb_member }}</td>
+                    <td>{{ svr.tel }}</td>
+                    <td><a href="{{svr.person_url}}">{{ svr.instanceID }}</a></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+
+{% endblock %}
