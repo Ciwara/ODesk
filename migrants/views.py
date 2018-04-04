@@ -14,7 +14,7 @@ from django.template import loader
 def dashboard(request):
     # TODO Export xls pour le partage.
     srv = Survey.objects.all()
-    template = loader.get_template('dashboard.html')
+    template = loader.get_template('migrants/dashboard.html')
     per_lieu_regions = Person.objects.values(
         "survey__lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
@@ -57,20 +57,20 @@ def dashboard(request):
 
 
 # @login_required
-def index(request):
+# def index(request):
 
-    srv = Survey.objects.all()
-    context = {"srv": srv}
-    template = loader.get_template('index.html')
+#     srv = Survey.objects.all()
+#     context = {"srv": srv}
+#     template = loader.get_template('index.html')
 
-    return HttpResponse(template.render(context, request))
+#     return HttpResponse(template.render(context, request))
 
 
 @login_required
 def table(request):
 
     srv = Survey.objects.all()
-    template = loader.get_template('tables.html')
+    template = loader.get_template('migrants/tables.html')
 
     per_lieu_regions = Person.objects.values(
         "survey__lieu_region").annotate(Count("id")).order_by()
@@ -94,7 +94,7 @@ def survey_table(request):
     for survey in surveys:
         survey.person_url = reverse("person_table", args=[survey.instanceID])
     context = {"surveys": surveys}
-    template = loader.get_template('survey_tables.html')
+    template = loader.get_template('migrants/survey_tables.html')
 
     return HttpResponse(template.render(context, request))
 
@@ -109,7 +109,7 @@ def person_table(request, *args, **kwargs):
         person.person_detail_url = reverse("person", args=[person.id])
 
     context = {"persons": persons}
-    template = loader.get_template('person_tables.html')
+    template = loader.get_template('migrants/person_tables.html')
 
     return HttpResponse(template.render(context, request))
 
@@ -121,6 +121,6 @@ def person(request, *args, **kwargs):
 
     person = Person.objects.get(id=iid)
     context = {"person": person}
-    template = loader.get_template('person_detail.html')
+    template = loader.get_template('migrants/person_detail.html')
 
     return HttpResponse(template.render(context, request))

@@ -17,6 +17,6 @@ from django.conf.urls import url
 from repatriate import views
 
 urlpatterns = [
-    url(r'^dashboard/$', views.dashboard, name='dashboard'),
-    url(r'^desk-controle/$', views.desk_controle, name='controle')
+    url(r'^$', views.dashboard, name='dashboard_rep'),
+    url(r'^desk-controle$', views.desk_controle, name='controle')
 ]

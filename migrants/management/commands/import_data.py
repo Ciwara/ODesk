@@ -10,7 +10,6 @@ import glob
 import json
 from django.core.management.base import BaseCommand
 
-
 from migrants.models import Survey, Person, Country
 from desk.models import Entity
 

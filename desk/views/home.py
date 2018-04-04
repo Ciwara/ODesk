@@ -7,12 +7,18 @@ from __future__ import (unicode_literals, absolute_import,
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-# from desk.decorators import user_permission
 from desk.models.Entities import Entity
 
 
+def index(request):
+    context = {'page_slug': 'index'}
+
+    return render(request, 'index.html', context)
+
+
 @login_required
-def user_dashboard(request):
+def dashboard(request):
+    print("dashboard")
     context = {'page_slug': 'dashboard'}
 
-    return render(request, 'user_dashboard.html', context)
+    return render(request, 'home.html', context)

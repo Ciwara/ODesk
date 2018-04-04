@@ -18,11 +18,10 @@ from django.conf.urls import url
 from migrants import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
     url(r'^table$', views.table, name='table'),
     url(r'^person/(?P<pk>.*)', views.person, name='person'),
     url(r'^person-table/(?P<iid>.*)', views.person_table, name='person_table'),
     url(r'^survey-table/$', views.survey_table, name='survey_table'),
     # url(r'^chart/$', chart, name='chart'),
-    url(r'^dashboard/$', views.dashboard, name='dashboard')
+    url(r'^$', views.dashboard, name='dashboard_mig')
 ]

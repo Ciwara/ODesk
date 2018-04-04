@@ -1,0 +1,144 @@
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>
+          {% block title %} {% endblock %}
+        </title>
+        <!-- Bootstrap core CSS-->
+        <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <!-- Custom fonts for this template-->
+        <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+        <!-- Page level plugin CSS-->
+        <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+        <!-- Custom styles for this template-->
+        <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+        {% block extra_head %}
+        {% endblock %}
+    </head>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+
+      <div class="container">
+        <a class="navbar-brand" href="/">DNDS/DNPSES</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+
+          <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Home">
+              <a class="nav-link" href="{% url 'home' %}">
+                <i class="fa fa-fw fa-home"></i>
+                <span class="nav-link-text">Home</span>
+              </a>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+                <i class="fa fa-fw fa-dashboard"></i>
+                <span class="nav-link-text">Dashboard</span>
+              </a>
+              <ul class="sidenav-second-level collapse" id="collapseMulti">
+                <li>
+                  <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i></i>Migrants</a>
+                </li>
+                <li></i>
+                  <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Rapatries</a>
+                </li>
+              </ul>
+            </li>
+            <!--
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+              <a class="nav-link" href="#">
+                <i class="fa fa-fw fa-area-chart"></i>
+                <span class="nav-link-text">Charts</span>
+              </a>
+            </li>  -->
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+              <a class="nav-link"  href="{% url 'table' %}"">
+                <i class="fa fa-fw fa-table"></i>
+                <span class="nav-link-text">Tables</span>
+              </a>
+            </li>
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
+                <a class="nav-link" href="{% url 'survey_table' %}">
+                  <i class="fa fa-database" aria-hidden="true"></i>
+                  <span class="nav-link-text">Administration</span>
+                </a>
+              </li>
+          </ul>
+          <ul class="navbar-nav sidenav-toggler">
+            <li class="nav-item">
+              <a class="nav-link text-center" id="sidenavToggler">
+                <i class="fa fa-fw fa-angle-left"></i>
+              </a>
+            </li>
+          </ul>
+          {% include "_menu.html"%}
+        </div>
+      </div>
+    </nav>
+    <body class="fixed-nav sticky-footer bg-dark sidenav-toggled" id="page-top">
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                    {% if messages %}
+                        <ul id="messages">
+                            {% for message in messages %}
+                            <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <div id="footer">{% block footer %}{% endblock %}</div>
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">Select "Déconnexion" est vous sûr de fermer cette sesion.</div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Déconnexion</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+          <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- /.content-wrapper-->
+        <footer class="sticky-footer">
+          <div class="container">
+            <div class="text-center">
+              <small>Copyright © IBS-MAli SARL 2018</small>
+            </div>
+          </div>
+        </footer>
+            {% include "_tags_js.html" %}
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    {% block onJQready %}{% endblock %}
+                });
+           </script>
+    </body>
+</html>

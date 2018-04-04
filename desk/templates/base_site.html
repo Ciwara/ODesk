@@ -1,0 +1,49 @@
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/full-slider.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+
+  <body>
+        {% include "_menu.html" %}
+    <!-- Navigation -->
+
+    {% block banner %} {% endblock %}
+
+    <!-- Page Content -->
+    <section class="py-5">
+      <div class="container">
+            {% block content %}
+            {% endblock %}
+      </div>
+    </section>
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © IBS-MAli SARL 2018</small>
+        </div>
+      </div>
+    </footer>
+        {% include "_tags_js.html" %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+                {% block onJQready %}{% endblock %}
+            });
+       </script>
+    <!-- Bootstrap core JavaScript -->
+  </body>
+</html>

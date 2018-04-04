@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from desk.models.Entities import RegistrationSite
+# from desk.models.Entities import RegistrationSite
 from repatriate.models import (
     Collect, Target, Settings, Person, ContactTemoin, Camp, Organization,
     Lien, NiveauxScolaire, Activite, TypeAssistance,

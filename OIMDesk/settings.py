@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from django.conf import settings
+from django.views.static import serve
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -114,12 +116,12 @@ EMAIL_PORT = 25
 EMAIL_SENDER = 'root@localhost'
 
 AUTH_USER_MODEL = 'desk.Provider'
-# ROLEPERMISSIONS_MODULE = 'OIMDesk.roles'
+ROLEPERMISSIONS_MODULE = 'OIMDesk.roles'
 # LOGIN_URL = 'login'
 # LOGIN_REDIRECT_URL = '/dashboard'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home'
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -148,10 +150,11 @@ OPERATORS = {ORANGE: ("Orange MALI", [7, 9, 4, 8, 90, 91]),
 #     os.path.join(BASE_DIR, 'static')
 # ]
 SITE_ID = 1
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-# print(STATIC_URL, " RRRRR")
-# print(STATIC_ROOT, "  TTTTT")
+
 try:
     from OIMDesk.settings_local import *
 except ImportError:

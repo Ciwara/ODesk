@@ -19,8 +19,11 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.conf.urls import url, include
 from django.contrib import admin
-# from desk.views import admin as admin_
-from desk.views import dashboard
+from django.views.static import serve
+
+
+from desk.views import provider
+from desk.views import home
 
 admin.site.site_header = 'DNDS-Desk admin'
 admin.site.site_title = 'DNDS-Desk admin'
@@ -29,16 +32,22 @@ admin.site.index_title = 'DNDS-Desk administration'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', dashboard.user_dashboard, name='index'),
-    # url(r'^user-new/$', views.user_new, name='user_new'),
-    # url(r'^user-manager/$', views.user_manager, name='user_manager'),
-    # url(r'^user-change/(?P<pk>.*)$', views.user_change, name='user_change'),
-
+    url(r'^$', home.index, name='index'),
+    url(r'^home/$', home.dashboard, name='home'),
+    url(r'^user-new/$', provider.user_new, name='user_new'),
+    url(r'^user-manager/$', provider.user_manager, name='user_manager'),
+    url(r'^user-change/(?P<pk>.*)$', provider.user_change, name='user_change'),
     url(r'^migrants/', include('migrants.urls')),
-    url(r'^rapatrie/', include('repatriate.urls')),
-
+    url(r'^repatriate/', include('repatriate.urls')),
     url(r'^login/$',
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
-
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]

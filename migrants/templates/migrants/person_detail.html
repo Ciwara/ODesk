@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
 {% load staticfiles i18n %}
-
+{% block menu %} {% include 'migrants/_menu_admin.html' %} {% endblock %}
 {% block content %}
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'dashboard' %}">Dashboard</a>
+          <a href="{% url 'dashboard_mig' %}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'dashboard' %}">Menage</a>
+          <a href="{% url 'dashboard_mig' %}">Menage</a>
         </li>
         <li class="breadcrumb-item active">Tables</li>
       </ol>

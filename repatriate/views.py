@@ -16,7 +16,7 @@ from repatriate.models.targets import Target
 def dashboard(request):
     # TODO Export xls pour le partage.
     srv = Survey.objects.all()
-    template = loader.get_template('dashboard.html')
+    template = loader.get_template('repatriate/dashboard.html')
     per_lieu_regions = Person.objects.values(
         "survey__lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
@@ -60,7 +60,7 @@ def dashboard(request):
 
 def desk_controle(request):
 
-    template = loader.get_template('desk_controle.html')
+    template = loader.get_template('repatriate/desk_controle.html')
     user = request.user
 
     context = {"user": user}

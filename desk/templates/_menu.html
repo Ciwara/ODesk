@@ -1,0 +1,74 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">DNDS / DNPSES</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="nav navbar-nav ml-auto">
+                {% if not user.is_anonymous %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <button type="button" class="btn btn-secondary btn-sm ">
+                                <i class="fa fa-fw fa-envelope"></i>Messages <span class="badge badge-pill badge-primary">9</span>
+                                <span class="sr-only">unread messages</span>
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <button type="button" class="btn btn-secondary btn-sm">
+                              <i class="fa fa-fw fa-bell"></i> Alerts <span class="badge badge-pill badge-warning">9</span>
+                              <span class="sr-only">unread messages</span>
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown nav-link">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-wrench"> </i> Administation</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <a href="{% url 'user_manager' %}"><button class="dropdown-item" type="button">
+                               <i class="fa fa-users"> </i> Gestion de Compte</button></a>
+                            <a href=""><button class="dropdown-item" type="button">
+                                <em class="fa fa-database"></em> Données brutes</button></a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/">Accueil
+                        <span class="sr-only">(current)</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="dropdown">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user"></i> {{ user }}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% if not user.is_anonymous %}
+                         <a href="{% url 'logout' %}"><button class="dropdown-item" type="button">
+                           <span class="fa fa-sign-out"></span> Déconnexion</button></a>
+                        <div class="dropdown-divider"></div>
+                        <a href=""><button class="dropdown-item" type="button">
+                            <em class="fa fa-edit"></em> Modifier</button></a>
+                    {% else %}
+                        <a href="{% url 'login' %}"><button class="dropdown-item" type="button"><i class="fa fa-sign-in"> </i> Connexion</button></a>
+                    {% endif %}
+                  </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
