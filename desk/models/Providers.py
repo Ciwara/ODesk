@@ -90,9 +90,9 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                                    verbose_name=_("Maiden Name"))
     position = models.CharField(max_length=250, blank=True, null=True,
                                 verbose_name=_("Position"))
-    site = models.ForeignKey(RegistrationSite,
+    site = models.ForeignKey(RegistrationSite, blank=True, null=True,
                              verbose_name=_("Registration site"),
-                             related_name='registrations_sites', blank=True)
+                             related_name='registrations_sites')
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
 
