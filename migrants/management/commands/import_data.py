@@ -52,9 +52,9 @@ class Command(BaseCommand):
             self.setup(json_file)
 
     def setup(self, json_file):
-        print("--"*50)
+        print("-- " * 50)
         print(json_file)
-        print("--"*50)
+        print("-- " * 50)
         with open(json_file) as data_f:
             data = json.loads(data_f.read())
         for famille in data:
@@ -83,9 +83,12 @@ class Command(BaseCommand):
             sv.menage_ville = famille.get("menage-ville")
             sv.menage_point_entrer = famille.get("menage-point-entrer")
             sv.menage_doc_voyage = famille.get("menage-doc-voyage")
-            sv.menage_numero_doc_voyage = famille.get("menage-numero-doc-voyage")
-            sv.menage_bien_pays_provenance = self.get_bol(famille.get("menage-bien-pays-provenance", ""))
-            sv.membre_pays_provenance = self.get_bol(famille.get("membre-pays-provenance"))
+            sv.menage_numero_doc_voyage = famille.get(
+                "menage-numero-doc-voyage")
+            sv.menage_bien_pays_provenance = self.get_bol(
+                famille.get("menage-bien-pays-provenance", ""))
+            sv.membre_pays_provenance = self.get_bol(
+                famille.get("membre-pays-provenance"))
             nb_membre = famille.get("nb-membre")
             if nb_membre:
                 nb_membre = int(famille.get("nb-membre"))
@@ -99,9 +102,12 @@ class Command(BaseCommand):
             sv.rue = str(famille.get("rue"))
             sv.porte = str(famille.get("porte"))
             sv.tel = famille.get("tel")
-            sv.hebergement = famille.get('hebergement') or famille.get("hebergement_other")
+            sv.hebergement = famille.get('hebergement') or famille.get(
+                "hebergement_other")
             sv.bonne_sante = self.get_bol(famille.get("bonne-sante"))
-            sv.maladie_chronique = str(famille.get("maladie-chronique")) or str(famille.get("maladie-chronique_other"))
+            sv.maladie_chronique = str(famille.get(
+                "maladie-chronique")) or str(famille.get(
+                    "maladie-chronique_other"))
             sv.prise_medicaments = str(famille.get("prise-medicaments"))
             sv.medicaments = str(famille.get("medicaments"))
             sv.fromation_pro = self.get_bol(famille.get("fromation-pro"))
@@ -116,7 +122,8 @@ class Command(BaseCommand):
             sv.activite_region = str(famille.get("activite-region"))
             sv.activite_cercle = str(famille.get("activite-cercle"))
             sv.activite_commune = str(famille.get("activite-commune"))
-            sv.activite_village_autre = str(famille.get("activite-village-autre"))
+            sv.activite_village_autre = str(famille.get(
+                "activite-village-autre"))
             sv.observations = str(famille.get("observations"))
             try:
                 sv.menage_photo_doc_voyage_url_odk = str(famille.get(

@@ -10,7 +10,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 # from functools import partial
 
-from desk.models import (Member)
+from desk.models import (Provider)
 
 
 class LoginForm(forms.Form):
@@ -39,16 +39,16 @@ class UserCreationForm(forms.ModelForm):
     """
 
     class Meta:
-        model = Member
-        fields = ('username', 'image', 'date_of_birth', 'full_name', 'email',
-                  'localite')
+        model = Provider
+        fields = ('username', 'full_name', 'email',
+                  'site')
         # exclude = ['email']
 
         widgets = {
             # 'date_of_birth': forms.DateInput(attrs={'class': 'datepicker'}),
             'full_name': forms.TextInput(attrs={
                 'placeholder': "Nom et prénom"}),
-            'localite': forms.TextInput(attrs={
+            'site': forms.TextInput(attrs={
                 'placeholder': "Adresse"}),
             # 'date_of_birth': forms.TextInput(
             #     attrs={'placeholder': "Date", 'class': 'datepicker'}),
@@ -56,8 +56,8 @@ class UserCreationForm(forms.ModelForm):
 
     username = forms.CharField(max_length=255, required=True)
     full_name = forms.CharField(max_length=200)
-    # date_of_birth = forms.DateField(label="Date de naissance")
-    localite = forms.CharField(max_length=100)
+    date_of_birth = forms.DateField(label="Date de naissance")
+    site = forms.CharField(max_length=100)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput)
@@ -94,9 +94,9 @@ class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = Member
-        # fields = (
-        #     'email', 'password', 'date_of_birth', 'is_active', 'is_admin')
+        model = Provider
+        fields = (
+            'email', 'password', 'is_active', 'is_admin')
         exclude = ['is_admin']
 
     def clean_password(self):

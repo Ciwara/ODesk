@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from django.utils import timezone
 from mptt.models import MPTTModel, TreeForeignKey
 from mptt.managers import TreeManager
+from collections import OrderedDict
 
 
 logger = logging.getLogger(__name__)
@@ -20,8 +21,17 @@ _s = lambda l: sorted(l, key=lambda e: e.name)
 
 
 class RegistrationSite(models.Model):
-    name = models.CharField(max_length=200,)
+
+    UNHCR = 'unhcr'
+    OIM = 'oim'
+    PROJECT_LIST = OrderedDict([
+        (UNHCR, "UNHCR"),
+        (OIM, "OIM")
+    ])
+
     slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
+    name = models.CharField(max_length=200,)
+    project = models.CharField(max_length=200, choices=PROJECT_LIST.items())
     active = models.BooleanField(default=True)
     locality = TreeForeignKey("Entity", related_name="site_localities")
     latitude = models.FloatField(blank=True, null=True)
@@ -29,8 +39,9 @@ class RegistrationSite(models.Model):
     geometry = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return "{slug}-{name}-{locality}".format(
-            name=self.name, slug=self.slug, locality=self.locality)
+        return "{proj} - {name} / {locality}".format(
+            name=self.name, locality=self.locality,
+            proj=self.project)
 
     def active(self):
         return self.filter(active=True)

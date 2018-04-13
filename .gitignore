@@ -7,3 +7,4 @@ static/*
 OIMDesk/settings_local.py
 deployment.fad
 desk/fixtures/settings.json
+Resources/register-site.xlsx

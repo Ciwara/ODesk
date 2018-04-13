@@ -66,3 +66,13 @@ def desk_controle(request):
     context = {"user": user}
 
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def target_validated(request, *args, **kwargs):
+    id_url = kwargs["pk"]
+    print(id_url)
+    selected_target = Target.objects.get(identifier=id_url)
+    selected_target.validation_status = Target.VALIDATED
+    selected_target.save()
+    return redirect("/home")

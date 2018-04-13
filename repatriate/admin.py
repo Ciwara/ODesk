@@ -79,7 +79,10 @@ class PersonAdmin(admin.ModelAdmin):
 class TargetAdmin(admin.ModelAdmin):
 
     model = Target
-    # list_filter = ['menage_pays_provenance', 'cause', 'date_arrivee']
+
+    list_display = ('identifier', 'validation_status', 'pays_asile',
+                    'site_engistrement', 'camp')
+    list_filter = ['validation_status', 'site_engistrement', 'camp']
 
 
 @admin.register(Collect)
