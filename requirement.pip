@@ -6,3 +6,5 @@ humanfriendly
 django-reversion==2.0.13
 qrcode
 jsonfield
+django-role-permissions==2.2.0
+requests

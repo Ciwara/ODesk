@@ -92,7 +92,7 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                                 verbose_name=_("Position"))
     site = models.ForeignKey(RegistrationSite,
                              verbose_name=_("Registration site"),
-                             related_name='registrations_sites')
+                             related_name='registrations_sites', blank=True)
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
 
