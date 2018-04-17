@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'reversion',
     'rolepermissions',
+    'odkextractor',
     'mptt',
     'desk',
     'migrants',

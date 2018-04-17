@@ -216,7 +216,18 @@ class Person(models.Model):
         (MALE, "Homme"),
         (FEMALE, "Femme")
     ])
-
+    en_types = OrderedDict([
+        ("kayes-cercle", 11),
+        ("diema", 13),
+        ("nioro", 16),
+        ("kita", 15),
+        ("bafoulabe", 12),
+        ("yelimane", 17),
+        ("kenieba", 14)
+    ])
+    identifier = models.CharField(
+        _("identifier"), max_length=500, null=True, blank=True)
+    date = models.DateTimeField(_("Date"), default=timezone.now)
     survey = models.ForeignKey(Survey)
     age = models.IntegerField(verbose_name=_("Age"))
     gender = models.CharField(max_length=20, choices=GENDERS.items())
@@ -266,6 +277,25 @@ class Person(models.Model):
     def __str__(self):
         return "{nom} {prenoms} {age}".format(
             nom=self.nom, prenoms=self.prenoms, age=self.age)
+
+    def create_identifier(self):
+        try:
+            p_lastest = Person.objects.filter(
+                survey__lieu_cercle=self.survey.lieu_cercle).latest("date")
+            identifier = p_lastest.identifier
+        except Exception as e:
+            print(e)
+            identifier = "00000"
+        return "R01{c}{id}".format(
+            c=self.get_slug_cercle(self.survey.lieu_cercle),
+            id=self.add(identifier, "1"))
+
+    def get_slug_cercle(self, cercle):
+        c_id = self.en_types.get(cercle)
+        return self.add("000", str(c_id))
+
+    def add(self, x, y):
+        return str(int(x) + int(y)).zfill(len(x))
 
 reversion.register(Person)
 reversion.register(Survey)
