@@ -38,14 +38,14 @@ def get_odk_data(form):
     print("getting data for ODK Server {}...".format(
           "with media files " if form.exclude_media_export else ""))
     default_params = "java -jar {app} --form_id {form_id} --odk_username {odk_username} --odk_password {odk_password} --overwrite_csv_export --export_directory {export_directory} --storage_directory {storage_directory} --aggregate_url {aggregate_url} --export_filename {export_filename}".format(
-        app=get_path(form.app),
+        app=get_path(form.odk_setting.app),
         form_id=form.form_id,
-        odk_username=form.odk_username,
-        odk_password=form.odk_password,
-        export_directory=get_path(form.export_directory),
-        storage_directory=get_path(form.storage_directory),
+        odk_username=form.odk_setting.odk_username,
+        odk_password=form.odk_setting.odk_password,
+        export_directory=get_path(form.odk_setting.export_directory),
+        storage_directory=get_path(form.odk_setting.storage_directory),
         export_filename=form.export_filename,
-        aggregate_url=form.aggregate_url)
+        aggregate_url=form.odk_setting.aggregate_url)
 
     if form.exclude_media_export:
         default_params += " --exclude_media_export"

@@ -9,7 +9,7 @@ from __future__ import (unicode_literals, absolute_import,
 # import glob
 # import json
 from django.core.management.base import BaseCommand
-from odkextractor.models import (FormSettings)
+from odkextractor.models import (FormID)
 from odkextractor.commons import get_odk_data
 
 # from desk.models import Entity
@@ -28,5 +28,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("handle")
-        for form in FormSettings.objects.filter(active=True):
+        for form in FormID.objects.filter(active=True):
             get_odk_data(form)
