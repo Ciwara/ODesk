@@ -17,7 +17,7 @@ from desk.models import Entity
 from odkextractor.models import FormID
 
 
-@kronos.register('15 * * * * *')
+@kronos.register('1 * * * * *')
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
