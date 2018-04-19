@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 # from django.shortcuts import redirect, render
 from migrants.models import Survey, Person
-from desk.celery import app
+# from desk.celery import app
 from django.db.models import Count
 from django.template import loader
 # from migrants.forms import (UserCreationForm, UserChangeForm)
@@ -58,16 +58,6 @@ def dashboard(request):
                "per_lieu_region": per_lieu_region
                }
     return HttpResponse(template.render(context, request))
-
-
-# @login_required
-# def index(request):
-
-#     srv = Survey.objects.all()
-#     context = {"srv": srv}
-#     template = loader.get_template('index.html')
-
-#     return HttpResponse(template.render(context, request))
 
 
 @login_required
@@ -145,7 +135,7 @@ def get_date(date):
 
 
 @login_required
-@app.task
+# @app.task
 def export_migrants_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
