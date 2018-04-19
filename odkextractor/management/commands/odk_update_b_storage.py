@@ -5,28 +5,19 @@
 from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
 
-# from optparse import make_option
-# import glob
-# import json
 from django.core.management.base import BaseCommand
 from odkextractor.models import (FormID)
-from odkextractor.commons import get_odk_data
-
-# from desk.models import Entity
-OTHER = "other"
+from odkextractor.commons import get_odk_data, read_csv
 
 
 class Command(BaseCommand):
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '-pk',
-            help='json file to import from',
-            action='store',
-            dest='input_file'
-        )
-
     def handle(self, *args, **options):
-        print("handle")
-        for form in FormID.objects.filter(active=True):
-            get_odk_data(form)
+        forms = FormID.objects.filter(active=True)
+        if FormID.IN_PROGRESS not in [f.status for f in forms]:
+            for form in FormID.objects.filter(active=True):
+                form.in_progress()
+                get_odk_data(form)
+                form.not_in_progress()
+                read_csv(form.get_migrant_csv_file, form.data_json)
+                read_csv(form.get_ig_manage_csv_file, form.data_info_g_json)

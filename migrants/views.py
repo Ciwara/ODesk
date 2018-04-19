@@ -1,8 +1,11 @@
 # from django.shortcuts import render
 
+
+import xlwt
+
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 # from django.shortcuts import redirect, render
 from migrants.models import Survey, Person
 from django.db.models import Count
@@ -117,10 +120,87 @@ def person_table(request, *args, **kwargs):
 @login_required
 def person(request, *args, **kwargs):
     iid = kwargs["pk"]
-    print(iid)
-
     person = Person.objects.get(id=iid)
     context = {"person": person}
     template = loader.get_template('migrants/person_detail.html')
 
     return HttpResponse(template.render(context, request))
+
+
+def get_sex(value):
+    return "M" if value == "male" else "F"
+
+
+def get_profession(value):
+    if value.get("membre-profession") == 'other':
+        return value.get("membre-profession_other")
+    return value.get("membre-profession")
+
+
+@login_required
+def export_migrants_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ["ID ", "DATE", "AGENT", "PROVENANCE DU MIGRANT",
+               "PRENOMS", "NOM", "SEXE", "DATE DE NAISSANCE", "AGE",
+               "PROFESSION", "ETAT CIVIL", "LIEN", "VULNERABILITE",
+               "REGION", "CERCLE", "COMMUNE", "VILLAGE", "TEL"]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    for row in Person.objects.all():
+        row_num += 1
+        col_num = 0
+        ws.write(row_num, col_num, row.survey.instanceID, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.date_ebtretien, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.nom_agent, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.menage_pays_provenance.name, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.prenoms, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.nom, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, get_sex(row.gender), font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.ddn, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.age, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.profession, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.etat_civil, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.lien, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, "", font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.lieu_region, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.lieu_cercle, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.lieu_commune, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.lieu_village_autre, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.survey.tel, font_style)
+        # break
+    wb.save(response)
+
+    return response

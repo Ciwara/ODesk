@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'mptt',
     'desk',
     'migrants',
-    'repatriate'
+    'repatriate',
+    'kronos',
 ]
 
 MIDDLEWARE = [

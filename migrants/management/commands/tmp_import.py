@@ -7,12 +7,17 @@ from __future__ import (unicode_literals, absolute_import,
 
 import datetime
 import json
+import kronos
+
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
 
 from migrants.models import Survey, Person, Country
 from desk.models import Entity
+from odkextractor.models import FormID
 
 
+@kronos.register('15 * * * * *')
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -51,15 +56,22 @@ class Command(BaseCommand):
         return "celibataire" if value.lower() == "celibataire" else "marie"
 
     def handle(self, *args, **options):
-        survey = options.get('add_survey')
-        menage = options.get('add_menage')
-        print("-- " * 50)
-        with open(survey) as data_f:
-            self.s_data = json.loads(data_f.read())
-        with open(menage) as data_f:
-            self.m_data = json.loads(data_f.read())
 
-        for membre in self.m_data:
+        print(u"odk_update_b_storage")
+        call_command("odk_update_b_storage")
+        for form in FormID.objects.filter(active=True):
+            self.setup(form)
+
+    def setup(self, form):
+
+        print("form_id : {}".format(form.form_id))
+        with open(form.data_info_g_json) as data_f:
+            m_data = json.loads(data_f.read())
+
+        with open(form.data_json) as data_f:
+            self.s_data = json.loads(data_f.read())
+
+        for membre in m_data:
             mmb = Person()
             mmb.nationalite = membre.get("membre-nationalite")
             mmb.prenoms = membre.get("membre-prenoms")

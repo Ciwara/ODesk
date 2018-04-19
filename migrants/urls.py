@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^person-table/(?P<iid>.*)', views.person_table, name='person_table'),
     url(r'^survey-table/$', views.survey_table, name='survey_table'),
     # url(r'^chart/$', chart, name='chart'),
-    url(r'^$', views.dashboard, name='dashboard_mig')
+    url(r'^$', views.dashboard, name='dashboard_mig'),
+    url(r'^export/xls/$', views.export_migrants_xls, name='export_migrants_xls'),
 ]

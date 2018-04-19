@@ -29,5 +29,5 @@ class FormIDAdmin(admin.ModelAdmin):
 
     model = FormID
     list_display = ['__str__', 'form_id',
-                    'last_update', 'odk_setting', 'active',]
-    list_filter = ['active', 'last_update']
+                    'last_update', 'odk_setting', 'active', 'status']
+    list_filter = ['active', 'last_update', 'status']
