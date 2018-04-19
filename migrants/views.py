@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 # from django.shortcuts import redirect, render
 from migrants.models import Survey, Person
+from desk.celery import app
 from django.db.models import Count
 from django.template import loader
 # from migrants.forms import (UserCreationForm, UserChangeForm)
@@ -137,7 +138,14 @@ def get_profession(value):
     return value.get("membre-profession")
 
 
+def get_date(date):
+    if date:
+        date = date.strftime("%x")
+    return date
+
+
 @login_required
+@app.task
 def export_migrants_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="users.xls"'
@@ -167,7 +175,7 @@ def export_migrants_xls(request):
         col_num = 0
         ws.write(row_num, col_num, row.survey.instanceID, font_style)
         col_num += 1
-        ws.write(row_num, col_num, row.survey.date_ebtretien, font_style)
+        ws.write(row_num, col_num, get_date(row.survey.date_ebtretien), font_style)
         col_num += 1
         ws.write(row_num, col_num, row.survey.nom_agent, font_style)
         col_num += 1
@@ -179,7 +187,7 @@ def export_migrants_xls(request):
         col_num += 1
         ws.write(row_num, col_num, get_sex(row.gender), font_style)
         col_num += 1
-        ws.write(row_num, col_num, row.ddn, font_style)
+        ws.write(row_num, col_num, get_date(row.ddn), font_style)
         col_num += 1
         ws.write(row_num, col_num, row.age, font_style)
         col_num += 1

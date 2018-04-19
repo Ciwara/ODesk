@@ -10,3 +10,4 @@ django-role-permissions==2.2.0
 requests
 django-kronos==1.0
 xlwt
+Celery

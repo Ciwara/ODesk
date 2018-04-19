@@ -9,10 +9,8 @@ import datetime
 import csv
 # from optparse import make_option
 from django.core.management.base import BaseCommand
-# from django.core.management import call_command
 
-from migrants.models import Survey, Person, Country
-from collections import OrderedDict
+from migrants.models import Person
 
 
 TODAY = datetime.date.today()
@@ -22,7 +20,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '-f',
+            '-r',
             help='CSV file to import from',
             action='store',
             dest='input_file'
