@@ -38,6 +38,9 @@ class ODKSetting(models.Model):
 
 class FormID(models.Model):
 
+    class Meta:
+        ordering = ['last_update', ]
+
     IN_PROGRESS = 'en cours'
     NOT_IN_PROGRESS = 'not in progress'
     STATUS = OrderedDict([

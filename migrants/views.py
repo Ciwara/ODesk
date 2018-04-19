@@ -11,6 +11,8 @@ from migrants.models import Survey, Person
 # from desk.celery import app
 from django.db.models import Count
 from django.template import loader
+
+from odkextractor.models import FormID
 # from migrants.forms import (UserCreationForm, UserChangeForm)
 
 
@@ -19,6 +21,7 @@ def dashboard(request):
     # TODO Export xls pour le partage.
     srv = Survey.objects.all()
     template = loader.get_template('migrants/dashboard.html')
+    date_last_update = FormID.objects.order_by().first().last_update
     per_lieu_regions = Person.objects.values(
         "survey__lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
@@ -55,8 +58,10 @@ def dashboard(request):
                "total_person": total_person,
                "total_female": total_female,
                "total_male": total_male,
-               "per_lieu_region": per_lieu_region
+               "per_lieu_region": per_lieu_region,
+               "date_last_update": date_last_update
                }
+
     return HttpResponse(template.render(context, request))
 
 

@@ -24,13 +24,17 @@ def dashboard(request, *args, **kwargs):
     prov = None
     if request.user.is_authenticated():
         prov = Provider.objects.get(username=request.user.username)
-
-    not_valid_soumissions_rep = Target.objects.filter(
-        site_engistrement=prov.site, validation_status=Target.NOT_APPLICABLE)
+    target_per_site = Target.objects.filter(
+        site_engistrement=prov.site)
+    not_valid_soumissions_rep = target_per_site.filter(
+        validation_status=Target.NOT_APPLICABLE)
+    nb_soumission = target_per_site.count()
     for v_soumissions in not_valid_soumissions_rep:
         v_soumissions.validated_url = reverse(
             "tvalidated", args=[v_soumissions.identifier])
+
     context = {'page_slug': 'dashboard',
+               'nb_soumission': nb_soumission,
                'not_valid_soumissions_rep': not_valid_soumissions_rep}
 
     return render(request, 'home.html', context)
