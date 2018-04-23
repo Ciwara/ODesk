@@ -24,9 +24,9 @@ def dashboard(request):
     total_male = Person.objects.filter(gender=Person.MALE).count()
     total_female = Person.objects.filter(gender=Person.FEMALE).count()
     s = Survey.objects.values("menage_pays_provenance").annotate(
-        Count('instanceID')).order_by()
+        Count('instance_id')).order_by()
     date_entre = Survey.objects.values("date_entretien").annotate(
-        Count('instanceID')).order_by()
+        Count('instance_id')).order_by()
 
     per_lieu_region = {
         'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_lieu_regions],
@@ -38,13 +38,13 @@ def dashboard(request):
         'labels': [i.get('menage_pays_provenance').title() for i in s],
         'label': "Nombre de migrants",
         'title': "",
-        'data': [i.get('instanceID__count') for i in s]
+        'data': [i.get('instance_id__count') for i in s]
     }
     menage_per_date_entrtien = {
         'labels': [i.get('date_entretien').strftime('%d-%b-%y') for i in date_entre],
         'label': "Nombre de migrants",
         'title': "",
-        'data': [i.get('instanceID__count') for i in date_entre]
+        'data': [i.get('instance_id__count') for i in date_entre]
     }
     context = {"srv": srv,
                "menage_per_prov": menage_per_prov,

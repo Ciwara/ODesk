@@ -5,11 +5,12 @@ import os
 import json
 import csv
 
-BPATH = os.path.join(os.getcwd(), "odkextractor")
+from django.conf import settings
 
 
 def read_csv(file, json_file, format=""):
     csv_rows = []
+    file = get_path("data,{}".format(file))
     with open(file) as csvfile:
         reader = csv.DictReader(csvfile)
         title = reader.fieldnames
@@ -25,7 +26,7 @@ def write_json(data, json_file, format):
 
 
 def get_path(path_):
-    return os.path.join(BPATH, *path_.split(','))
+    return os.path.join(settings.BASE_ODK_DIR, *path_.split(','))
 
 
 def get_odk_data(form):

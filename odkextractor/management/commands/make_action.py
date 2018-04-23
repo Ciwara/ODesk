@@ -27,10 +27,22 @@ class Command(BaseCommand):
             action='store',
             dest='active_all'
         )
+        parser.add_argument(
+            '-ad',
+            help='CSV file to import from',
+            action='store',
+            dest='deactive_all'
+        )
 
     def handle(self, *args, **options):
         if options.get("active_all"):
             print("active all FormID...")
             for f in FormID.objects.all():
                 f.active = True
+                f.save()
+
+        if options.get("deactive_all"):
+            print("deactive all FormID...")
+            for f in FormID.objects.all():
+                f.active = False
                 f.save()

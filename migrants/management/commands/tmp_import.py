@@ -15,6 +15,7 @@ from django.core.management import call_command
 from migrants.models import Survey, Person, Country
 from desk.models import Entity
 from odkextractor.models import FormID
+from odkextractor.commons import get_path
 
 
 @kronos.register('* * * * * *')
@@ -54,7 +55,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # print(options.get('update_odk'))
         if not options.get('update_odk'):
-            print(u"odk_update_b_storage")
             call_command("odk_update_b_storage")
         for form in FormID.objects.filter(active=True):
             self.setup(form)
@@ -62,10 +62,10 @@ class Command(BaseCommand):
     def setup(self, form):
 
         # print("form_id : {}".format(form.form_id))
-        with open(form.data_info_g_json) as data_f:
+        with open(get_path(form.data_info_g_json)) as data_f:
             m_data = json.loads(data_f.read())
 
-        with open(form.data_json) as data_f:
+        with open(get_path(form.data_json)) as data_f:
             self.s_data = json.loads(data_f.read())
 
         for membre in m_data:
@@ -104,7 +104,7 @@ class Command(BaseCommand):
                 person = Person.objects.get_or_create(key_odk=str(membre.get("KEY")), defaults=data_mb)
             except Exception as e:
                 print("mmb", e)
-            print("NOM :", person)
+            # print("NOM :", person)
 
     def create_survey(self, pkey):
 

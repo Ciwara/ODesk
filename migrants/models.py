@@ -82,14 +82,17 @@ class Survey(models.Model):
                                      related_name='own_validated_reports')
     auto_validated = models.BooleanField(default=False)
 
-    instance_id = models.CharField(_("Instance ID"), max_length=100, primary_key=True)
+    instance_id = models.CharField(
+        _("Instance ID"), max_length=100, primary_key=True)
     formhub_uuid = models.CharField(max_length=250)
-    submission_date = models.DateTimeField(_("Date de soumission"), default=timezone.now)
+    submission_date = models.DateTimeField(
+        _("Date de soumission"), default=timezone.now)
     date_debut = models.DateTimeField(default=timezone.now)
     date_fin = models.DateTimeField(default=timezone.now)
     type_operation = models.CharField(_("Operation Type"), max_length=120)
     cause = models.CharField(_("Cause"), max_length=120, blank=True, null=True)
-    cause_other = models.CharField(_("Cause"), max_length=120, blank=True, null=True)
+    cause_other = models.CharField(
+        _("Cause"), max_length=120, blank=True, null=True)
     nom_agent = models.CharField(_("Agent"), max_length=120)
     date_arrivee = models.DateField()
     date_entretien = models.DateField()
@@ -100,7 +103,7 @@ class Survey(models.Model):
         related_name='pays_provenances', blank=True, null=True)
     menage_pays_de_provenance_ville = models.CharField(max_length=100)
     membre_pays_provenance = models.BooleanField(default=False)
-    retour_rejoidre_famille= models.BooleanField(default=False)
+    retour_rejoidre_famille = models.BooleanField(default=False)
     menage_doc_voyage = models.CharField(max_length=100)
     menage_numero_doc_voyage = models.CharField(max_length=250)
     faire_venir_famille = models.BooleanField(default=False)
@@ -130,7 +133,8 @@ class Survey(models.Model):
     hebergement = models.CharField(max_length=100, blank=True, null=True)
     hebergement_other = models.CharField(max_length=100, blank=True, null=True)
     maladie_chronique = models.CharField(max_length=100, blank=True, null=True)
-    maladie_chronique_other = models.CharField(max_length=100, blank=True, null=True)
+    maladie_chronique_other = models.CharField(
+        max_length=100, blank=True, null=True)
     prise_medicaments = models.CharField(max_length=100, blank=True, null=True)
     medicaments = models.CharField(max_length=100, blank=True, null=True)
     fromation_pro = models.BooleanField(
@@ -142,22 +146,26 @@ class Survey(models.Model):
         verbose_name=_("Job"), default=True)
     reinsertion_professionnelle_f1 = models.BooleanField(
         default=True, verbose_name=_(
-        "F1. Formation socio-professionnelle souhaitée ?"))
+            "F1. Formation socio-professionnelle souhaitée ?"))
     reinsertion_professionnelle_f2 = models.CharField(
         blank=True, null=True, max_length=200, verbose_name=_(
             "F2. Dans quel secteur ?"))
-    reinsertion_professionnelle_f3 = models.BooleanField(default=True, verbose_name=_(
-        "F3. Avez-vous un Projet d’activité ?"))
+    reinsertion_professionnelle_f3 = models.BooleanField(
+        default=True, verbose_name=_("F3. Avez-vous un Projet d’activité ?"))
     reinsertion_professionnelle_f4 = models.CharField(
         blank=True, null=True, max_length=200, verbose_name=_(
             "F4. Lequel?"))
     reinsertion_professionnelle_f5 = models.CharField(
         blank=True, null=True, max_length=200, verbose_name=_(
             "F5. Que souhaiterez-vous faire ?"))
-    reinsertion_professionnelle_f6_activite_region = models.CharField(max_length=100, blank=True, null=True)
-    reinsertion_professionnelle_f6_activite_cercle = models.CharField(max_length=100, blank=True, null=True)
-    reinsertion_professionnelle_f6_activite_commune = models.CharField(max_length=100, blank=True, null=True)
-    reinsertion_professionnelle_f6_activite_village_autre = models.CharField(max_length=100, blank=True, null=True)
+    reinsertion_professionnelle_f6_activite_region = models.CharField(
+        max_length=100, blank=True, null=True)
+    reinsertion_professionnelle_f6_activite_cercle = models.CharField(
+        max_length=100, blank=True, null=True)
+    reinsertion_professionnelle_f6_activite_commune = models.CharField(
+        max_length=100, blank=True, null=True)
+    reinsertion_professionnelle_f6_activite_village_autre = models.CharField(
+        max_length=100, blank=True, null=True)
     observations = models.CharField(
         verbose_name=_("Observations"), max_length=100, blank=True, null=True)
 
@@ -179,6 +187,7 @@ class Person(models.Model):
     class Meta:
         unique_together = (('key_odk'),)
 
+        ordering = ['survey__date_entretien']
     CELI = 'celibataire'
     MARIE = 'marie'
     ETAT_CIVIL = OrderedDict([

@@ -62,11 +62,6 @@ class FormID(models.Model):
     def __str__(self):
         return self.form_id
 
-    def get_path(self, path_):
-        return os.path.join(
-            os.path.join(
-                os.getcwd(), "odkextractor"), *path_.split(','))
-
     def in_progress(self):
         self.status = self.IN_PROGRESS
         self.save()
@@ -77,8 +72,9 @@ class FormID(models.Model):
 
     @property
     def get_migrant_csv_file(self):
-        return self.get_path("{},{}".format(self.odk_setting.export_directory,
-                                            self.export_filename.replace('-', '_')))
+        return os.path.join(
+            self.odk_setting.export_directory,
+            self.export_filename.replace('-', '_'))
 
     @property
     def get_ig_manage_csv_file(self):

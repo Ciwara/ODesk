@@ -154,7 +154,8 @@ OPERATORS = {ORANGE: ("Orange MALI", [7, 9, 4, 8, 90, 91]),
 # ]
 SITE_ID = 1
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_ODK_ROOT = os.path.join(BASE_DIR, 'odkextractor', 'data', "media")
+BASE_ODK_DIR = os.path.join(BASE_DIR, 'odkextractor')
+MEDIA_ODK_ROOT = os.path.join(BASE_ODK_DIR, 'data', "media")
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
