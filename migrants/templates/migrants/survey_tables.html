@@ -43,14 +43,14 @@
               <tbody>
                 {% for svr in surveys %}
                   <tr>
-                    <td>{{ svr.date_ebtretien }}</td>
+                    <td>{{ svr.date_entretien }}</td>
                     <td>{{ svr.menage_pays_provenance }}</td>
                     <td>{{ svr.type_operation }}</td>
                     <td>{{ svr.cause }}</td>
                     <td>{{ svr.menage_point_entrer }}</td>
                     <td>{{ svr.nb_member }}</td>
                     <td>{{ svr.tel }}</td>
-                    <td><a href="{{svr.person_url}}">{{ svr.instanceID }}</a></td>
+                    <td><a href="{{svr.person_url}}">{{ svr.instance_id }}</a></td>
                   </tr>
                 {% endfor %}
               </tbody>

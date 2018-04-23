@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from desk.models import Entity, Provider
-from repatriate.models import Target
+from repatriate.models import Target, Person
 
 
 def index(request):
@@ -26,8 +26,14 @@ def dashboard(request, *args, **kwargs):
         prov = Provider.objects.get(username=request.user.username)
     target_per_site = Target.objects.filter(
         site_engistrement=prov.site)
+    person_per_site = Person.objects.filter(
+        target__site_engistrement=prov.site)
     not_valid_soumissions_rep = target_per_site.filter(
         validation_status=Target.NOT_APPLICABLE)
+
+    total_person = target_per_site.count()
+    total_male = person_per_site.filter(membre_sexe=Person.MALE).count()
+    total_female = person_per_site.filter(membre_sexe=Person.FEMALE).count()
     nb_soumission = target_per_site.count()
     for v_soumissions in not_valid_soumissions_rep:
         v_soumissions.validated_url = reverse(
@@ -35,6 +41,9 @@ def dashboard(request, *args, **kwargs):
 
     context = {'page_slug': 'dashboard',
                'nb_soumission': nb_soumission,
+               'total_person': total_person,
+               'total_male': total_male,
+               'total_female': total_female,
                'not_valid_soumissions_rep': not_valid_soumissions_rep}
 
     return render(request, 'home.html', context)

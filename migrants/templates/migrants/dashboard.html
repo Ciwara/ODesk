@@ -1,6 +1,7 @@
 {% extends "base_admin.html" %}
 {% load staticfiles i18n humanize %}
 {% block content %}
+      <h1>Migrants</h1>
       <div class="row">
         <div class="col-lg-12">
           <!-- Example Bar Chart Card-->
@@ -108,7 +109,7 @@
 
 {% block onJQready %}
     chartbarData({{menage_per_prov|safe}}, "barChart");
-    chartbarData({{per_lieu_region|safe}}, "barChart2");
+    chartbarData({{per_adresse_mali_lieu_region|safe}}, "barChart2");
     chartlineData({{menage_per_date_entrtien|safe}}, "lineChart");
     chartpieData({{menage_per_prov|safe}});
 {% endblock %}

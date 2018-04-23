@@ -1,6 +1,7 @@
 {% extends "base_admin.html" %}
 {% load staticfiles i18n %}
 {% block content %}
+      <h1> Retournés </h1>
       <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
@@ -104,7 +105,7 @@
 
 {% block onJQready %}
     chartbarData({{menage_per_prov|safe}}, "barChart");
-    chartbarData({{per_lieu_region|safe}}, "barChart2");
+    chartbarData({{per_adresse_mali_lieu_region|safe}}, "barChart2");
     chartlineData({{menage_per_date_entrtien|safe}}, "lineChart");
     chartpieData({{menage_per_prov|safe}});
 {% endblock %}

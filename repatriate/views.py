@@ -18,18 +18,18 @@ def dashboard(request):
     srv = Survey.objects.all()
     template = loader.get_template('repatriate/dashboard.html')
     per_lieu_regions = Person.objects.values(
-        "survey__lieu_region").annotate(Count("id")).order_by()
+        "survey__adresse_mali_lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
     total_person = Person.objects.all().count()
     total_male = Person.objects.filter(gender=Person.MALE).count()
     total_female = Person.objects.filter(gender=Person.FEMALE).count()
     s = Survey.objects.values("menage_pays_provenance").annotate(
         Count('instanceID')).order_by()
-    date_entre = Survey.objects.values("date_ebtretien").annotate(
+    date_entre = Survey.objects.values("date_entretien").annotate(
         Count('instanceID')).order_by()
 
     per_lieu_region = {
-        'labels': [i.get('survey__lieu_region').title() for i in per_lieu_regions],
+        'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_lieu_regions],
         'label': "Région de retour",
         'title': "",
         'data': [i.get('id__count') for i in per_lieu_regions]
@@ -41,7 +41,7 @@ def dashboard(request):
         'data': [i.get('instanceID__count') for i in s]
     }
     menage_per_date_entrtien = {
-        'labels': [i.get('date_ebtretien').strftime('%d-%b-%y') for i in date_entre],
+        'labels': [i.get('date_entretien').strftime('%d-%b-%y') for i in date_entre],
         'label': "Nombre de migrants",
         'title': "",
         'data': [i.get('instanceID__count') for i in date_entre]
@@ -71,7 +71,6 @@ def desk_controle(request):
 @login_required
 def target_validated(request, *args, **kwargs):
     id_url = kwargs["pk"]
-    print(id_url)
     selected_target = Target.objects.get(identifier=id_url)
     selected_target.validation_status = Target.VALIDATED
     selected_target.save()
