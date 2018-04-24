@@ -56,7 +56,7 @@ class Survey(models.Model):
 
     class Meta:
         ordering = ['date_entretien', 'date_arrivee', ]
-        unique_together = (('instance_id'),)
+        # unique_together = (('instance_id'),)
 
     # last Provider who edited report. Initialized with created_by
     modified_by = models.ForeignKey(Provider,
@@ -186,8 +186,8 @@ class Person(models.Model):
 
     class Meta:
         unique_together = (('key_odk'),)
-
         ordering = ['survey__date_entretien']
+
     CELI = 'celibataire'
     MARIE = 'marie'
     ETAT_CIVIL = OrderedDict([
