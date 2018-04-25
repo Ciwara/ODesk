@@ -40,7 +40,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for member in Person.objects.filter(survey__lieu_region="kayes").order_by("date"):
+        for member in Person.objects.filter(
+                survey__adresse_mali_lieu_region="kayes").order_by("survey__submission_date"):
             member.identifier = self.create_identifier(member)
             member.save()
             print(self.create_identifier(member))
@@ -48,7 +49,7 @@ class Command(BaseCommand):
     def create_identifier(self, m):
         try:
             p_lastest = Person.objects.filter(
-                survey__lieu_cercle=m.survey.lieu_cercle).latest("identifier")
+                survey__adresse_mali_lieu_cercle=m.survey.adresse_mali_lieu_cercle).latest("identifier")
             identifier = p_lastest.identifier[6:]
         except Exception as e:
             print(e)
@@ -57,7 +58,7 @@ class Command(BaseCommand):
             identifier = "00000"
 
         return "R01{c}{id}".format(
-            c=self.get_slug_cercle(m.survey.lieu_cercle),
+            c=self.get_slug_cercle(m.survey.adresse_mali_lieu_cercle),
             id=self.add(identifier, "1"))
 
     def get_slug_cercle(self, cercle):

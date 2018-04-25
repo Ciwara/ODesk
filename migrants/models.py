@@ -12,7 +12,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from collections import OrderedDict
-from desk.models import Entity, Provider
+from desk.models import Provider
 
 
 class Country(models.Model):
@@ -86,9 +86,9 @@ class Survey(models.Model):
         _("Instance ID"), max_length=100, primary_key=True)
     formhub_uuid = models.CharField(max_length=250)
     submission_date = models.DateTimeField(
-        _("Date de soumission"), default=timezone.now)
-    date_debut = models.DateTimeField(default=timezone.now)
-    date_fin = models.DateTimeField(default=timezone.now)
+        _("Date de soumission"))
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
     type_operation = models.CharField(_("Operation Type"), max_length=120)
     cause = models.CharField(_("Cause"), max_length=120, blank=True, null=True)
     cause_other = models.CharField(
