@@ -10,7 +10,6 @@ from django.conf import settings
 
 def read_csv(file, json_file, format=""):
     csv_rows = []
-    file = get_path("data,{}".format(file))
     with open(file) as csvfile:
         reader = csv.DictReader(csvfile)
         title = reader.fieldnames
@@ -43,11 +42,12 @@ def get_odk_data(form):
         form_id=form.form_id,
         odk_username=form.odk_setting.odk_username,
         odk_password=form.odk_setting.odk_password,
-        export_directory=get_path(form.odk_setting.export_directory),
-        storage_directory=get_path(form.odk_setting.storage_directory),
+        export_directory= form.get_path_export_directory,
+        storage_directory=form.odk_setting.get_path_storage_directory,
         export_filename=form.export_filename,
         aggregate_url=form.odk_setting.aggregate_url)
 
     if form.exclude_media_export:
         default_params += " --exclude_media_export"
+    print(default_params)
     os.system(default_params)

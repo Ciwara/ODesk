@@ -28,6 +28,8 @@ class ODKSettingAdmin(admin.ModelAdmin):
 class FormIDAdmin(admin.ModelAdmin):
 
     model = FormID
-    list_display = ['__str__', 'form_id',
-                    'last_update', 'odk_setting', 'active', 'status']
+    list_display = ['__str__', 'export_filename',
+                    'exclude_media_export', 'last_update',
+                    'export_directory', 'active',
+                    'status', 'odk_setting']
     list_filter = ['active', 'last_update', 'status']

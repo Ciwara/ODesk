@@ -15,7 +15,7 @@ from django.core.management import call_command
 from migrants.models import Survey, Person, Country
 from desk.models import Entity
 from odkextractor.models import FormID
-from odkextractor.commons import get_path
+# from odkextractor.commons import get_path
 
 
 @kronos.register('* * * * * *')
@@ -62,10 +62,10 @@ class Command(BaseCommand):
     def setup(self, form):
 
         # print("form_id : {}".format(form.form_id))
-        with open(get_path(form.data_info_g_json)) as data_f:
+        with open(form.data_info_g_json) as data_f:
             m_data = json.loads(data_f.read())
 
-        with open(get_path(form.data_json)) as data_f:
+        with open(form.data_json) as data_f:
             self.s_data = json.loads(data_f.read())
 
         for membre in m_data:
