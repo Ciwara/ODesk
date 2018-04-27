@@ -5,8 +5,20 @@ import os
 import json
 import csv
 
+from django.utils import timezone
 from django.conf import settings
 
+
+def date_format(strdate):
+    date_ = timezone.datetime.strptime(strdate, '%b %d, %Y')
+    return date_
+
+def datetime_format(strdatetime):
+    print(strdatetime)
+    t= timezone.datetime.strptime(
+        strdatetime, '%b %d, %Y %H:%M:%S %p')
+    print(t)
+    return t
 
 def read_csv(file, json_file, format=""):
     csv_rows = []
@@ -49,5 +61,4 @@ def get_odk_data(form):
 
     if form.exclude_media_export:
         default_params += " --exclude_media_export"
-    print(default_params)
     os.system(default_params)

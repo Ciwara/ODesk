@@ -166,7 +166,7 @@ class Survey(models.Model):
         max_length=100, blank=True, null=True)
     reinsertion_professionnelle_f6_activite_village_autre = models.CharField(
         max_length=100, blank=True, null=True)
-    observations = models.CharField(
+    observations = models.TextField(
         verbose_name=_("Observations"), max_length=100, blank=True, null=True)
 
     def __str__(self):

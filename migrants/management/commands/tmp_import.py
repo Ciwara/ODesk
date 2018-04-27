@@ -5,7 +5,7 @@
 from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
 
-import datetime
+# import datetime
 import json
 import kronos
 
@@ -15,7 +15,7 @@ from django.core.management import call_command
 from migrants.models import Survey, Person, Country
 from desk.models import Entity
 from odkextractor.models import FormID
-# from odkextractor.commons import get_path
+from odkextractor.commons import date_format, datetime_format
 
 
 @kronos.register('* * * * * *')
@@ -28,14 +28,6 @@ class Command(BaseCommand):
             action='store',
             dest='update_odk'
         )
-
-    def date_format(self, strdate):
-        date_ = datetime.datetime.strptime(strdate, '%b %d, %Y')
-        # print(date_)
-        return date_
-
-    def datetime_format(self, strdatetime):
-        return datetime.datetime.strptime(strdatetime, '%b %d, %Y %H:%M:%S %p')
 
     def get_bol(self, value):
         # print("", value)
@@ -78,7 +70,7 @@ class Command(BaseCommand):
                 'gender': self.get_sex(membre.get("membre-sexe")),
                 'type_naissance': membre.get("membre-type-naissance"),
                 'annee_naissance': None if not membre.get("membre-annee-naissance") else int(membre.get("membre-annee-naissance")),
-                'ddn': None if not membre.get("membre-ddn") else self.date_format(membre.get("membre-ddn")),
+                'ddn': None if not membre.get("membre-ddn") else date_format(membre.get("membre-ddn")),
                 'age': membre.get("membre-age") or membre.get("membre-age1"),
                 'profession': membre.get("membre-profession"),
                 'profession_other': membre.get("membre-profession_other"),
@@ -118,15 +110,15 @@ class Command(BaseCommand):
                 #     localite = "90000000"
                 data_sv = {
                     'formhub_uuid': sv.get("formhub-uuid"),
-                    'submission_date': self.datetime_format(sv.get("SubmissionDate")),
-                    'date_debut': self.datetime_format(sv.get("debut")),
-                    'date_fin': self.datetime_format(sv.get("fin")),
+                    'submission_date': datetime_format(sv.get("SubmissionDate")),
+                    'date_debut': datetime_format(sv.get("debut")),
+                    'date_fin': datetime_format(sv.get("fin")),
                     'type_operation': sv.get("operation-repatriement-type-operation"),
                     'cause': sv.get("operation-repatriement-cause"),
                     'cause_other': sv.get("operation-repatriement-cause_other"),
                     'nom_agent': sv.get("operation-repatriement-nom-agent"),
-                    'date_arrivee': self.date_format(sv.get("operation-repatriement-date-arrivee")),
-                    'date_entretien': self.date_format(sv.get("operation-repatriement-date-ebtretien")),
+                    'date_arrivee': date_format(sv.get("operation-repatriement-date-arrivee")),
+                    'date_entretien': date_format(sv.get("operation-repatriement-date-ebtretien")),
                     'menage_pays_provenance': Country.get_or_create(
                         slug=sv.get("informations-generales-menage-menage-pays-provenance").lower(),
                         name=sv.get("informations-generales-menage-menage-pays-provenance")),
