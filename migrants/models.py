@@ -214,7 +214,7 @@ class Person(models.Model):
         ("kenieba", 14)
     ])
     identifier = models.CharField(
-        _("identifier"), max_length=500, null=True, blank=True)
+        _("identifier"), max_length=80, null=True, blank=True)
     key_odk = models.CharField(max_length=100)
     date = models.DateTimeField(_("Date"), default=timezone.now)
     survey = models.ForeignKey(Survey)
@@ -222,7 +222,7 @@ class Person(models.Model):
     gender = models.CharField(max_length=20, choices=GENDERS.items())
     type_naissance = models.CharField(max_length=30)
     nationalite = models.CharField(
-        verbose_name=_("Nationalite"), max_length=120, blank=True, null=True)
+        verbose_name=_("Nationalite"), max_length=50, blank=True, null=True)
     prenoms = models.CharField(_("First name"), max_length=120)
     nom = models.CharField(_("Last name"), max_length=120)
     annee_naissance = models.IntegerField(
