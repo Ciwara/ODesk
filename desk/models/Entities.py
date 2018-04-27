@@ -83,7 +83,7 @@ class Entity(MPTTModel):
         verbose_name = _("Entity")
         verbose_name_plural = _("Entities")
 
-    slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
+    slug = models.SlugField(_("Slug"), max_length=30, primary_key=True)
     name = models.CharField(_("Name"), max_length=50)
     type = models.ForeignKey(EntityType, related_name='entities',
                              verbose_name=_("Type"))
