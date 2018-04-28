@@ -6,6 +6,7 @@
 # from desk.models.Roles import Role
 from desk.models.Entities import (
     EntityType, Entity, RegistrationSite)
+from desk.models.Dict import DictLabel
 from desk.models.Providers import Provider
 # from desk.models.Numbers import PhoneNumber, PhoneNumberType
 # from desk.models.Projects import Domain, Cluster, Participation

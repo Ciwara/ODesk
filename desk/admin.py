@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
-    Entity, EntityType, Provider, RegistrationSite)
+    Entity, EntityType, Provider, RegistrationSite, DictLabel)
 
 
 @admin.register(Entity)
@@ -22,6 +22,12 @@ class EntityAdmin(admin.ModelAdmin):
 @admin.register(RegistrationSite)
 class RegistrationSiteAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'slug', 'name')
+
+
+@admin.register(DictLabel)
+class DictLabelAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'name_md', 'code', 'label')
+    list_filter = ('name_md',)
 
 
 class PhoneNumberAdmin(admin.ModelAdmin):
