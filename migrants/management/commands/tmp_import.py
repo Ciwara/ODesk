@@ -7,13 +7,14 @@ from __future__ import (unicode_literals, absolute_import,
 
 # import datetime
 import json
+import os
 import kronos
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
 from migrants.models import Survey, Person, Country
-from desk.models import Entity
+# from desk.models import Entity
 from odkextractor.models import FormID
 from odkextractor.commons import date_format, datetime_format
 
@@ -59,6 +60,7 @@ class Command(BaseCommand):
 
         with open(form.data_json) as data_f:
             self.s_data = json.loads(data_f.read())
+        self.export_directory = form.export_directory
 
         for membre in m_data:
             # mmb = Person()
@@ -87,7 +89,7 @@ class Command(BaseCommand):
                 'membre_vul1': membre.get("membre-vul1"),
                 'membre_vul2': membre.get("membre-vul2"),
                 'membre_vul3': membre.get("membre-vul3"),
-                'membre_photo': membre.get("photo-membre")
+                'membre_photo': os.path.join(self.export_directory, membre.get("photo-membre"))
             }
 
             survey, created = self.create_survey(membre.get("PARENT_KEY"))
@@ -125,7 +127,8 @@ class Command(BaseCommand):
                     'menage_pays_de_provenance_ville': sv.get("informations-generales-menage-menage-ville"),
                     'menage_point_entrer': sv.get("informations-generales-menage-menage-point-entrer"),
                     'menage_doc_voyage': sv.get("informations-generales-menage-menage-doc-voyage"),
-                    'menage_numero_doc_voyage': sv.get("informations-generales-menage-menage-numero-doc-voyage"),
+                    'menage_numero_doc_voyage': sv.get(
+                        "informations-generales-menage-menage-numero-doc-voyage"),
                     'menage_bien_pays_provenance': self.get_bol(sv.get("informations-generales-menage-menage-bien-pays-provenance", "")),
                     'membre_pays_provenance': self.get_bol(sv.get("informations-generales-menage-membre-pays-provenance")),
                     'nb_membre': 0 if not sv.get("informations-generales-menage-nb-membre") else int(sv.get("informations-generales-menage-nb-membre")),
@@ -159,6 +162,8 @@ class Command(BaseCommand):
                     'reinsertion_professionnelle_f6_activite_commune': str(sv.get("reinsertion-professionnelle-F6-activite_commune")),
                     'reinsertion_professionnelle_f6_activite_village_autre': str(sv.get("reinsertion-professionnelle-F6-activite_village_autre")),
                     'observations': str(sv.get("observations")),
-                    'menage_photo_doc_voyage': sv.get("informations-generales-menage-menage-photo-doc-voyage")
+                    'menage_photo_doc_voyage': os.path.join(
+                        self.export_directory,
+                        sv.get("informations-generales-menage-menage-photo-doc-voyage"))
                 }
                 return Survey.objects.get_or_create(instance_id=str(sv.get("meta-instanceID")), defaults=data_sv)

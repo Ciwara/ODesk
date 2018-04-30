@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 # vim: ai ts=4 sts=4 et sw=4 nu
 
-# import json
+import json
 # import re
 # import logging
-
+import os
 import reversion
 from django.db import models
+from django.conf import settings
 
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -174,6 +175,15 @@ class Survey(models.Model):
             instance_id=self.instance_id, nom_agent=self.nom_agent,
             lieu_region=self.adresse_mali_lieu_region)
 
+    def get_menage_photo_doc_voyage_name(self, name):
+        return os.path.splitext(name)[0].split('-')[0]
+
+    @property
+    def get_menage_photo_doc_voyage_url(self):
+        return os.path.join(
+            settings.BASE_ODK_DIR, self.get_menage_photo_doc_voyage_name(
+                self.menage_photo_doc_voyage))
+
     def persons(self):
         return Person.objects.filter(survey=self)
 
@@ -185,7 +195,7 @@ class Survey(models.Model):
 class Person(models.Model):
 
     class Meta:
-        unique_together = (('key_odk'),)
+        unique_together = (('key_odk'), ('identifier'))
         ordering = ['survey__date_entretien']
 
     CELI = 'celibataire'
@@ -204,15 +214,7 @@ class Person(models.Model):
         (MALE, "Homme"),
         (FEMALE, "Femme")
     ])
-    en_types = OrderedDict([
-        ("kayes-cercle", 11),
-        ("diema", 13),
-        ("nioro", 16),
-        ("kita", 15),
-        ("bafoulabe", 12),
-        ("yelimane", 17),
-        ("kenieba", 14)
-    ])
+
     identifier = models.CharField(
         _("identifier"), max_length=80, null=True, blank=True)
     key_odk = models.CharField(max_length=100)
@@ -258,6 +260,13 @@ class Person(models.Model):
     #         "Photo document de voyage"))
 
     @property
+    def get_membre_photo_name(self):
+        return os.path.join(
+            os.path.dirname(self.membre_photo),
+            os.path.basename(self.membre_photo).split('-')[0] +
+            os.path.splitext(self.membre_photo)[1])
+
+    @property
     def verbose_sex(self):
         return self.SEXES.get(self.gender)
 
@@ -267,26 +276,40 @@ class Person(models.Model):
             nom=self.nom, prenoms=self.prenoms, age=self.age)
 
     def __str__(self):
-        return self.display_name()
+        return "{}-{}".format(self.identifier, self.display_name())
 
     def create_identifier(self):
         try:
             p_lastest = Person.objects.filter(
-                survey__lieu_cercle=self.survey.lieu_cercle).latest("date")
-            identifier = p_lastest.identifier
-        except Exception as e:
-            print(e)
+                survey__adresse_mali_lieu_cercle=self.survey.adresse_mali_lieu_cercle).latest(
+                "date")
+            identifier = p_lastest.identifier[6:]
+        except Exception:
             identifier = "00000"
-        return "R01{c}{id}".format(
-            c=self.get_slug_cercle(self.survey.lieu_cercle),
+        return "M{r}{c}{id}".format(
+            r=self.get_slug_region(self.survey.adresse_mali_lieu_region),
+            c=self.get_slug_cercle(self.survey.adresse_mali_lieu_cercle),
             id=self.add(identifier, "1"))
 
+    def get_code(self):
+        with open(settings.CODES) as data_f:
+            m_data = json.loads(data_f.read())
+        return m_data
+
+    def get_slug_region(self, region):
+        return str(self.get_code().get(region))
+
     def get_slug_cercle(self, cercle):
-        c_id = self.en_types.get(cercle)
-        return self.add("000", str(c_id))
+        return self.add("000", str(self.get_code().get(cercle)))
 
     def add(self, x, y):
-        return str(int(x) + int(y)).zfill(len(x))
+        r = str(int(x) + int(y)).zfill(len(x))
+        return r
+
+    def save(self, *args, **kwargs):
+        if not self.identifier:
+            self.identifier = self.create_identifier()
+        super(Person, self).save(*args, **kwargs)
 
 reversion.register(Person)
 reversion.register(Survey)
