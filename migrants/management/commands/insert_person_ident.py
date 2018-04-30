@@ -44,7 +44,6 @@ class Command(BaseCommand):
                 survey__adresse_mali_lieu_region="kayes").order_by("survey__submission_date"):
             member.identifier = self.create_identifier(member)
             member.save()
-            print(self.create_identifier(member))
 
     def create_identifier(self, m):
         try:

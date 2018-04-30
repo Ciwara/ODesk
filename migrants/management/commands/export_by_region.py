@@ -54,8 +54,8 @@ class Command(BaseCommand):
                 'Sexe': self.get_sex(member.gender),
                 "Âge": member.age,
                 "Telephone": member.survey.tel,
-                "Région": member.survey.lieu_region.upper(),
-                "Cercle": member.survey.lieu_cercle.upper(),
-                "Commune": member.survey.lieu_commune.upper()
+                "Région": member.survey.adresse_mali_lieu_region.upper(),
+                "Cercle": member.survey.adresse_mali_lieu_cercle.upper(),
+                "Commune": member.survey.adresse_mali_lieu_commune.upper()
                 }
         return data

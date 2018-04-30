@@ -46,8 +46,7 @@ class VulnerabilityPerson(models.Model):
         unique_together = (('person', 'vulnerability'),)
         ordering = ['person']
 
-    vulnerability = models.ForeignKey(
-        "vulnerability", related_name="vulnerabilities")
+    vulnerability = models.CharField(blank=True, null=True, max_length=100)
     person = models.ForeignKey("Person", related_name='vulnerability_persons')
 
     def __str__(self):
@@ -127,10 +126,8 @@ class Person(models.Model):
     membre_ddn = models.DateField(blank=True, null=True)
     membre_age = models.IntegerField(default=0)
     membre_age_mois = models.IntegerField(default=0, null=True)
-    membre_lien = models.ForeignKey(
-        "Lien", blank=True, null=True, max_length=100, related_name="liens")
-    membre_scolaire = models.ForeignKey(
-        'NiveauxScolaire', blank=True, null=True, related_name="membre_scolaires")
+    membre_lien = models.CharField(blank=True, null=True, max_length=100)
+    membre_scolaire = models.CharField(blank=True, null=True, max_length=100)
     num_progres_individuel = models.CharField(blank=True, null=True, max_length=100)
     vulnerable = models.BooleanField(default=False)
     dispo_doc_etat_civil = models.BooleanField(default=False)
@@ -153,20 +150,13 @@ class Person(models.Model):
     # info-parents
     nom_pere = models.CharField(blank=True, null=True, max_length=100)
     prenom_pere = models.CharField(blank=True, null=True, max_length=100)
-    profession_pere = models.ForeignKey(
-        'Activite', blank=True, null=True, related_name="professions_pere")
-    niveau_education_pere = models.ForeignKey(
-        'NiveauxScolaire', blank=True, null=True,
-        related_name="niveaux_scolaires_pere")
+    profession_pere = models.CharField(blank=True, null=True, max_length=100)
+    niveau_education_pere = models.CharField(blank=True, null=True, max_length=100)
     nom_mere = models.CharField(blank=True, null=True, max_length=100)
     prenom_mere = models.CharField(blank=True, null=True, max_length=100)
-    profession_mere = models.ForeignKey(
-        'Activite', blank=True, null=True, related_name="professions_mere")
-    niveau_education_mere = models.ForeignKey(
-        'NiveauxScolaire', blank=True, null=True,
-        related_name="niveaux_scolaires_mere")
-    profession = models.ForeignKey(
-        'Activite', blank=True, null=True, related_name="professions")
+    profession_mere = models.CharField(blank=True, null=True, max_length=100)
+    niveau_education_mere = models.CharField(blank=True, null=True, max_length=100)
+    profession = models.CharField(blank=True, null=True, max_length=100)
     existe_centre_etat_civil = models.BooleanField(default=False)
     cente_etat_civil = models.CharField(
         blank=True, null=True, choices=CENTRE_ETAT_CIVIL.items(), max_length=100)

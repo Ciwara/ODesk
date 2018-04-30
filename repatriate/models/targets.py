@@ -25,8 +25,12 @@ logger = logging.getLogger(__name__)
 
 
 class OrganizationTarget(models.Model):
-    organization = models.ForeignKey(
-        "Organization", related_name='organization_target_organizations')
+
+    class Meta:
+
+        unique_together = (('organization', 'target'),)
+
+    organization = models.CharField(blank=True, null=True, max_length=100)
     target = models.ForeignKey(
         "Target", related_name='organization_target_targets')
 
@@ -36,8 +40,12 @@ class OrganizationTarget(models.Model):
 
 
 class TargetTypeAssistance(models.Model):
-    type_assistance = models.ForeignKey(
-        "TypeAssistance", related_name='target_type_assistances')
+
+    class Meta:
+
+        unique_together = (('type_assistance', 'target'),)
+
+    type_assistance = models.CharField(blank=True, null=True, max_length=100)
     target = models.ForeignKey(
         "Target", related_name='type_assistance_targets')
 
@@ -191,14 +199,14 @@ class Target(models.Model):
     fin = models.DateTimeField(default=timezone.now)
     nom_agent = models.CharField(blank=True, max_length=100)
     nu_enregistrement = models.CharField(blank=True, max_length=100)
-    site_engistrement = models.ForeignKey(RegistrationSite,
-        related_name="target_registrations_sites")
+    site_engistrement = models.ForeignKey(
+        RegistrationSite, related_name="target_registrations_sites")
     date_arrivee = models.CharField(blank=True, max_length=100)
     date_entretien = models.CharField(blank=True, max_length=100)
     continent_asile = models.CharField(blank=True, max_length=100)
     pays_asile = models.CharField(blank=True, max_length=100)
     ville_asile = models.CharField(blank=True, max_length=100)
-    camp = models.ForeignKey("Camp", related_name="camps")
+    camp = models.CharField(blank=True, null=True, max_length=100)
     num_progres_menage_alg = models.CharField(blank=True, max_length=100)
     num_progres_menage = models.CharField(blank=True, max_length=100)
     chef_nom = models.CharField(blank=True, max_length=100)
@@ -215,8 +223,7 @@ class Target(models.Model):
     lieu_naissance = models.CharField(blank=True, max_length=100)
     # chef_nom_pere = models.CharField(null=True, blank=True, max_length=100)
     # chef_nom_mere = models.CharField(null=True, blank=True, max_length=100)
-    chef_profession = models.ForeignKey("Activite",
-        null=True, blank=True, max_length=100, related_name="chef_activites")
+    chef_profession = models.CharField(blank=True, null=True, max_length=100)
     point_de_entree = models.CharField(null=True, blank=True, max_length=100)
     chef_doc = models.CharField(
         null=True, blank=True, max_length=100, choices=DOC_ENREGISTREMENT.items())

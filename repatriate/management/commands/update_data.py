@@ -12,10 +12,8 @@ from django.core.management.base import BaseCommand
 
 from desk.ona import get_form_data
 from repatriate.models import (
-    TargetTypeAssistance, TypeAssistance, Lien,
-    OrganizationTarget, Activite, NiveauxScolaire, Collect, Target,
-    Settings, Person, Organization, ContactTemoin, Camp,
-    Vulnerability, VulnerabilityPerson)
+    TargetTypeAssistance, OrganizationTarget, Collect, Target,
+    Person, ContactTemoin, VulnerabilityPerson)
 
 # from desk.models import Entity
 OTHER = "other"

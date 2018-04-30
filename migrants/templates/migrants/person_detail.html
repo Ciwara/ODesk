@@ -15,7 +15,9 @@
       <!-- Example DataTables Card-->
       <div class="card mb-3">
         <div class="card-header">
+          <img style="max-width: 10em;min-height: 10em; float: right; margin: 1em" src="/odk-media/{{person.get_membre_photo_name}}">
           <h1><i class="fa fa-user"></i> {{ person.display_name }}</h1></div>
+
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -42,7 +44,6 @@
                   <tr><th>vulnerabilité 1</th><td>{{person.membre_vul1}}</td></tr>
                   <tr><th>vulnerabilité 2</th><td>{{person.membre_vul2}}</td></tr>
                   <tr><th>vulnerabilité 3</th><td>{{person.membre_vul3}}</td></tr>
-                  <tr><th>Photo</th><td><a target="_blank" href="{{person.person_photo_url}}">Voir la photo</td></tr>
               </tbody>
             </table>
           </div>

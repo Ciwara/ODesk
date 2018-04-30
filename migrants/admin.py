@@ -23,7 +23,7 @@ class PersonAdmin(admin.ModelAdmin):
     model = Person
 
     list_display = ['__str__', 'identifier', 'profession', 'lien', 'age', 'gender']
-    list_filter = ['gender', 'survey__adresse_mali_lieu_region', 'membre_vulnerabilite',
+    list_filter = ['gender', 'survey__adresse_mali_lieu_region', 'survey__adresse_mali_lieu_cercle', 'membre_vulnerabilite',
                    'nationalite', 'survey__date_entretien']
 
 
