@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from django.utils import timezone
 from mptt.models import MPTTModel, TreeForeignKey
 from mptt.managers import TreeManager
-from collections import OrderedDict
+# from collections import OrderedDict
 
 
 logger = logging.getLogger(__name__)
@@ -20,19 +20,21 @@ logger = logging.getLogger(__name__)
 _s = lambda l: sorted(l, key=lambda e: e.name)
 
 
-class RegistrationSite(models.Model):
-
-    INCONUE = 'inconue'
-    UNHCR = 'unhcr'
-    OIM = 'oim'
-    PROJECT_LIST = OrderedDict([
-        (UNHCR, "UNHCR"),
-        (OIM, "OIM")
-    ])
+class Project(models.Model):
 
     slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
-    name = models.CharField(max_length=200,)
-    project = models.CharField(max_length=200, choices=PROJECT_LIST.items(), default=INCONUE)
+    name = models.CharField(max_length=200)
+    desciption = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "{name}".format(name=self.name)
+
+
+class RegistrationSite(models.Model):
+
+    slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
+    name = models.CharField(max_length=200)
+    project = models.ForeignKey("Project", blank=True, null=True, related_name='entity_projects')
     active = models.BooleanField(default=True)
     locality = TreeForeignKey("Entity", null=True, related_name="site_localities")
     latitude = models.FloatField(blank=True, null=True)
@@ -41,9 +43,8 @@ class RegistrationSite(models.Model):
     confirmed = models.BooleanField(default=True)
 
     def __str__(self):
-        return "{proj} - {name} / {locality}".format(
-            name=self.name, locality=self.locality,
-            proj=self.project)
+        return "{name} / {locality}".format(
+            name=self.name, locality=self.locality)
 
     def active(self):
         return self.filter(active=True)

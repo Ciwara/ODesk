@@ -48,7 +48,7 @@ class TargetAdmin(admin.ModelAdmin):
 
     list_display = ('identifier', 'validation_status', 'pays_asile',
                     'site_engistrement', 'camp')
-    list_filter = ['validation_status', 'site_engistrement', 'camp']
+    list_filter = ['validation_status', 'camp', 'site_engistrement']
 
 
 @admin.register(Collect)

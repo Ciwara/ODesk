@@ -5,8 +5,6 @@
 import logging
 import os
 from collections import OrderedDict
-import io
-import qrcode
 
 from django.db import models
 # from django.utils import timezone
@@ -19,7 +17,7 @@ from desk.utils import get_attachment, PERSONAL_FILES
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from desk.models import Entity, Provider, RegistrationSite
+from desk.models import Provider, RegistrationSite
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +48,7 @@ class TargetTypeAssistance(models.Model):
         "Target", related_name='type_assistance_targets')
 
     def __str__(self):
-        return "{type_assistance}.{target}".format(
+        return "{type_assistance} - {target}".format(
             type_assistance=self.type_assistance, target=self.target)
 
 
@@ -85,9 +83,6 @@ class Target(models.Model):
         REFUSED: _("Refused"),
         NOT_APPLICABLE: _("N/a")
     }
-
-    class Meta:
-        ordering = ['-collect__started_on', 'chef_nom', 'chef_prenom']
 
     MALE = 'masculin'
     FEMALE = 'female'
@@ -167,6 +162,50 @@ class Target(models.Model):
         (C, "Carte des ration")
     ])
 
+    U = "1"
+    D = "2"
+    T = "3"
+    Q = "4"
+    C = "5"
+    S = "6"
+    ST = "7"
+    H = "8"
+    N = "9"
+    DX = "10"
+    O = "11"
+    DS = "12"
+    TZ = "13"
+    TC = "TC"
+    UG = "UG"
+    PG = "PG"
+    IN = "IN"
+    NE = "NE"
+    U = "U"
+    Niveau = OrderedDict([
+        (U, "1ère année d'études"),
+        (D, "2 ère année d'études"),
+        (T, "3 ère année d'études"),
+        (Q, "4 ère année d'études"),
+        (C, "5 ère année d'études"),
+        (S, "6 ère année d'études"),
+        (ST, "7 ère année d'études"),
+        (H, "8 ère année d'études"),
+        (N, "9 ère année d'études"),
+        (DX, "Secondaire 1"),
+        (O, "Secondaire 2"),
+        (DS, "Secondaire 3"),
+        (TZ, "Professionnel/ Agriculture"),
+        (TC, "Technique ou Bénévole"),
+        (UG, "Niveau Universitaire"),
+        (PG, "Second cycle/ Doctorat"),
+        (IN, "Education informelle"),
+        (NE, "Aucune éducation"),
+        (U, "Inconnue")])
+
+    class Meta:
+        unique_together = (('identifier'),)
+        ordering = ['-collect__started_on', 'identifier']
+
     # last time report was edited. Initialized with created_on
     modified_on = models.DateTimeField(default=timezone.now,
                                        verbose_name=_("Modified On"))
@@ -184,10 +223,9 @@ class Target(models.Model):
                                          choices=VALIDATION_STATUSES.items(),
                                          default=NOT_APPLICABLE)
     validated_on = models.DateTimeField(null=True, blank=True)
-    validated_by = models.ForeignKey(Provider,
-                                     null=True, blank=True,
-                                     verbose_name=_("Validated By"),
-                                     related_name='repat_own_validated_reports')
+    validated_by = models.ForeignKey(
+        Provider, null=True, blank=True, verbose_name=_("Validated By"),
+        related_name='repat_own_validated_reports')
 
     identifier = models.CharField(max_length=100, primary_key=True)
     collect = models.ForeignKey('Collect', related_name='targets')
@@ -201,34 +239,28 @@ class Target(models.Model):
     nu_enregistrement = models.CharField(blank=True, max_length=100)
     site_engistrement = models.ForeignKey(
         RegistrationSite, related_name="target_registrations_sites")
-    date_arrivee = models.CharField(blank=True, max_length=100)
-    date_entretien = models.CharField(blank=True, max_length=100)
+    date_arrivee = models.DateField(blank=True, max_length=100)
+    date_entretien = models.DateField(blank=True, max_length=100)
     continent_asile = models.CharField(blank=True, max_length=100)
     pays_asile = models.CharField(blank=True, max_length=100)
     ville_asile = models.CharField(blank=True, max_length=100)
     camp = models.CharField(blank=True, null=True, max_length=100)
-    num_progres_menage_alg = models.CharField(blank=True, max_length=100)
+    camp_other = models.CharField(blank=True, null=True, max_length=100)
+    num_progres_menage_alg = models.CharField(null=True, blank=True, max_length=100)
     num_progres_menage = models.CharField(blank=True, max_length=100)
-    chef_nom = models.CharField(blank=True, max_length=100)
-    chef_prenom = models.CharField(blank=True, max_length=100)
-    chef_sexe = models.CharField(
-        blank=True, max_length=20, choices=GENDERS.items())
-    chef_etat_civil = models.CharField(
-        max_length=20, choices=ETAT_CIVIL.items())
-    chef_ddn = models.DateField(blank=True, max_length=100)
-    chef_age = models.IntegerField(verbose_name=_("L'âge du chef de menage"))
-    beneficiez_lassistance = models.BooleanField(default=False)
+    point_de_entree = models.CharField(null=True, blank=True, max_length=100)
     continent_naissance = models.CharField(blank=True, max_length=100)
     pays_naissance = models.CharField(blank=True, max_length=100)
     lieu_naissance = models.CharField(blank=True, max_length=100)
-    # chef_nom_pere = models.CharField(null=True, blank=True, max_length=100)
-    # chef_nom_mere = models.CharField(null=True, blank=True, max_length=100)
+    chef_etat_civil = models.CharField(
+        max_length=20, choices=ETAT_CIVIL.items())
     chef_profession = models.CharField(blank=True, null=True, max_length=100)
-    point_de_entree = models.CharField(null=True, blank=True, max_length=100)
     chef_doc = models.CharField(
         null=True, blank=True, max_length=100, choices=DOC_ENREGISTREMENT.items())
-    nu_doc = models.CharField(blank=True, max_length=100)
-    # adresse_mali
+    num_doc = models.CharField(blank=True, max_length=100)
+    beneficiez_lassistance = models.BooleanField(default=False)
+    type_assistance_other = models.CharField(blank=True, null=True, max_length=50)
+    organisations_other = models.CharField(blank=True, null=True, max_length=50)
     actuelle_region = models.CharField(blank=True, max_length=100)
     actuelle_cercle = models.CharField(blank=True, max_length=100)
     actuelle_commune = models.CharField(blank=True, max_length=100)
@@ -239,43 +271,63 @@ class Target(models.Model):
     tel = models.IntegerField(default=0)
     abris = models.BooleanField(default=False)
     nature_construction = models.CharField(blank=True, max_length=100)
+    nature_construction_other = models.CharField(
+        null=True, blank=True, max_length=100)
     type_hebergement = models.CharField(
         max_length=20, blank=True, choices=HEBERGEMENTS.items())
+    type_hebergement_other = models.CharField(
+        null=True, blank=True, max_length=100)
+    membre_pays = models.BooleanField(default=True)
+    nbre_membre_reste = models.IntegerField(null=True, default=0)
     # Sante_Appuipyschosocial
     etat_sante = models.BooleanField(default=True)
-    situation_maladie = models.CharField(blank=True, max_length=100)
-    type_maladie = models.CharField(blank=True, max_length=100)
-    type_aigue = models.CharField(blank=True, max_length=100)
-    prise_medicament = models.CharField(blank=True, max_length=100)
-    type_medicaments = models.CharField(blank=True, max_length=100)
+    situation_maladie = models.CharField(null=True, blank=True, max_length=100)
+    type_maladie = models.CharField(null=True, blank=True, max_length=100)
+    type_maladie_other = models.CharField(
+        null=True, blank=True, max_length=100)
+    type_aigue = models.CharField(null=True, blank=True, max_length=100)
+    type_aigue_other = models.CharField(
+        null=True, blank=True, max_length=100)
+    prise_medicament = models.CharField(null=True, blank=True, max_length=100)
+    type_medicaments = models.CharField(null=True, blank=True, max_length=100)
     # formation_experience
     suivi_formation = models.BooleanField(default=False)
-    domaine_formation = models.CharField(blank=True, max_length=100)
-    metier_pays_prove = models.CharField(blank=True, max_length=100)
+    domaine_formation = models.CharField(null=True, blank=True, max_length=100)
+    metier_pays_prove = models.BooleanField(default=False)
     exercice_secteur = models.CharField(
         null=True, blank=True, max_length=100, choices=SECTEURS.items())
+    exercice_secteur_other = models.CharField(
+        null=True, blank=True, max_length=100)
     # reinsertion_prof
     formation_socio_prof = models.BooleanField(default=False)
     secteur_prof = models.CharField(null=True, blank=True, max_length=100)
+    secteur_prof_other = models.CharField(null=True, blank=True, max_length=100)
     projet_activite = models.BooleanField(default=False)
     type_projet = models.CharField(null=True, blank=True, max_length=100)
     souhait_activite = models.CharField(
         null=True, max_length=20, blank=True, choices=ACTIVITES_TYPES.items())
+    souhait_activite_other = models.CharField(
+        null=True, blank=True, max_length=100)
     # lieu_activite
     lieu_region = models.CharField(null=True, blank=True, max_length=100)
     lieu_cercle = models.CharField(null=True, blank=True, max_length=100)
     lieu_commune = models.CharField(null=True, blank=True, max_length=100)
     lieu_qvf = models.CharField(null=True, blank=True, max_length=100)
+    lieu_non_generale_utilise = models.CharField(null=True, blank=True, max_length=100)
     signature = models.CharField(blank=True, max_length=200)
-    membre_pays = models.BooleanField(default=True)
-    nbre_membre_reste = models.IntegerField(default=0)
 
+    @property
     def type_assistance(self):
         return TargetTypeAssistance.objects.filter(target=self).all()
 
+    @property
+    def organisations(self):
+        return OrganizationTarget.objects.filter(target=self).all()
+
     def name(self):
-        return "{first} {last}".format(
-            last=self.chef_nom.upper(), first=self.chef_prenom.title())
+        return "{site} - {num_p_m}".format(
+            site=self.site_engistrement.name.upper(),
+            num_p_m=self.num_progres_menage)
 
     @property
     def verbose_sex(self):
@@ -303,20 +355,10 @@ class Target(models.Model):
         except cls.DoesNotExist:
             return None
 
-    def get_qrcode(self):
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_H,
-            box_size=10,
-            border=4)
-
-        qr.add_data(self.identifier)
-        qr.make(fit=True)
-        im = qr.make_image()
-        output = io.BytesIO()
-        im.save(output, format="PNG")
-        output.seek(0)
-        return output
+    def save(self, *args, **kwargs):
+        if not self.identifier:
+            self.identifier = self.instance_id
+        super(Target, self).save(*args, **kwargs)
 
     def attachments(self):
 
@@ -345,25 +387,6 @@ class Target(models.Model):
                 'slug': 'certificat-residence',
                 'short': "CERT-RES",
                 'long': "Certificat de résidence",
-            },
-        }
-
-        children_labels = {
-            'enfants/situation/enfant_certificat-frequentation/enfant_image_f':
-            {
-                'slug': 'certificat-frequentation',
-                'short': "CERT-FREQ",
-                'long': "Certificat de fréquentation",
-            },
-            'enfants/situation/enfant_certificat-medical/enfant_image_m': {
-                'slug': 'certificat-medical',
-                'short': "CERT-MED",
-                'long': "Certificat médical",
-            },
-            'enfants/enfant_acte-naissance/enfant_image_n': {
-                'slug': 'acte-naissance',
-                'short': "AN",
-                'long': "Acte de naissance",
             },
         }
 
@@ -415,24 +438,6 @@ class Target(models.Model):
                 spouse_data.update({label['slug']: attachment})
                 del(attachment)
             data['epouses'].append(spouse_data)
-
-        # loop on children to apply same process
-        for index, children in enumerate(self.dataset.get('enfants', [])):
-            children_data = {}
-            for key, label in children_labels.items():
-                attachment = get_attachment(self.dataset, children.get(key))
-                if attachment is None:
-                    continue
-                attachment['labels'] = label
-                attachment['export_fname'] = \
-                    "{id}_enfant{num}_{label}{ext}".format(
-                    id=self.identifier,
-                    num=index + 1,
-                    label=label['slug'],
-                    ext=os.path.splitext(attachment['filename'])[1])
-                children_data.update({label['slug']: attachment})
-                del(attachment)
-            data['enfants'].append(children_data)
 
         return data
 

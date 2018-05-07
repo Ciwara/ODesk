@@ -8,7 +8,15 @@ from __future__ import (unicode_literals, absolute_import,
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.shortcuts import redirect
+
+from rolepermissions.decorators import has_role_decorator
+from rolepermissions.decorators import has_permission_decorator
+from rolepermissions.roles import get_user_roles
+from rolepermissions.checkers import has_role
+
 from desk.models import Entity, Provider
+from OIMDesk.roles import *
 from repatriate.models import Target, Person
 
 
@@ -19,11 +27,24 @@ def index(request):
 
 
 @login_required
+def home(request, *args, **kwargs):
+    context = {}
+    prov = Provider.objects.get(username=request.user.username)
+    if has_role(prov, [DeskControle]):
+        return redirect("controle")
+    if has_role(prov, [DeskAssistantAdmin]):
+        return redirect("assis_admin")
+
+
+    return render(request, 'home.html', context)
+
+
+@login_required
+# @has_permission_decorator("controle_data")
 def dashboard(request, *args, **kwargs):
 
-    prov = None
-    if request.user.is_authenticated():
-        prov = Provider.objects.get(username=request.user.username)
+    prov = Provider.objects.get(username=request.user.username)
+
     target_per_site = Target.objects.filter(
         site_engistrement=prov.site)
     person_per_site = Person.objects.filter(
@@ -47,10 +68,3 @@ def dashboard(request, *args, **kwargs):
                'not_valid_soumissions_rep': not_valid_soumissions_rep}
 
     return render(request, 'home.html', context)
-
-
-@login_required
-def desk_controle(request):
-
-    context = {}
-    return render(request, 'desk_controle.html', context)

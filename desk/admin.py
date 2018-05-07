@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
-    Entity, EntityType, Provider, RegistrationSite, DictLabel)
+    Entity, EntityType, Provider, RegistrationSite, DictLabel, Project)
 
 
 @admin.register(Entity)
@@ -49,7 +49,8 @@ class ProviderAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'password1', 'password2', 'email',
-                       'is_superuser', 'is_staff', 'is_active', 'site')}),
+                       'is_superuser', 'is_staff', 'is_active', 'site',
+                       'project')}),
         ("Personnal info", {
             'classes': ('wide',),
             'fields': ('gender', 'title', 'maiden_name', 'first_name',
@@ -57,7 +58,8 @@ class ProviderAdmin(UserAdmin):
     )
 
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'email', 'site')}),
+        (None, {'fields': (
+            'username', 'password', 'email', 'project', 'site')}),
         (_('Personal info'), {'fields': ('gender', 'title', 'maiden_name',
                                          'first_name', 'middle_name',
                                          'last_name', 'position')}),
@@ -73,8 +75,8 @@ class EntityTypeAdmin(admin.ModelAdmin):
     model = EntityType
 
 
-# admin.site.register(Domain)
-# admin.site.register(Cluster)
+# admin.site.register(Role)
+admin.site.register(Project)
 # admin.site.register(Group)
 # admin.site.register(Participation)
 # admin.site.register(PeriodicTask)

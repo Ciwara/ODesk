@@ -16,7 +16,9 @@ from django.utils import timezone
 # from desk.signals import logged_in, logged_out
 from desk.models.common import ActiveManager
 from desk.models.Entities import Entity, RegistrationSite
-from rolepermissions.roles import get_user_roles
+
+from rolepermissions.roles import get_user_roles, assign_role
+from OIMDesk.roles import Guest
 
 
 class ProviderManager(UserManager):
@@ -90,6 +92,7 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                                    verbose_name=_("Maiden Name"))
     position = models.CharField(max_length=250, blank=True, null=True,
                                 verbose_name=_("Position"))
+    project = models.ForeignKey("Project", blank=True, null=True, related_name='provider_projects')
     site = models.ForeignKey(RegistrationSite, blank=True, null=True,
                              verbose_name=_("Registration site"),
                              related_name='registrations_sites')
@@ -111,7 +114,8 @@ class Provider(AbstractBaseUser, PermissionsMixin):
     active = ActiveManager()
 
     def __str__(self):
-        return self.username
+        return "{} {}".format(
+            self.get_title_full_name(), self.get_access())
 
     @classmethod
     def get_or_none(cls, username, with_inactive=False):
@@ -122,6 +126,8 @@ class Provider(AbstractBaseUser, PermissionsMixin):
             return None
 
     def save(self, *args, **kwargs):
+
+        # assign_role(self, Guest)
         author = None
         if 'author' in kwargs.keys():
             author = kwargs.pop('author')
@@ -217,15 +223,18 @@ class Provider(AbstractBaseUser, PermissionsMixin):
 
         if not self.is_active:
             return ugettext("Désactivé")
-        # if not self.site.level:
-        #     return ugettext("{role}").format(role=self.role.name).strip()
-        return ugettext(
-            "{role} à {site}").format(
-            role=get_user_roles(self), site=self.site).strip()
+        if not self.site:
+            return self.get_roles()
+        return ugettext("{role} à {site}").format(
+            role=self.get_roles(), site=self.site.name).strip()
+
+    def get_roles(self):
+        role = [i.get_name().replace('_', ' ').title() for i in get_user_roles(self)]
+        return "" if len(role) == 0 else ",".join(role)
 
     def has_name_infos(self):
-        return (self.first_name or self.middle_name
-                or self.last_name or self.maiden_name)
+        return (
+            self.first_name or self.middle_name or self.last_name or self.maiden_name)
 
     def email_user(self, subject, message, from_email=None):
         if self.email:

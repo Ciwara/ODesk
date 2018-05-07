@@ -33,7 +33,7 @@ admin.site.index_title = 'DNDS-Desk administration'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', home.index, name='index'),
-    url(r'^home/$', home.dashboard, name='home'),
+    url(r'^home/$', home.home, name='home'),
     url(r'^user-new/$', provider.user_new, name='user_new'),
     url(r'^user-manager/$', provider.user_manager, name='user_manager'),
     url(r'^user-change/(?P<pk>.*)$', provider.user_change, name='user_change'),

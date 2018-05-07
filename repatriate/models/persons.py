@@ -7,10 +7,13 @@ import logging
 from collections import OrderedDict
 # import io
 # import qrcode
-
+import json
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 from jsonfield.fields import JSONField
+import io
+import qrcode
 
 # from hamed.identifiers import full_random_id
 # from desk.utils import get_attachment, PERSONAL_FILES
@@ -55,9 +58,6 @@ class VulnerabilityPerson(models.Model):
 
 
 class Person(models.Model):
-
-    class Meta:
-        ordering = ['started_on', 'membre_nom', 'membre_prenom']
 
     MALE = 'masculin'
     FEMALE = 'feminin'
@@ -115,6 +115,50 @@ class Person(models.Model):
         (J, "Justice"),
     ])
 
+    U = "1"
+    D = "2"
+    T = "3"
+    Q = "4"
+    C = "5"
+    S = "6"
+    ST = "7"
+    H = "8"
+    N = "9"
+    DX = "10"
+    O = "11"
+    DS = "12"
+    TZ = "13"
+    TC = "TC"
+    UG = "UG"
+    PG = "PG"
+    IN = "IN"
+    NE = "NE"
+    U = "U"
+    Niveau = OrderedDict([
+        (U, "1ère année d'études"),
+        (D, "2 ère année d'études"),
+        (T, "3 ère année d'études"),
+        (Q, "4 ère année d'études"),
+        (C, "5 ère année d'études"),
+        (S, "6 ère année d'études"),
+        (ST, "7 ère année d'études"),
+        (H, "8 ère année d'études"),
+        (N, "9 ère année d'études"),
+        (DX, "Secondaire 1"),
+        (O, "Secondaire 2"),
+        (DS, "Secondaire 3"),
+        (TZ, "Professionnel/ Agriculture"),
+        (TC, "Technique ou Bénévole"),
+        (UG, "Niveau Universitaire"),
+        (PG, "Second cycle/ Doctorat"),
+        (IN, "Education informelle"),
+        (NE, "Aucune éducation"),
+        (U, "Inconnue")])
+
+    class Meta:
+        unique_together = (('identifier'),)
+        ordering = ['started_on', 'membre_nom', 'membre_prenom']
+
     started_on = models.DateTimeField(default=timezone.now)
     identifier = models.CharField(max_length=10, primary_key=True)
     target = models.ForeignKey(
@@ -125,11 +169,14 @@ class Person(models.Model):
         blank=True, null=True, choices=GENDERS.items(), max_length=20)
     membre_ddn = models.DateField(blank=True, null=True)
     membre_age = models.IntegerField(default=0)
-    membre_age_mois = models.IntegerField(default=0, null=True)
+    membre_age_mois = models.IntegerField(default=0, null=True, blank=True)
     membre_lien = models.CharField(blank=True, null=True, max_length=100)
-    membre_scolaire = models.CharField(blank=True, null=True, max_length=100)
+    membre_scolaire = models.CharField(
+        "Niveau scolaire", choices=Niveau.items(), blank=True, null=True, max_length=100)
     num_progres_individuel = models.CharField(blank=True, null=True, max_length=100)
-    vulnerable = models.BooleanField(default=False)
+    membre_vulnerabilite = models.BooleanField(default=False)
+    besoin_specifique = models.CharField(blank=True, null=True, max_length=100)
+    sub_besoin = models.CharField(blank=True, null=True, max_length=100)
     dispo_doc_etat_civil = models.BooleanField(default=False)
     # info-etat-civil-dispo
     num_acte_naissance = models.CharField(blank=True, null=True, max_length=100)
@@ -141,9 +188,11 @@ class Person(models.Model):
     # info-etat-civil-non-dispo
     raison_non_dispo = models.CharField(
         choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
+    raison_non_dispo_other = models.CharField(
+        blank=True, null=True, max_length=100)
     partage_info_perso = models.BooleanField(default=False)
     # info-etablissement-docu
-    year_ddn = models.IntegerField(blank=True, null=True)
+    # year_ddn = models.IntegerField(blank=True, null=True)
     naissance_region = models.CharField(blank=True, null=True, max_length=100)
     naissance_cercle = models.CharField(blank=True, null=True, max_length=100)
     naissance_commune = models.CharField(blank=True, null=True, max_length=100)
@@ -151,28 +200,76 @@ class Person(models.Model):
     nom_pere = models.CharField(blank=True, null=True, max_length=100)
     prenom_pere = models.CharField(blank=True, null=True, max_length=100)
     profession_pere = models.CharField(blank=True, null=True, max_length=100)
-    niveau_education_pere = models.CharField(blank=True, null=True, max_length=100)
+    niveau_education_pere = models.CharField(
+        choices=Niveau.items(), blank=True, null=True, max_length=100)
     nom_mere = models.CharField(blank=True, null=True, max_length=100)
     prenom_mere = models.CharField(blank=True, null=True, max_length=100)
     profession_mere = models.CharField(blank=True, null=True, max_length=100)
-    niveau_education_mere = models.CharField(blank=True, null=True, max_length=100)
+    niveau_education_mere = models.CharField(
+        choices=Niveau.items(), blank=True, null=True, max_length=100)
     profession = models.CharField(blank=True, null=True, max_length=100)
     existe_centre_etat_civil = models.BooleanField(default=False)
-    cente_etat_civil = models.CharField(
+    centre_etat_civil = models.CharField(
         blank=True, null=True, choices=CENTRE_ETAT_CIVIL.items(), max_length=100)
+    centre_etat_civil_other = models.CharField(blank=True, null=True, max_length=100)
     au_moins_deux_temoins = models.BooleanField(default=False)
     referer = models.BooleanField(default=False)
     a_qui = models.CharField(choices=REFERENCE.items(), max_length=100)
+    a_qui_other = models.CharField(null=True, blank=True, max_length=50)
     form_dataset = JSONField(default=dict, blank=True)
 
     def name(self):
-        return "{}-{}".format(self.membre_nom, self.membre_prenom)
+        return "{}-{}-{}".format(
+            self.identifier, self.membre_nom, self.membre_prenom)
 
-    def get_dentification(self):
-        if self.num_progres_individuel:
-            return self.num_progres_individuel
-        else:
-            return self.identifier
+    def les_temoins(self):
+        return ContactTemoin.objects.filter(person=self).all()
+
+    @property
+    def vulnerabilities(self):
+        return VulnerabilityPerson.objects.all(person=self).all()
+
+    def create_identifier(self):
+        try:
+            p_lastest = Person.objects.filter(
+                target__site_engistrement=self.target.site_engistrement).latest(
+                "target__date")
+            identifier = p_lastest.identifier[-5:]
+            print(identifier, ' lllslslsls')
+        except Exception as e:
+            print(e)
+            identifier = "00000"
+        print("IEIEI :", self.identifier)
+        return "S{s}{d}{id}".format(
+            s=self.target.site_engistrement.slug,
+            d="{}{}".format(self.target.date.split("-")[0],
+                            self.target.date.split("-")[1]),
+            id=self.add(identifier, "1"))
+
+    def get_qrcode(self):
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=4)
+
+        qr.add_data(self.identifier)
+        qr.make(fit=True)
+        im = qr.make_image()
+        output = io.BytesIO()
+        im.save(output, format="PNG")
+        output.seek(0)
+        return output
+
+    def add(self, x, y):
+        r = str(int(x) + int(y)).zfill(len(x))
+        return r
 
     def __str__(self):
         return self.name()
+
+    def save(self, *args, **kwargs):
+        if not self.identifier:
+            self.identifier = self.create_identifier()
+            print(self.identifier)
+        super(Person, self).save(*args, **kwargs)

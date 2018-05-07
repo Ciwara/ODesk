@@ -1,4 +1,5 @@
 {% load staticfiles i18n %}
+{% load permission_tags %}
 <!DOCTYPE html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -56,6 +57,26 @@
                 </li>
               </ul>
             </li>
+
+            {% if user|has_role:'desk_admin' %}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
+                <i class="fa fa-fw fa fa-database"></i>
+                <span class="nav-link-text">Administration</span>
+              </a>
+              <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
+                <li>
+                  <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i></i>Données Retournés</a>
+                </li>
+                <li></i>
+                  <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a>
+                </li>
+                <li>
+                  <a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i></i>PDIs (non activité)</a>
+                </li>
+              </ul>
+            </li>
+          {% endif %}
             <!--
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
               <a class="nav-link" href="#">
@@ -63,18 +84,6 @@
                 <span class="nav-link-text">Charts</span>
               </a>
             </li>  -->
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-              <a class="nav-link"  href="{% url 'table' %}"">
-                <i class="fa fa-fw fa-table"></i>
-                <span class="nav-link-text">Tables</span>
-              </a>
-            </li>
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
-                <a class="nav-link" href="{% url 'survey_table' %}">
-                  <i class="fa fa-database" aria-hidden="true"></i>
-                  <span class="nav-link-text">Administration</span>
-                </a>
-              </li>
           </ul>
           <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
