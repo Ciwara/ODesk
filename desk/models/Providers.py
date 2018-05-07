@@ -95,7 +95,6 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                              related_name='registrations_sites')
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
-
     email = models.EmailField(_("email address"), blank=True, null=True)
     is_staff = models.BooleanField(
         _("staff status"), default=False,

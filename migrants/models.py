@@ -283,7 +283,7 @@ class Person(models.Model):
             p_lastest = Person.objects.filter(
                 survey__adresse_mali_lieu_cercle=self.survey.adresse_mali_lieu_cercle).latest(
                 "date")
-            identifier = p_lastest.identifier[6:]
+            identifier = p_lastest.identifier[-5:]
         except Exception:
             identifier = "00000"
         return "M{r}{c}{id}".format(

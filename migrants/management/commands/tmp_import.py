@@ -5,7 +5,6 @@
 from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
 
-# import datetime
 import json
 import os
 import kronos
@@ -60,6 +59,7 @@ class Command(BaseCommand):
 
         with open(form.data_json) as data_f:
             self.s_data = json.loads(data_f.read())
+
         self.export_directory = form.export_directory
 
         for membre in m_data:

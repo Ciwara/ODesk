@@ -31,7 +31,7 @@ def dashboard(request):
     s = Survey.objects.values("menage_pays_provenance").annotate(
         Count('instance_id')).order_by()
     date_entre = Survey.objects.values("date_entretien").annotate(
-        Count('instance_id')).order_by()
+        Count('instance_id')).order_by("date_entretien")
 
     per_adresse_mali_lieu_region = {
         'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_adresse_mali_lieu_regions],
@@ -145,7 +145,7 @@ def get_profession(value):
 
 def get_date(date):
     if date:
-        date = date.strftime("%x")
+        date = date.strftime("%Y/%m/%d")
     return date
 
 
@@ -153,7 +153,7 @@ def get_date(date):
 # @app.task
 def export_migrants_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+    response['Content-Disposition'] = 'attachment; filename="migrant_data.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')
@@ -164,7 +164,7 @@ def export_migrants_xls(request):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ["ID ", "DATE", "AGENT", "PROVENANCE DU MIGRANT",
+    columns = ["ID ", "DATE ENTRETIEN", "DATE ARRIVEE", "AGENT", "PROVENANCE DU MIGRANT",
                "PRENOMS", "NOM", "SEXE", "DATE DE NAISSANCE", "AGE",
                "PROFESSION", "ETAT CIVIL", "LIEN", "VULNERABILITE",
                "REGION", "CERCLE", "COMMUNE", "VILLAGE", "TEL"]

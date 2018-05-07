@@ -22,6 +22,7 @@ _s = lambda l: sorted(l, key=lambda e: e.name)
 
 class RegistrationSite(models.Model):
 
+    INCONUE = 'inconue'
     UNHCR = 'unhcr'
     OIM = 'oim'
     PROJECT_LIST = OrderedDict([
@@ -31,12 +32,13 @@ class RegistrationSite(models.Model):
 
     slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
     name = models.CharField(max_length=200,)
-    project = models.CharField(max_length=200, choices=PROJECT_LIST.items())
+    project = models.CharField(max_length=200, choices=PROJECT_LIST.items(), default=INCONUE)
     active = models.BooleanField(default=True)
-    locality = TreeForeignKey("Entity", related_name="site_localities")
+    locality = TreeForeignKey("Entity", null=True, related_name="site_localities")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     geometry = models.TextField(blank=True, null=True)
+    confirmed = models.BooleanField(default=True)
 
     def __str__(self):
         return "{proj} - {name} / {locality}".format(
