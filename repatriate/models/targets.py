@@ -270,11 +270,11 @@ class Target(models.Model):
     porte = models.CharField(null=True, blank=True, max_length=100)
     tel = models.IntegerField(default=0)
     abris = models.BooleanField(default=False)
-    nature_construction = models.CharField(blank=True, max_length=100)
+    nature_construction = models.CharField(null=True, blank=True, max_length=100)
     nature_construction_other = models.CharField(
         null=True, blank=True, max_length=100)
     type_hebergement = models.CharField(
-        max_length=20, blank=True, choices=HEBERGEMENTS.items())
+        max_length=20, blank=True, null=True, choices=HEBERGEMENTS.items())
     type_hebergement_other = models.CharField(
         null=True, blank=True, max_length=100)
     membre_pays = models.BooleanField(default=True)

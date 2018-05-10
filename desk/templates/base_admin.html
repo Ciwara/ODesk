@@ -21,10 +21,11 @@
         <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
         <!-- Custom styles for this template-->
         <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+        <link href="{% static 'css/desk.css' %}" rel="stylesheet">
         {% block extra_head %}
         {% endblock %}
     </head>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-msah fixed-top" id="mainNav">
 
       <div class="container">
         <a class="navbar-brand" href="/">DNDS/DNPSES</a>
@@ -59,24 +60,24 @@
             </li>
 
             {% if user|has_role:'desk_admin' %}
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
-              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
-                <i class="fa fa-fw fa fa-database"></i>
-                <span class="nav-link-text">Administration</span>
-              </a>
-              <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
-                <li>
-                  <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i></i>Données Retournés</a>
-                </li>
-                <li></i>
-                  <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a>
-                </li>
-                <li>
-                  <a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i></i>PDIs (non activité)</a>
-                </li>
-              </ul>
-            </li>
-          {% endif %}
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
+                  <i class="fa fa-fw fa fa-database"></i>
+                  <span class="nav-link-text">Administration</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
+                  <li>
+                    <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i></i>Données Retournés</a>
+                  </li>
+                  <li></i>
+                    <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a>
+                  </li>
+                  <li>
+                    <a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i></i>PDIs (non activité)</a>
+                  </li>
+                </ul>
+              </li>
+            {% endif %}
             <!--
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
               <a class="nav-link" href="#">
@@ -96,7 +97,7 @@
         </div>
       </div>
     </nav>
-    <body class="fixed-nav sticky-footer bg-dark sidenav-toggled" id="page-top">
+    <body class="fixed-nav sticky-footer bg-msah sidenav-toggled" id="page-top">
         <div class="content-wrapper">
             <div class="container-fluid">
                     {% if messages %}

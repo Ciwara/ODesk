@@ -4,11 +4,95 @@
 
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
 {% block content %}
+    <h4>Desk Contôle de {{user.site}} </h4>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1>Desk Contôle de {{user.site}} </h1>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <table class="table table-sm table-bordered" style="text-align: center;">
+                <thead>
+                    <tr><th colspan="8">Situation hebdo.</th></tr>
+                    <tr class="thead-msah"><th>Nombre de ménage</th><th>Données désagrégées</th><th>Bébés (0-4 ans)</th>
+                        <th>Enfant (5-11 ans)</th><th>Enfant (12-17 ans)</th><th>Adultes (18-59 ans)</th>
+                        <th>Personnes (+ de 60 ans)</th><th>TOTAL</th></tr></thead>
+                </thead>
+                <tbody class="">
+                    <tr>
+                        <td rowspan="4">{{nb_menage}}</td>
+                        <tr><th> M </th><td>{{pn_0_4_count_m}}</td><td>{{pn_5_11_count_m}}</td><td>{{pn_12_17_count_m}}</td><td>{{pn_18_59_count_m}}</td><td>{{plus60_count_m}}</td><td>{{nb_person_m}}</td></tr>
+                        <tr><th> F </th><td>{{pn_0_4_count_f}}</td><td>{{pn_5_11_count_f}}</td><td>{{pn_12_17_count_f}}</td><td>{{pn_18_59_count_f}}</td><td>{{plus60_count_f}}</td><td>{{nb_person_f}}</td></tr>
+                        <tr class="bg-primary"><th>Total</th>
+                            <th> {{pn_0_4_count}}</th>
+                            <th> {{pn_5_11_count}}</th>
+                            <th> {{pn_12_17_count}}</th>
+                            <th> {{pn_18_59_count}}</th>
+                            <th> {{plus60_count}}</th>
+                            <th> {{nb_person}}</th>
+                        </tr>
+                    </tr>
+                  </tbody>
+                </table>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <form action= {% url 'controle' %} method="post"> {% csrf_token %}
+                <div  class="form-group">
+                    <div>Début {{period_form.star_date}} </div>
+                    <div>fin {{period_form.end_date}}</div>
+                    <input type="submit" name="_per_Date" class="btn btn-sm btn-primary" value="Export xls pour" />
+                </div>
+            </form>
+            <form action= {% url 'controle' %} class="form-group"  method="post"> {% csrf_token %}
+                <div  class="form-group">
+                    <div> {{search_form.num_progres_individuel}} <input type="submit" name="_search" class="btn btn-sm btn-primary" value="OK" /></div>
+                </div>
+            </form>
+            <h6>{{msg_result}}</h6>
         </div>
     </div>
+    <hr/>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table class="table table-sm table-bordered table">
+                <thead class="thead-msah"><th colspan="4">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Alertes </th>
+                </thead>
+                <tbody >
+                    <tr class="table-warning"><th colspan="2">Numéro progres ménage invalide.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">ENQUÊTE FAITE PAR Diabaté le 20 avril 2018 à BKO</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Numéro progres individuel invalide.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">ENQUÊTE FAITE PAR Diabaté le 20 avril 2018 à BKO.</a></td></tr>
+                    <tr><td><a href="{{member.url_change}}">ENQUÊTE FAITE PAR Diabaté le 20 avril 2018 à BKO.</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Numéro progres avec le pays d'asile Algerie.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Numéro du site non attribué ou non non n'existant.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Numero de telephone non valide.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Ménage sans membre.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Ménage avec plusieure chef.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Ménage sans chef de ménage.</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table class="table table-sm table-bordered table">
+                <thead class="thead-msah"><th colspan="4">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Contôle doublons</th>
+                    </thead><tbody class="">
+
+                    <tr class="table-warning"><th colspan="2">Numéro progres ménage</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                    <tr class="table-warning"><th colspan="2">Numéro progres individuel</th></tr>
+                    <tr><td><a href="{{member.url_change}}">kddd jdjdjd</a></td></tr>
+                  </tbody>
+            </table>
+        </div>
+    </div>
+
 
 {% endblock %}

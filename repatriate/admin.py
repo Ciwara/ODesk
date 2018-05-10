@@ -4,7 +4,15 @@ from django.contrib import admin
 # from desk.models.Entities import RegistrationSite
 from repatriate.models import (
     Collect, Target, Settings, Person, ContactTemoin,
-    OrganizationTarget, TargetTypeAssistance)
+    OrganizationTarget, TargetTypeAssistance, VulnerabilityPerson)
+
+
+@admin.register(VulnerabilityPerson)
+class VulnerabilityPersonAdmin(admin.ModelAdmin):
+
+    model = VulnerabilityPerson
+
+    list_filter = ['sub_besoin', 'besoin_specifique']
 
 
 @admin.register(TargetTypeAssistance)
@@ -40,6 +48,13 @@ class PersonAdmin(admin.ModelAdmin):
 
     model = Person
 
+    list_display = ('identifier', 'membre_nom', 'membre_prenom', 'membre_sexe',
+                    'membre_age')
+    list_filter = ['membre_sexe', 'membre_vulnerabilite',
+                   'dispo_doc_etat_civil', 'partage_info_perso',
+                   'existe_centre_etat_civil', 'au_moins_deux_temoins',
+                   'referer']
+
 
 @admin.register(Target)
 class TargetAdmin(admin.ModelAdmin):
@@ -48,7 +63,10 @@ class TargetAdmin(admin.ModelAdmin):
 
     list_display = ('identifier', 'validation_status', 'pays_asile',
                     'site_engistrement', 'camp')
-    list_filter = ['validation_status', 'camp', 'site_engistrement']
+    list_filter = ['beneficiez_lassistance', 'abris', 'membre_pays',
+                   'etat_sante', 'suivi_formation', 'metier_pays_prove',
+                   'formation_socio_prof', 'projet_activite', 'camp',
+                   'site_engistrement']
 
 
 @admin.register(Collect)

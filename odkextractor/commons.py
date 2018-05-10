@@ -12,12 +12,15 @@ from django.conf import settings
 def get_media_name(name):
     return os.path.splitext(name)[0].split('-')[0]
 
+
 def date_format(strdate):
     return timezone.datetime.strptime(strdate, '%b %d, %Y')
+
 
 def datetime_format(strdatetime):
     return timezone.datetime.strptime(
         strdatetime, '%b %d, %Y %H:%M:%S %p')
+
 
 def read_csv(file, json_file, format=""):
     csv_rows = []

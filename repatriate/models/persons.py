@@ -5,15 +5,12 @@
 import logging
 # import os
 from collections import OrderedDict
-# import io
-# import qrcode
-import json
-from django.db import models
-from django.utils import timezone
-from django.conf import settings
-from jsonfield.fields import JSONField
 import io
 import qrcode
+from django.db import models
+from django.utils import timezone
+# from django.conf import settings
+from jsonfield.fields import JSONField
 
 # from hamed.identifiers import full_random_id
 # from desk.utils import get_attachment, PERSONAL_FILES
@@ -46,15 +43,17 @@ class VulnerabilityPerson(models.Model):
 
     class Meta:
 
-        unique_together = (('person', 'vulnerability'),)
+        unique_together = (('person', 'sub_besoin'),)
         ordering = ['person']
 
-    vulnerability = models.CharField(blank=True, null=True, max_length=100)
+    besoin_specifique = models.CharField(blank=True, null=True, max_length=100)
+    sub_besoin = models.CharField(blank=True, null=True, max_length=100)
     person = models.ForeignKey("Person", related_name='vulnerability_persons')
 
     def __str__(self):
-        return "{person}.{vulnerability}".format(
-            person=self.person, vulnerability=self.vulnerability)
+        return "{person}.{besoin_specifique} {sub_besoin}".format(
+            person=self.person, besoin_specifique=self.besoin_specifique,
+            sub_besoin=self.sub_besoin)
 
 
 class Person(models.Model):
@@ -175,8 +174,6 @@ class Person(models.Model):
         "Niveau scolaire", choices=Niveau.items(), blank=True, null=True, max_length=100)
     num_progres_individuel = models.CharField(blank=True, null=True, max_length=100)
     membre_vulnerabilite = models.BooleanField(default=False)
-    besoin_specifique = models.CharField(blank=True, null=True, max_length=100)
-    sub_besoin = models.CharField(blank=True, null=True, max_length=100)
     dispo_doc_etat_civil = models.BooleanField(default=False)
     # info-etat-civil-dispo
     num_acte_naissance = models.CharField(blank=True, null=True, max_length=100)
@@ -187,7 +184,7 @@ class Person(models.Model):
     num_passeport = models.CharField(blank=True, null=True, max_length=100)
     # info-etat-civil-non-dispo
     raison_non_dispo = models.CharField(
-        choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
+        null=True, choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
     raison_non_dispo_other = models.CharField(
         blank=True, null=True, max_length=100)
     partage_info_perso = models.BooleanField(default=False)
@@ -214,7 +211,8 @@ class Person(models.Model):
     centre_etat_civil_other = models.CharField(blank=True, null=True, max_length=100)
     au_moins_deux_temoins = models.BooleanField(default=False)
     referer = models.BooleanField(default=False)
-    a_qui = models.CharField(choices=REFERENCE.items(), max_length=100)
+    a_qui = models.CharField(
+        blank=True, null=True, choices=REFERENCE.items(), max_length=100)
     a_qui_other = models.CharField(null=True, blank=True, max_length=50)
     form_dataset = JSONField(default=dict, blank=True)
 
@@ -232,19 +230,21 @@ class Person(models.Model):
     def create_identifier(self):
         try:
             p_lastest = Person.objects.filter(
-                target__site_engistrement=self.target.site_engistrement).latest(
-                "target__date")
-            identifier = p_lastest.identifier[-5:]
-            print(identifier, ' lllslslsls')
+                target__site_engistrement=self.target.site_engistrement
+            ).latest("started_on")
+            identifier = p_lastest.identifier[-4:]
         except Exception as e:
             print(e)
-            identifier = "00000"
-        print("IEIEI :", self.identifier)
+            identifier = "0000"
         return "S{s}{d}{id}".format(
             s=self.target.site_engistrement.slug,
             d="{}{}".format(self.target.date.split("-")[0],
                             self.target.date.split("-")[1]),
             id=self.add(identifier, "1"))
+
+    def add(self, x, y):
+        r = str(int(x) + int(y)).zfill(len(x))
+        return r
 
     def get_qrcode(self):
         qr = qrcode.QRCode(
@@ -261,15 +261,10 @@ class Person(models.Model):
         output.seek(0)
         return output
 
-    def add(self, x, y):
-        r = str(int(x) + int(y)).zfill(len(x))
-        return r
-
     def __str__(self):
         return self.name()
 
     def save(self, *args, **kwargs):
         if not self.identifier:
             self.identifier = self.create_identifier()
-            print(self.identifier)
         super(Person, self).save(*args, **kwargs)

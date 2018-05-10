@@ -1,0 +1,25 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n %}
+{% block title %} {% trans "Controle" %}{% endblock %}
+
+{% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1>Monitoring</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            {{msg_result}}
+            <form action= {% url 'controle' %} class="form-group"  method="post"> {% csrf_token %}
+                <div  class="form-group">
+                    <div> {{search_form.num_progres_individuel}} <input type="submit" name="_search" class="btn btn-sm btn-primary" value="OK" /></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

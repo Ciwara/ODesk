@@ -8,3 +8,16 @@
     max-height: 100%;
     max-width: 100%;
 }
+
+.situtation-heb {
+    background-color: #9eb300;
+}
+
+.table .thead-msah th {
+    color: #fff;
+    background-color: #004403;;
+    border-color: #32383e;
+}
+.bg-msah {
+    background-color: #033261!important;
+}

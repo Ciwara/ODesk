@@ -13,22 +13,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">
                             <button type="button" class="btn btn-secondary btn-sm ">
-                                <i class="fa fa-fw fa-home"></i>Home <span class="badge badge-pill badge-primary">9</span>
-                                <span class="sr-only">unread messages</span>
+                                <i class="fa fa-fw fa-home"></i>Home
                             </button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
+                        <a class="nav-link" href="{% url 'controle' %}">
                             <button type="button" class="btn btn-secondary btn-sm">
-                              <i class="fa fa-fw fa-bell"></i> Alerts <span class="badge badge-pill badge-warning">9</span>
+                              <i class="fa fa-fw fa-bell"></i> Desk Côntrole <span class="badge badge-pill badge-warning">9</span>
                               <span class="sr-only">unread messages</span>
                             </button>
                         </a>
                     </li>
                 {% if user|has_role:'desk_assistant_admin, desk_admin' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
+                        <a class="nav-link" href="{% url 'monitoring' %}">
                             <button type="button" class="btn btn-secondary btn-sm">
                               <i class="fa fa-fw fa-bell"></i> Monitoring <span class="badge badge-pill badge-warning">9</span>
                               <span class="sr-only">unread messages</span>

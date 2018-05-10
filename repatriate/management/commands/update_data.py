@@ -48,13 +48,11 @@ class Command(BaseCommand):
         self.setup()
 
     def get_or_other(self, value):
-        print(value)
         if not value:
             "{}_other".format(value)
         return value
 
     def get_with_other(self, value):
-        print(value)
         if not value:
             "{}_other".format(value)
         return value
@@ -85,7 +83,6 @@ class Command(BaseCommand):
                 "fin": targ.get("fin"),
                 "nom_agent": targ.get("generales/nom_agent"),
                 "nu_enregistrement": targ.get("generales/nu_enregistrement"),
-                # "code_operation": targ.get("generales/code_operation"),
                 "site_engistrement": site_engistrement,
                 "date_arrivee": targ.get("generales/date_arrivee"),
                 "date_entretien": targ.get("generales/date_entretien"),
@@ -113,63 +110,53 @@ class Command(BaseCommand):
                 "rue": targ.get("adresse-mali/rue"),
                 "porte": targ.get("adresse-mali/porte"),
                 "tel": targ.get("adresse-mali/tel"),
+
                 "abris": self.get_bol(targ.get("hebergement/abris")),
+                "nature_construction": targ.get("hebergement/nature_construction"),
+                "nature_construction_other": targ.get("hebergement/nature_construction_other"),
+                "type_hebergement": targ.get("hebergement/type_hebergement"),
+                "type_hebergement_other": targ.get("hebergement/type_hebergement_other"),
+
                 "membre_pays": self.get_bol(targ.get("info-generale-membres/membre_pays")),
                 "nbre_membre_reste": targ.get("info-generale-membres/nbre_membre_reste"),
+
                 "etat_sante": self.get_bol(targ.get("sante-appuipyschosocial/etat_sante")),
+                "situation_maladie": targ.get("sante-appuipyschosocial/situation_maladie"),
+                "type_maladie": targ.get("sante-appuipyschosocial/type_maladie"),
+                "type_maladie_other": targ.get("sante-appuipyschosocial/type_maladie_other"),
+                "type_aigue": targ.get("sante-appuipyschosocial/type_aigue"),
+                "type_aigue_other": targ.get("sante-appuipyschosocial/type_aigue_other"),
+                "prise_medicament": targ.get("sante-appuipyschosocial/prise_medicament"),
+                "type_medicaments": targ.get("sante-appuipyschosocial/type_medicaments"),
+
                 "suivi_formation": self.get_bol(targ.get("formation-experience/suivi_formation")),
+                "domaine_formation": targ.get("formation-experience/domaine_formation"),
+
                 "metier_pays_prove": self.get_bol(targ.get("formation-experience/metier_pays_prove")),
+                "exercice_secteur": targ.get("formation-experience/exercice_secteur"),
+                "exercice_secteur_other": targ.get("formation-experience/exercice_secteur_other"),
+
                 "formation_socio_prof": self.get_bol(targ.get("reinsertion-prof/formation_socio_prof")),
+                "secteur_prof": targ.get("reinsertion-prof/secteur_prof"),
+                "secteur_prof_other": targ.get("reinsertion-prof/secteur_prof_other"),
+
+                "projet_activite": self.get_bol(targ.get('reinsertion-prof/projet_activite')),
+                "type_projet": targ.get("reinsertion-prof/type_projet"),
+                "souhait_activite": targ.get("reinsertion-prof/souhait_activite"),
+                "souhait_activite_other": targ.get("reinsertion-prof/souhait_activite_other"),
+
                 "lieu_region": targ.get("reinsertion-prof/lieu-activite/lieu_region"),
                 "lieu_cercle": targ.get("reinsertion-prof/lieu-activite/lieu_cercle"),
                 "lieu_commune": targ.get("reinsertion-prof/lieu-activite/lieu_commune"),
                 "lieu_qvf": targ.get("reinsertion-prof/lieu-activite/lieu_qvf"),
                 "lieu_non_generale_utilise": targ.get("reinsertion-prof/lieu-activite/lieu_non_generale_utilise"),
                 "signature": targ.get("signature"),
-                "instance_id": targ.get("meta/instanceID"),
             }
-            if t_data.get("metier_pays_prove"):
-                t_data.update({
-                    "exercice_secteur": targ.get("formation-experience/exercice_secteur"),
-                    "exercice_secteur_other": targ.get("formation-experience/exercice_secteur_other")
-                })
-            if t_data.get("suivi_formation"):
-                t_data.update({
-                    "domaine_formation": targ.get("formation-experience/domaine_formation")})
-            if t_data.get("formation_socio_prof"):
-                t_data.update({
-                    "secteur_prof": targ.get("reinsertion-prof/secteur_prof"),
-                    "secteur_prof_other": targ.get("reinsertion-prof/secteur_prof_other"),
-                    "projet_activite": self.get_bol(targ.get('reinsertion-prof/projet_activite')),
-                })
-                if t_data.get("projet_activite"):
-                    t_data.update({
-                        "type_projet": targ.get("reinsertion-prof/type_projet"),
-                        "souhait_activite": targ.get("reinsertion-prof/souhait_activite"),
-                        "souhait_activite_other": targ.get("reinsertion-prof/souhait_activite_other"),
-                    })
-            if t_data.get("abris"):
-                t_data.update({
-                    "nature_construction": targ.get("hebergement/nature_construction"),
-                    "nature_construction_other": targ.get("hebergement/nature_construction_other"),
-                    "type_hebergement": targ.get("hebergement/type_hebergement"),
-                    "type_hebergement_other": targ.get("hebergement/type_hebergement_other"),
-                })
-            if t_data.get("etat_sante"):
-                t_data.update({
-                    "situation_maladie": targ.get("sante-appuipyschosocial/situation_maladie"),
-                    "type_maladie": targ.get("sante-appuipyschosocial/type_maladie"),
-                    "type_maladie_other": targ.get("sante-appuipyschosocial/type_maladie_other"),
-                    "type_aigue": targ.get("sante-appuipyschosocial/type_aigue"),
-                    "type_aigue_other": targ.get("sante-appuipyschosocial/type_aigue_other"),
-                    "prise_medicament": targ.get("sante-appuipyschosocial/prise_medicament"),
-                    "type_medicaments": targ.get("sante-appuipyschosocial/type_medicaments"),
-                })
-
-            instanceid = t_data.get('meta/instanceID')
-            target, ok = Target.objects.get_or_create(instance_id=instanceid, defaults=t_data)
+            target, ok = Target.objects.get_or_create(
+                instance_id=targ.get("meta/instanceID"), defaults=t_data)
             if not ok:
                 continue
+
             if t_data.get("beneficiez_lassistance"):
                 for typ_assis in targ.get('info-generales-manage/assistance/type_assistance').split():
                     data = {
@@ -183,43 +170,27 @@ class Command(BaseCommand):
                         "organization": o if o != OTHER else targ.get('info-generales-manage/assistance/organisations_other')
                     }
                     organ_targ, c = OrganizationTarget.objects.update_or_create(**data)
-
-            persons = targ.get('info-generale-membres/membres')
-
-            if not persons:
-                print("Not person in menage")
+            data_members = targ.get('info-generale-membres/membres')
+            if not data_members:
                 continue
-            else:
-                self.save_person(persons, target)
-
-    def save_person(self, persons, target):
-        count_m = 0
-        for person in persons:
-            count_m += 1
-            print("- - " * 36)
-            p_data = {
-                "target": target,
-                "membre_nom": person.get("info-generale-membres/membres/membre_nom"),
-                "membre_prenom": person.get("info-generale-membres/membres/membre_prenom"),
-                "membre_sexe": person.get("info-generale-membres/membres/membre_sexe"),
-                "membre_ddn": person.get("info-generale-membres/membres/membre_ddn"),
-                "membre_age": person.get("info-generale-membres/membres/membre_age"),
-                "membre_age_mois": person.get("info-generale-membres/membres/membre_age_mois"),
-                "membre_lien": person.get("info-generale-membres/membres/membre_lien"),
-                "membre_scolaire": person.get("info-generale-membres/membres/membre_scolaire"),
-                "num_progres_individuel": person.get("info-generale-membres/membres/num_progres_individul"),
-                "membre_vulnerabilite": self.get_bol(person.get("info-generale-membres/membres/membre-vulnerabilite")),
-                "dispo_doc_etat_civil": self.get_bol(person.get("info-generale-membres/membres/dispo_doc_etat_civil")),
-                "partage_info_perso": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/partage_info_perso")),
-                "referer": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/referer")),
-            }
-            if p_data.get("referer"):
-                p_data.update({
+            for person in data_members:
+                p_data = {
+                    "target": target,
+                    "membre_nom": person.get("info-generale-membres/membres/membre_nom"),
+                    "membre_prenom": person.get("info-generale-membres/membres/membre_prenom"),
+                    "membre_sexe": person.get("info-generale-membres/membres/membre_sexe"),
+                    "membre_ddn": person.get("info-generale-membres/membres/membre_ddn"),
+                    "membre_age": person.get("info-generale-membres/membres/membre_age"),
+                    "membre_age_mois": person.get("info-generale-membres/membres/membre_age_mois"),
+                    "membre_lien": person.get("info-generale-membres/membres/membre_lien"),
+                    "membre_scolaire": person.get("info-generale-membres/membres/membre_scolaire"),
+                    "num_progres_individuel": person.get("info-generale-membres/membres/num_progres_individul"),
+                    "membre_vulnerabilite": self.get_bol(person.get("info-generale-membres/membres/membre-vulnerabilite")),
+                    "dispo_doc_etat_civil": self.get_bol(person.get("info-generale-membres/membres/dispo_doc_etat_civil")),
+                    "partage_info_perso": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/partage_info_perso")),
+                    "referer": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/referer")),
                     "a_qui": person.get('info-generale-membres/membres/etat-civil-non-dispo/a_qui'),
-                    "a_qui_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/a_qui_other")
-                })
-            if p_data.get("partage_info_perso"):
-                p_data.update({
+                    "a_qui_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/a_qui_other"),
                     "naissance_region": person.get("info-generale-membres/membres/etat-civil-non-dispo/etablissement-docu/naissance_region"),
                     "naissance_cercle": person.get("info-generale-membres/membres/etat-civil-non-dispo/etablissement-docu/naissance_cercle"),
                     "naissance_commune": person.get("info-generale-membres/membres/etat-civil-non-dispo/etablissement-docu/naissance_commune"),
@@ -236,43 +207,31 @@ class Command(BaseCommand):
                     "centre_etat_civil": person.get("info-generale-membres/membres/etat-civil-non-dispo/centre_etat_civil"),
                     "centre_etat_civil_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/centre_etat_civil_other"),
                     "au_moins_deux_temoins": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/au_moins_deux_temoins")),
-                })
-            if p_data.get("dispo_doc_etat_civil"):
-                p_data.update({
                     "num_acte_naissance": person.get("info-generale-membres/membres/etat-civil-dispo/num_acte_naissance"),
                     "num_acte_mariage": person.get("info-generale-membres/membres/etat-civil-dispo/num_acte_mariage"),
                     "num_carte_nina": person.get("info-generale-membres/membres/etat-civil-dispo/num_carte_nina"),
                     "num_carte_identite_national": person.get("info-generale-membres/membres/etat-civil-dispo/num_carte_identite_national"),
                     "num_passeport": person.get("info-generale-membres/membres/etat-civil-dispo/num_passeport"),
-                })
-            else:
-                p_data.update({
                     "raison_non_dispo": person.get("info-generale-membres/membres/etat-civil-non-dispo/raison_non_dispo"),
                     "raison_non_dispo_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/raison_non_dispo_other"),
-                })
-            num_progres_individuel = p_data.get('num_progres_individuel') or "{}".format(
-                person.get("meta/instanceID"))
-            pn, ok = Person.objects.get_or_create(num_progres_individuel=num_progres_individuel, defaults=p_data)
-            print(pn.membre_nom, pn.membre_prenom)
-            if p_data.get("au_moins_deux_temoins"):
+                }
+                pn, ok = Person.objects.update_or_create(**p_data)
                 les_contacts = person.get('info-generale-membres/membres/etat-civil-non-dispo/les_contacts')
-                print("les_contacts : ", les_contacts)
                 if les_contacts:
                     for ctt in les_contacts:
-                        print(ctt)
                         data = {
                             "contact": ctt.get(
                                 'info-generale-membres/membres/etat-civil-non-dispo/les_contacts/contact_temoins'),
                             "person": pn,
                         }
                         contact_t, ok = ContactTemoin.objects.update_or_create(**data)
-            if p_data.get("membre-vulnerabilite"):
-                    for vul in person.get('info-generale-membres/membres/besoin-specifique'):
-                        print(vul)
-                        vul_person = VulnerabilityPerson()
-                        vul_person.person = pn
-                        vul_person.vulnerabily = vul
-                        if vul == OTHER:
-                            vul_person.vulnerabily_other = targ.get(
-                                'info-generale-membres/membres/besoin-specifique/besoin_specifique_other')
-                        # vul_person.save()
+                if person.get('info-generale-membres/membres/besoin-specifique'):
+                    for dic_vul in person.get('info-generale-membres/membres/besoin-specifique'):
+                        vul = dic_vul.get('info-generale-membres/membres/besoin-specifique/besoin_specifique')
+                        subvul = dic_vul.get('info-generale-membres/membres/besoin-specifique/sub_besoin')
+                    data = {
+                        "person": pn,
+                        "besoin_specifique": subvul,
+                        "sub_besoin": vul
+                    }
+                    targ_typ, c = VulnerabilityPerson.objects.update_or_create(**data)

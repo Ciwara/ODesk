@@ -33,8 +33,7 @@ def home(request, *args, **kwargs):
     if has_role(prov, [DeskControle]):
         return redirect("controle")
     if has_role(prov, [DeskAssistantAdmin]):
-        return redirect("assis_admin")
-
+        return redirect("monitoring")
 
     return render(request, 'home.html', context)
 

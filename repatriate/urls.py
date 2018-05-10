@@ -19,6 +19,6 @@ from repatriate import views
 urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard_rep'),
     url(r'^desk-controle$', views.desk_controle, name='controle'),
-    url(r'^desk-assis-admin$', views.assis_admin, name='assis_admin'),
+    url(r'^desk-monitoring$', views.desk_monitoring, name='monitoring'),
     url(r'^target_validated/(?P<pk>.*)', views.target_validated, name='tvalidated'),
 ]

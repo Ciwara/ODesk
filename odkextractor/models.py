@@ -79,6 +79,7 @@ class FormID(models.Model):
             i.unlink()
 
     def in_progress(self):
+        self.last_update = timezone.now()
         self.status = self.IN_PROGRESS
         self.save()
 
