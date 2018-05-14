@@ -27,3 +27,20 @@ class SearchForm(forms.Form):
         except Exception:
             result = None
         return result
+
+
+class TargetForm(forms.ModelForm):
+
+    class Meta:
+        model = Target
+        fields = ('site_engistrement', 'ville_asile', 'camp', 'tel',
+                  'num_progres_menage_alg', 'num_progres_menage', 'num_doc',)
+        exclude = ['site_engistrement', ]
+
+
+class FixedPersonForm(forms.ModelForm):
+
+    class Meta:
+        model = Target
+        fields = ('nom_agent',)
+        exclude = ['site_engistrement', ]

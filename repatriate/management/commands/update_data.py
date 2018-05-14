@@ -119,7 +119,6 @@ class Command(BaseCommand):
 
                 "membre_pays": self.get_bol(targ.get("info-generale-membres/membre_pays")),
                 "nbre_membre_reste": targ.get("info-generale-membres/nbre_membre_reste"),
-
                 "etat_sante": self.get_bol(targ.get("sante-appuipyschosocial/etat_sante")),
                 "situation_maladie": targ.get("sante-appuipyschosocial/situation_maladie"),
                 "type_maladie": targ.get("sante-appuipyschosocial/type_maladie"),

@@ -10,15 +10,14 @@ from django.db import models
 # from django.utils import timezone
 from jsonfield.fields import JSONField
 
-# from hamed.identifiers import full_random_id
 from desk.utils import get_attachment, PERSONAL_FILES
-# from hamed.ona import delete_submission
 
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 
 from desk.models import Provider, RegistrationSite
-
+# from repatriate.target_checks import checker
 logger = logging.getLogger(__name__)
 
 
@@ -52,6 +51,11 @@ class TargetTypeAssistance(models.Model):
             type_assistance=self.type_assistance, target=self.target)
 
 
+class TargetManager(models.Manager):
+    def get_queryset(self):
+        return super(TargetManager, self).get_queryset().filter(deleted=False)
+
+
 class Target(models.Model):
 
     # Completion Status
@@ -67,11 +71,6 @@ class Target(models.Model):
     NOT_CHECKED = 'not_checked'
     INCORRECT = 'incorrect'
     CORRECT = 'correct'
-    INTEGRITY_STATUSES = {
-        NOT_CHECKED: _("Not Checked"),
-        INCORRECT: _("Incorrect"),
-        CORRECT: _("Correct")
-    }
 
     # Validation
     NOT_VALIDATED = 'not_validated'
@@ -214,10 +213,6 @@ class Target(models.Model):
                                     null=True, blank=True,
                                     verbose_name=_("Modified By"),
                                     related_name='repat_own_modified_reports')
-    # Integrity State: wheter data are correct or not (!= validation)
-    integrity_status = models.CharField(max_length=40,
-                                        choices=INTEGRITY_STATUSES.items(),
-                                        default=NOT_CHECKED)
     # Validation State
     validation_status = models.CharField(max_length=40,
                                          choices=VALIDATION_STATUSES.items(),
@@ -241,23 +236,23 @@ class Target(models.Model):
         RegistrationSite, related_name="target_registrations_sites")
     date_arrivee = models.DateField(blank=True, max_length=100)
     date_entretien = models.DateField(blank=True, max_length=100)
-    continent_asile = models.CharField(blank=True, max_length=100)
-    pays_asile = models.CharField(blank=True, max_length=100)
-    ville_asile = models.CharField(blank=True, max_length=100)
+    continent_asile = models.CharField(blank=True, null=True, max_length=100)
+    pays_asile = models.CharField(blank=True, null=True, max_length=100)
+    ville_asile = models.CharField(blank=True, null=True, max_length=100)
     camp = models.CharField(blank=True, null=True, max_length=100)
     camp_other = models.CharField(blank=True, null=True, max_length=100)
     num_progres_menage_alg = models.CharField(null=True, blank=True, max_length=100)
     num_progres_menage = models.CharField(blank=True, max_length=100)
     point_de_entree = models.CharField(null=True, blank=True, max_length=100)
-    continent_naissance = models.CharField(blank=True, max_length=100)
-    pays_naissance = models.CharField(blank=True, max_length=100)
-    lieu_naissance = models.CharField(blank=True, max_length=100)
+    continent_naissance = models.CharField(null=True, blank=True, max_length=100)
+    pays_naissance = models.CharField(null=True, blank=True, max_length=100)
+    lieu_naissance = models.CharField(null=True, blank=True, max_length=100)
     chef_etat_civil = models.CharField(
         max_length=20, choices=ETAT_CIVIL.items())
     chef_profession = models.CharField(blank=True, null=True, max_length=100)
     chef_doc = models.CharField(
         null=True, blank=True, max_length=100, choices=DOC_ENREGISTREMENT.items())
-    num_doc = models.CharField(blank=True, max_length=100)
+    num_doc = models.CharField(blank=True, null=True, max_length=100)
     beneficiez_lassistance = models.BooleanField(default=False)
     type_assistance_other = models.CharField(blank=True, null=True, max_length=50)
     organisations_other = models.CharField(blank=True, null=True, max_length=50)
@@ -268,7 +263,7 @@ class Target(models.Model):
     actuelle_nom_generale_utilise = models.CharField(null=True, blank=True, max_length=100)
     rue = models.CharField(null=True, blank=True, max_length=100)
     porte = models.CharField(null=True, blank=True, max_length=100)
-    tel = models.IntegerField(default=0)
+    tel = models.CharField(null=True, blank=True, default=0, max_length=20)
     abris = models.BooleanField(default=False)
     nature_construction = models.CharField(null=True, blank=True, max_length=100)
     nature_construction_other = models.CharField(
@@ -278,7 +273,7 @@ class Target(models.Model):
     type_hebergement_other = models.CharField(
         null=True, blank=True, max_length=100)
     membre_pays = models.BooleanField(default=True)
-    nbre_membre_reste = models.IntegerField(null=True, default=0)
+    nbre_membre_reste = models.IntegerField(null=True, blank=True, default=0)
     # Sante_Appuipyschosocial
     etat_sante = models.BooleanField(default=True)
     situation_maladie = models.CharField(null=True, blank=True, max_length=100)
@@ -315,6 +310,24 @@ class Target(models.Model):
     lieu_qvf = models.CharField(null=True, blank=True, max_length=100)
     lieu_non_generale_utilise = models.CharField(null=True, blank=True, max_length=100)
     signature = models.CharField(blank=True, max_length=200)
+    deleted = models.BooleanField(default=False)
+
+    # Checks
+    is_requise_num_progres_menage = models.BooleanField(default=True)
+    is_invalide_num_progres_menage = models.BooleanField(default=True)
+    is_not_empty_num_progres_menage_alg = models.BooleanField(default=True)
+    is_invalide_num_tel = models.BooleanField(default=True)
+    is_zero_member = models.BooleanField(default=True)
+    is_many_chef_menage = models.BooleanField(default=True)
+    is_no_chef_manage = models.BooleanField(default=True)
+    is_no_doc_with_num_pm = models.BooleanField(default=True)
+    is_site_not_existe = models.BooleanField(default=True)
+
+    objects = models.Manager() # The default manager.
+    active_objects = TargetManager() # The EmployeeManager manager.
+
+    def get_absolute_url(self):
+        return reverse('correction_target', kwargs={'id': self.identifier})
 
     @property
     def type_assistance(self):
@@ -358,6 +371,16 @@ class Target(models.Model):
     def save(self, *args, **kwargs):
         if not self.identifier:
             self.identifier = self.instance_id
+
+        self.is_zero_member = self.zero_member()
+        self.is_requise_num_progres_menage = self.requise_num_progres_menage()
+        self.is_invalide_num_progres_menage = self.invalide_num_progres_menage()
+        self.is_invalide_num_tel = self.invalide_num_tel()
+        self.is_not_empty_num_progres_menage_alg = self.not_empty_num_progres_menage_alg()
+        self.is_many_chef_menage = self.many_chef_menage()
+        self.is_no_chef_manage = self.no_chef_manage()
+        self.is_no_doc_with_num_pm = self.no_doc_with_num_pm()
+        self.is_site_not_existe = self.site_not_existe()
         super(Target, self).save(*args, **kwargs)
 
     def attachments(self):
@@ -490,3 +513,66 @@ class Target(models.Model):
     @property
     def ona_submission_id(self):
         return self.form_dataset.get('_id')
+
+    def get_membres(self):
+        from repatriate.models import Person
+        return Person.objects.filter(target=self)
+
+    # Check functions
+    def no_doc_with_num_pm(self):
+        if self.chef_doc == "sans_doc" and self.num_progres_menage != "":
+            return True
+        return False
+
+    def requise_num_progres_menage(self):
+        if self.pays_asile != "aligerie" and self.num_progres_menage == "":
+            return True
+        return False
+
+    def invalide_num_progres_menage(self):
+        if self.num_progres_menage:
+            try:
+                num_camp, incr = self.num_progres_menage.split("-")
+            except Exception:
+                return True
+            if len(incr) != 8:
+                return True
+        return False
+
+    def invalide_num_tel(self):
+        if len("{}".format(self.tel)) < 8 and self.tel == 0:
+            return True
+        return False
+
+    def not_empty_num_progres_menage_alg(self):
+        if self.pays_asile == "algerie" and self.num_progres_menage != "":
+            return True
+        return False
+
+    def zero_member(self):
+        return self.get_membres().count() == 0
+
+    def many_chef_menage(self):
+        from repatriate.models import Person
+        if Person.objects.filter(target=self, membre_lien="chef_de_famille").count() > 1:
+            return True
+        return False
+
+    def no_chef_manage(self):
+        from repatriate.models import Person
+        if Person.objects.filter(target=self, membre_lien="chef_de_famille").count() < 1:
+            return True
+        return False
+
+    def num_pm_existe(self):
+        return Target.objects.filter(
+            deleted=False,
+            num_progres_menage=self.num_progres_menage).count() != 0
+
+    def site_not_existe(self):
+        return RegistrationSite.objects.filter(
+            deactivate=False, confirmed=True,
+            slug=self.site_engistrement).count() != 0
+
+
+# models.signals.post_save.connect(checker, sender=Target)

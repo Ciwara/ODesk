@@ -56,6 +56,11 @@ class VulnerabilityPerson(models.Model):
             sub_besoin=self.sub_besoin)
 
 
+class PersonManager(models.Manager):
+    def get_queryset(self):
+        return super(PersonManager, self).get_queryset().filter(deleted=False)
+
+
 class Person(models.Model):
 
     MALE = 'masculin'
@@ -68,9 +73,11 @@ class Person(models.Model):
         (MALE, "Homme"),
         (FEMALE, "Femme")
     ])
-    VRF = "vrf"
-    D1 = "d1"
-    D2 = "d2"
+    VRF = "formulaire_de_retour_volontaire"
+    D1 = "attestation_de_refugie"
+    D2 = "carte_des_ration"
+    SD = "sans_doc"
+
     DOC_ENREGISTREMENETS = OrderedDict([
         (VRF, "Formulaire de retour volontaire"),
         (D1, "Attestation de réfugier"),
@@ -159,7 +166,7 @@ class Person(models.Model):
         ordering = ['started_on', 'membre_nom', 'membre_prenom']
 
     started_on = models.DateTimeField(default=timezone.now)
-    identifier = models.CharField(max_length=10, primary_key=True)
+    identifier = models.CharField(max_length=15, primary_key=True)
     target = models.ForeignKey(
         'Target', related_name='targets')
     membre_nom = models.CharField(blank=True, null=True, max_length=100)
@@ -184,7 +191,7 @@ class Person(models.Model):
     num_passeport = models.CharField(blank=True, null=True, max_length=100)
     # info-etat-civil-non-dispo
     raison_non_dispo = models.CharField(
-        null=True, choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
+        null=True, blank=True, choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
     raison_non_dispo_other = models.CharField(
         blank=True, null=True, max_length=100)
     partage_info_perso = models.BooleanField(default=False)
@@ -215,10 +222,23 @@ class Person(models.Model):
         blank=True, null=True, choices=REFERENCE.items(), max_length=100)
     a_qui_other = models.CharField(null=True, blank=True, max_length=50)
     form_dataset = JSONField(default=dict, blank=True)
+    deleted = models.BooleanField(default=False)
+
+    # Checks
+    is_invalide_num_pi = models.BooleanField(default=True)
+    is_not_empty_num_pi_alg = models.BooleanField(default=True)
+    is_vrf_wihtout_num_pi = models.BooleanField(default=True)
+    is_sans_doc_avec_num_pi = models.BooleanField(default=True)
+    is_num_pi_sans_num_pm = models.BooleanField(default=True)
+    is_suspect_new_member = models.BooleanField(default=True)
+    is_suspect_update_member = models.BooleanField(default=True)
+
+    objects = models.Manager() # The default manager.
+    active_objects = PersonManager()
 
     def name(self):
-        return "{}-{}-{}".format(
-            self.identifier, self.membre_nom, self.membre_prenom)
+        return "{}-{}-{}-{}".format(
+            self.identifier, self.membre_nom, self.membre_prenom, self.membre_sexe)
 
     def les_temoins(self):
         return ContactTemoin.objects.filter(person=self).all()
@@ -267,4 +287,57 @@ class Person(models.Model):
     def save(self, *args, **kwargs):
         if not self.identifier:
             self.identifier = self.create_identifier()
+        self.is_invalide_num_pi = self.invalide_num_pi()
+        self.is_num_pi_sans_num_pm = self.num_pi_sans_num_pm()
+        self.is_not_empty_num_pi_alg = self.not_empty_num_pi_alg()
+        self.is_vrf_wihtout_num_pi = self.vrf_wihtout_num_pi()
+        self.is_suspect_new_member = self.suspect_new_member()
+        self.is_suspect_update_member = self.suspect_update_member()
+        self.is_sans_doc_avec_num_pi = self.sans_doc_avec_num_pi()
         super(Person, self).save(*args, **kwargs)
+
+    def num_pi_sans_num_pm(self):
+        if self.target.num_progres_menage == "" and self.num_progres_individuel != "":
+            return True
+        return False
+
+    def invalide_num_pi(self):
+        if self.num_progres_individuel:
+            try:
+                num_camp, incr = self.num_progres_individuel.split("-")
+            except Exception as e:
+                print(e)
+                return False
+            if len(incr) != 8:
+                return True
+        return False
+
+    def not_empty_num_pi_alg(self):
+        if self.target.pays_asile == "algerie" and self.num_progres_individuel != "":
+            return True
+        return False
+
+    def vrf_wihtout_num_pi(self):
+        if self.target.chef_doc == "formulaire_de_retour_volontaire" and self.num_progres_individuel == "":
+            return True
+        return False
+
+    def sans_doc_avec_num_pi(self):
+        if self.target.chef_doc == "sans_doc" and self.num_progres_individuel == "":
+            return True
+        return False
+
+    def num_pi_existe(self):
+        return Person.objects.filter(
+            deleted=False, num_progres_individuel=self.num_progres_individuel).count() != 0
+
+    def suspect_new_member(self):
+        if not self.num_pi_existe() and self.target.num_pm_existe():
+            print(self.num_pi_existe(), ' ', "Num_pi_existe")
+            return True
+        return False
+
+    def suspect_update_member(self):
+        if self.num_pi_existe() and self.target.num_pm_existe():
+            return True
+        return False

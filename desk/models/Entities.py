@@ -25,6 +25,7 @@ class Project(models.Model):
     slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
     name = models.CharField(max_length=200)
     desciption = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return "{name}".format(name=self.name)
@@ -40,7 +41,8 @@ class RegistrationSite(models.Model):
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     geometry = models.TextField(blank=True, null=True)
-    confirmed = models.BooleanField(default=True)
+    deactivate = models.BooleanField(default=False)
+    confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return "{name} / {locality}".format(
