@@ -1,11 +1,14 @@
 # from django.shortcuts import render
 
+import xlwt
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.db.models import Count
 from django.template import loader
 from django.contrib import messages
+from django.utils import timezone
 
 from rolepermissions.checkers import has_role
 
@@ -94,9 +97,10 @@ def desk_controle(request):
 
     if request.method == 'POST' and '_per_Date' in request.POST:
         period_form = SearchFormPerPeriod(request.POST or None)
-        if period_form.is_valid():
-            print("VALIDATED DATE FILTER")
-            return redirect("/")
+        print("SearchFormPerPeriod")
+        date_s = request.POST.get('start_date').replace("/", "-")
+        date_e = request.POST.get('end_date').replace("/", "-")
+        return redirect("export-xls/{start}/{end}".format(start=date_s, end=date_e))
     else:
         period_form = SearchFormPerPeriod()
     context.update({'period_form': period_form})
@@ -266,7 +270,7 @@ def person_correction(request, *args, **kwargs):
 
     id_url = kwargs["id"]
     selected_person = Person.objects.get(identifier=id_url)
-    person_form = FixedPersonForm(request.POST or None, instance=selected_target)
+    person_form = FixedPersonForm(request.POST or None, instance=selected_person)
     if request.method == 'POST' and '_fixed_target' in request.POST:
         if person_form.is_valid():
             # notice = person_form.save(commit=False)
@@ -291,8 +295,7 @@ def target_correction(request, *args, **kwargs):
     if request.method == 'POST' and '_fixed_target' in request.POST:
         if target_form.is_valid():
             target_form.save()
-
-            messages.success(request, 'Modifier avec succès')
+            messages.success(request, 'Corrigé avec succès')
             return redirect("/repatriate/desk-controle")
     context.update({'selected_target': selected_target, 'target_form': target_form})
 
@@ -306,3 +309,224 @@ def target_validated(request, *args, **kwargs):
     selected_target.validation_status = Target.VALIDATED
     selected_target.save()
     return redirect("/home")
+
+
+def get_date(date):
+    if date:
+        date = date.strftime("%Y/%m/%d")
+    return date
+
+
+def date_format(strdate):
+    return timezone.datetime.strptime(strdate, '%d-%m-%Y')
+
+
+def get_sex(value):
+    return "M" if value == "male" else "F"
+
+
+@login_required
+def export_xls(request, *args, **kwargs):
+
+    start = date_format(kwargs["start"])
+    end = date_format(kwargs["end"])
+    print(start, '  ', end)
+    prov = Provider.objects.get(username=request.user.username)
+    if has_role(prov, [DeskControle]):
+        pn = Person.active_objects.filter(target__site_engistrement=prov.site)
+    if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
+        pn = Person.active_objects.all()
+    else:
+        redirect('/')
+
+    pn = pn.filter(target__date_entretien__gte=start, target__date_entretien__lte=end)
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="export brute retournés.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = [
+        'identifier',
+        'nom_agent',
+        'nu_enregistrement',
+        'site_engistrement',
+        'date_arrivee',
+        'date_entretien',
+        'continent_asile',
+        'pays_asile',
+        'ville_asile',
+        'camp',
+        'num_progres_menage',
+        'point_de_entree',
+        'continent_naissance',
+        'pays_naissance',
+        'lieu_naissance',
+        'chef_etat_civil',
+        'chef_profession',
+        'chef_doc',
+        'num_doc',
+        'beneficiez_lassistance',
+        'actuelle_region',
+        'actuelle_cercle',
+        'actuelle_commune',
+        'actuelle_qvf',
+        'actuelle_nom_generale_utilise',
+        'rue',
+        'porte',
+        'tel',
+        'abris',
+        'nature_construction',
+        'type_hebergement',
+        'membre_pays',
+        'nbre_membre_reste',
+        'etat_sante',
+        'situation_maladie',
+        'type_maladie',
+        'type_aigue',
+        'prise_medicament',
+        'type_medicaments',
+        'suivi_formation',
+        'domaine_formation',
+        'metier_pays_prove',
+        'exercice_secteur',
+        'formation_socio_prof',
+        'secteur_prof',
+        'projet_activite',
+        'type_projet',
+        'souhait_activite',
+        'lieu_region',
+        'lieu_cercle',
+        'lieu_commune',
+        'lieu_qvf',
+        'lieu_non_generale_utilise',
+        'num_progres_individuel'
+    ]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    for row in pn:
+        row_num += 1
+        col_num = 0
+        ws.write(row_num, col_num, row.target.identifier, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.nom_agent, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.nu_enregistrement, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.site_engistrement.name, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, get_date(row.target.date_arrivee), font_style)
+        col_num += 1
+        ws.write(row_num, col_num, get_date(row.target.date_entretien), font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.continent_asile, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.pays_asile, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.ville_asile, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.camp, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.num_progres_menage, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.point_de_entree, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.continent_naissance, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.pays_naissance, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_naissance, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.chef_etat_civil, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.chef_profession, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.chef_doc, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.num_doc, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.beneficiez_lassistance, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.actuelle_region, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.actuelle_cercle, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.actuelle_commune, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.actuelle_qvf, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.actuelle_nom_generale_utilise, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.rue, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.porte, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.tel, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.abris, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.nature_construction, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.type_hebergement, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.membre_pays, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.nbre_membre_reste, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.etat_sante, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.situation_maladie, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.type_maladie, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.type_aigue, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.prise_medicament, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.type_medicaments, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.suivi_formation, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.domaine_formation, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.metier_pays_prove, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.exercice_secteur, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.formation_socio_prof, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.secteur_prof, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.projet_activite, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.type_projet, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.souhait_activite, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_region, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_cercle, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_commune, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_qvf, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.target.lieu_non_generale_utilise, font_style)
+        col_num += 1
+        ws.write(row_num, col_num, row.num_progres_individuel, font_style)
+        col_num += 1
+        # break
+    wb.save(response)
+
+    return response

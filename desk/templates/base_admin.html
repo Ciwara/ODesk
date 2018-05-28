@@ -13,13 +13,13 @@
         <title>
           {% block title %} {% endblock %}
         </title>
+        <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
-        <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-        <!-- Custom fonts for this template-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
         <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-        <!-- Page level plugin CSS-->
+        <!-- Page level plugin CSS -->
+        <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
-        <!-- Custom styles for this template-->
         <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
         <link href="{% static 'css/desk.css' %}" rel="stylesheet">
         {% block extra_head %}
@@ -33,32 +33,22 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Home">
               <a class="nav-link" href="{% url 'home' %}">
-                <i class="fa fa-fw fa-home"></i>
-                <span class="nav-link-text">Home</span>
+                <i class="fa fa-fw fa-home"></i> <span class="nav-link-text">Home</span>
               </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                <i class="fa fa-fw fa-dashboard"></i>
-                <span class="nav-link-text">Dashboard</span>
+                <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Dashboard</span>
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
-                <li>
-                  <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a>
-                </li>
-                <li></i>
-                  <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a>
-                </li>
-                <li>
-                  <a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-chart"></i>PDIs (non activité)</a>
-                </li>
+                <li> <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
+                <li> <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
+                <li><a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-chart"></i>PDIs (non activité)</a></li>
               </ul>
             </li>
-
             {% if user|has_role:'desk_admin' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
@@ -66,31 +56,16 @@
                   <span class="nav-link-text">Administration</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
-                  <li>
-                    <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a>
-                  </li>
-                  <li></i>
-                    <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a>
-                  </li>
-                  <li>
-                    <a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i>PDIs (non activité)</a>
-                  </li>
+                  <li> <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
+                  <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>
+                  <li><a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i>PDIs (non activité)</a></li>
                 </ul>
               </li>
             {% endif %}
-            <!--
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-              <a class="nav-link" href="#">
-                <i class="fa fa-fw fa-area-chart"></i>
-                <span class="nav-link-text">Charts</span>
-              </a>
-            </li>  -->
           </ul>
           <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
-              <a class="nav-link text-center" id="sidenavToggler">
-                <i class="fa fa-fw fa-angle-left"></i>
-              </a>
+              <a class="nav-link text-center" id="sidenavToggler"><i class="fa fa-fw fa-angle-left"></i></a>
             </li>
           </ul>
           {% include "_menu.html"%}
@@ -147,11 +122,11 @@
             </div>
           </div>
         </footer>
-            {% include "_tags_js.html" %}
-            <script type="text/javascript">
-                $(document).ready(function(){
-                    {% block onJQready %}{% endblock %}
-                });
-           </script>
+          {% include "_tags_js.html" %}
+          <script type="text/javascript">
+              $(document).ready(function(){
+                  {% block onJQready %}{% endblock %}
+              });
+         </script>
     </body>
 </html>

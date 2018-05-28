@@ -98,3 +98,11 @@ function chartLine(data, id) {
     });
 }
 
+$('.datepicker').datepicker({
+    weekStart: 1,
+    daysOfWeekHighlighted: "6,0",
+    autoclose: true,
+    todayHighlight: true,
+    format: "dd-mm-yyyy"
+});
+$('.datepicker').datepicker("setDate", new Date());

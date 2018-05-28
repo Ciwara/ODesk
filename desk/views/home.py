@@ -10,14 +10,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
 
-from rolepermissions.decorators import has_role_decorator
-from rolepermissions.decorators import has_permission_decorator
-from rolepermissions.roles import get_user_roles
+# from rolepermissions.decorators import has_role_decorator
+# from rolepermissions.decorators import has_permission_decorator
+# from rolepermissions.roles import get_user_roles
 from rolepermissions.checkers import has_role
 
 from desk.models import Entity, Provider
 from OIMDesk.roles import *
 from repatriate.models import Target, Person
+from django.core.mail import send_mail
 
 
 def index(request):
@@ -34,6 +35,21 @@ def home(request, *args, **kwargs):
         return redirect("controle")
     if has_role(prov, [DeskAssistantAdmin]):
         return redirect("monitoring")
+    if has_role(prov, [DeskAdmin]):
+        return redirect("user_manager")
+
+    if form.is_valid():
+        subject = form.cleaned_data['subject']
+        message = form.cleaned_data['message']
+        sender = form.cleaned_data['sender']
+        cc_myself = form.cleaned_data['cc_myself']
+        recipients = ['faddev@gmail.com']
+
+        if cc_myself:
+            recipients.append(sender)
+
+        send_mail(subject, message, sender, recipients)
+        return HttpResponseRedirect('/')
 
     return render(request, 'home.html', context)
 

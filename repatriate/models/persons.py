@@ -11,6 +11,7 @@ from django.db import models
 from django.utils import timezone
 # from django.conf import settings
 from jsonfield.fields import JSONField
+from django.urls import reverse
 
 # from hamed.identifiers import full_random_id
 # from desk.utils import get_attachment, PERSONAL_FILES
@@ -167,8 +168,7 @@ class Person(models.Model):
 
     started_on = models.DateTimeField(default=timezone.now)
     identifier = models.CharField(max_length=15, primary_key=True)
-    target = models.ForeignKey(
-        'Target', related_name='targets')
+    target = models.ForeignKey('Target', related_name='targets')
     membre_nom = models.CharField(blank=True, null=True, max_length=100)
     membre_prenom = models.CharField(blank=True, null=True, max_length=100)
     membre_sexe = models.CharField(
@@ -240,6 +240,9 @@ class Person(models.Model):
         return "{}-{}-{}-{}".format(
             self.identifier, self.membre_nom, self.membre_prenom, self.membre_sexe)
 
+    def get_absolute_url(self):
+        return reverse('correction_person', kwargs={'id': self.identifier})
+
     def les_temoins(self):
         return ContactTemoin.objects.filter(person=self).all()
 
@@ -295,6 +298,16 @@ class Person(models.Model):
         self.is_suspect_update_member = self.suspect_update_member()
         self.is_sans_doc_avec_num_pi = self.sans_doc_avec_num_pi()
         super(Person, self).save(*args, **kwargs)
+
+    @property
+    def validated(self):
+        return (self.is_invalide_num_pi or
+                self.is_num_pi_sans_num_pm or
+                self.is_not_empty_num_pi_alg or
+                self.is_vrf_wihtout_num_pi or
+                self.is_suspect_new_member or
+                self.is_suspect_update_member or
+                self.is_sans_doc_avec_num_pi)
 
     def num_pi_sans_num_pm(self):
         if self.target.num_progres_menage == "" and self.num_progres_individuel != "":

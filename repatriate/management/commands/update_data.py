@@ -65,14 +65,14 @@ class Command(BaseCommand):
         collect = Collect.objects.get(name="Formulaire rapatiment")
         rdata = get_form_data(collect.ona_form_pk)
         for targ in rdata:
+            site_engist = targ.get('info-generales-generales/site_engistrement')
             try:
-                site_engistrement = RegistrationSite.objects.get(
-                    slug=targ.get('generales/site_engistrement'))
+                site_engistrement = RegistrationSite.objects.get(slug=site_engist)
             except Exception as e:
                 print("Creating SITE")
                 site_engistrement = RegistrationSite()
-                site_engistrement.slug = targ.get('generales/site_engistrement')
-                site_engistrement.name = targ.get('generales/site_engistrement')
+                site_engistrement.slug = site_engist
+                site_engistrement.name = site_engist
                 site_engistrement.confirmed = False
                 site_engistrement.save()
 
@@ -81,18 +81,18 @@ class Command(BaseCommand):
                 "date": targ.get("date"),
                 "debut": targ.get("debut"),
                 "fin": targ.get("fin"),
-                "nom_agent": targ.get("generales/nom_agent"),
-                "nu_enregistrement": targ.get("generales/nu_enregistrement"),
+                "nom_agent": targ.get("info-generales-generales/nom_agent"),
+                "nu_enregistrement": targ.get("info-generales-generales/nu_enregistrement"),
                 "site_engistrement": site_engistrement,
-                "date_arrivee": targ.get("generales/date_arrivee"),
-                "date_entretien": targ.get("generales/date_entretien"),
+                "date_arrivee": targ.get("info-generales-generales/date_arrivee"),
+                "date_entretien": targ.get("info-generales-generales/date_entretien"),
                 "continent_asile": targ.get("info-generales-manage/pays-asile/continent_asile"),
                 "pays_asile": targ.get("info-generales-manage/pays-asile/pays_asile"),
                 "ville_asile": targ.get("info-generales-manage/pays-asile/ville_asile"),
                 "camp": targ.get("info-generales-manage/pays-asile/camp"),
                 "camp_other": targ.get("info-generales-manage/pays-asile/camp_other"),
-                "num_progres_menage_alg": targ.get("info-generales-manage/num_progres_menage_alg"),
-                "num_progres_menage": targ.get("info-generales-manage/num_progres_menage"),
+                # "num_progres_menage_alg": targ.get("info-generales-manage/num_progres_menage_alg"),
+                "num_progres_menage": targ.get("info-generales-manage/num_progres_menage") or targ.get("info-generales-manage/num_progres_menage_alg"),
                 "point_de_entree": targ.get("info-generales-manage/point_de_entree"),
                 "continent_naissance": targ.get("info-generales-manage/pays-naissance/continent_naissance"),
                 "pays_naissance": targ.get("info-generales-manage/pays-naissance/pays_naissance"),
@@ -110,6 +110,7 @@ class Command(BaseCommand):
                 "rue": targ.get("adresse-mali/rue"),
                 "porte": targ.get("adresse-mali/porte"),
                 "tel": targ.get("adresse-mali/tel"),
+                "tel2": targ.get("adresse-mali/tel2"),
 
                 "abris": self.get_bol(targ.get("hebergement/abris")),
                 "nature_construction": targ.get("hebergement/nature_construction"),
@@ -118,6 +119,7 @@ class Command(BaseCommand):
                 "type_hebergement_other": targ.get("hebergement/type_hebergement_other"),
 
                 "membre_pays": self.get_bol(targ.get("info-generale-membres/membre_pays")),
+                "nb_membre": targ.get("info-generale-membres/nb_membre"),
                 "nbre_membre_reste": targ.get("info-generale-membres/nbre_membre_reste"),
                 "etat_sante": self.get_bol(targ.get("sante-appuipyschosocial/etat_sante")),
                 "situation_maladie": targ.get("sante-appuipyschosocial/situation_maladie"),

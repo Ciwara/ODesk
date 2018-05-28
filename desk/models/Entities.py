@@ -31,10 +31,16 @@ class Project(models.Model):
         return "{name}".format(name=self.name)
 
 
+class RegistrationSManager(models.Manager):
+    def get_queryset(self):
+        return super(RegistrationSManager, self).get_queryset(
+        ).filter(confirmed=False)
+
+
 class RegistrationSite(models.Model):
 
     slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
-    name = models.CharField(max_length=200)
+    name = models.CharField(null=True,blank=True, max_length=200)
     project = models.ForeignKey("Project", blank=True, null=True, related_name='entity_projects')
     active = models.BooleanField(default=True)
     locality = TreeForeignKey("Entity", null=True, related_name="site_localities")
@@ -43,6 +49,9 @@ class RegistrationSite(models.Model):
     geometry = models.TextField(blank=True, null=True)
     deactivate = models.BooleanField(default=False)
     confirmed = models.BooleanField(default=False)
+
+    objects = models.Manager()
+    confirme_objects = RegistrationSManager()
 
     def __str__(self):
         return "{name} / {locality}".format(

@@ -21,7 +21,8 @@ class EntityAdmin(admin.ModelAdmin):
 
 @admin.register(RegistrationSite)
 class RegistrationSiteAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'slug', 'name')
+    list_display = ('__str__', 'slug', 'name', 'confirmed')
+    list_filter = ('confirmed',)
 
 
 @admin.register(DictLabel)

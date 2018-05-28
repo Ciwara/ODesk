@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^target_validated/(?P<pk>.*)', views.target_validated, name='tvalidated'),
     url(r'^target-correction/(?P<id>.*)', views.target_correction, name='correction_target'),
     url(r'^person-correction/(?P<id>.*)', views.person_correction, name='correction_person'),
+    url(r'^export-xls/(?P<start>.*)/(?P<end>.*)', views.export_xls, name='export_xls'),
 ]

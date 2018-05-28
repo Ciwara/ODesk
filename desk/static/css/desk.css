@@ -21,3 +21,13 @@
 .bg-msah {
     background-color: #033261!important;
 }
+
+.error-msg {
+    background-color: red;
+    color: white;
+    display: block;
+    font-size: 1.2em;
+    margin: 0 0 3px;
+    padding: 4px 5px;
+}
+/*form {margin: 1em}*/

@@ -1,31 +1,16 @@
 {% extends "base_admin.html" %}
-{% load staticfiles i18n widget_tweaks %}
-{% block title %} {% trans "Controle" %}{% endblock %}
+{% load staticfiles i18n widget_tweaks bootstrap_tags %}
+{% block title %} Correction {% trans "Controle" %}{% endblock %}
 
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
-{% block content %}
-    <h4> Correction des données du {{selected_target.date}} collecté par l'agent {{selected_target.nom_agent}}</h4>
-    <h6 style="color: red"> </h6>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-      {% include "_message.html" with msg=target_form.errors %}
-      <div class="new-user">
-          <form "form-horizontal" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div  class="form-group">
-                  <label>{{target_form.site_engistrement.label}}</label>
-                  {{target_form.site_engistrement|add_class:"form-control"}}
-                  <label>{{target_form.num_progres_menage.label}}</label>
-                  {{target_form.num_progres_menage|add_class:"form-control"}}
-                  <label>{{target_form.camp.label}}</label>
-                  {{target_form.camp|add_class:"form-control"}}
-                  <label>{{target_form.tel.label}}</label>
-                  {{target_form.tel|add_class:"form-control"}}
-                  <label>{{target_form.num_doc.label}}</label>
-                  {{target_form.num_doc|add_class:"form-control"}}
-              </div>
-              <button type="submit" name="_fixed_target" class="btn btn-primary">{% trans "Save" %}</button>
-          </form>
-      </div>
-    </div>
 
+{% block content %}
+    {% include "_message.html" with msg=target_form.errors %}
+    <form class="form-horizontal" method="post">{% csrf_token %}
+        <legend>Correction de l'enregistrement de l'agent <b>{{selected_target.nom_agent}}</b> du site <b>{{selected_target.site_engistrement}}</b></legend>
+        {{ target_form|as_bootstrap }}
+        <div class="form-actions">
+          <button type="submit" class="btn btn-info" name="_fixed_target">Corriger</button>
+        </div>
+    </form>
 {% endblock %}

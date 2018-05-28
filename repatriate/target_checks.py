@@ -5,39 +5,41 @@ from desk.models import RegistrationSite
 
 
 # Check functions
-def zero_member(instance):
-    return instance.get_membres().count() == 0
+def zero_member(ident):
+    from repatriate.models import Person
+    return Person.active_objects.filter(target__identifier=ident).count() == 0
 
 
-def num_pm_existe(instance):
+def num_pm_existe(num_progres_menage):
     from repatriate.models import Target
     return Target.objects.filter(
         deleted=False,
-        num_progres_menage=instance.num_progres_menage).count() != 0
+        num_progres_menage=num_progres_menage).count() != 0
 
 
-def site_not_existe(instance):
+def site_not_existe(site_engistrement):
     return RegistrationSite.objects.filter(
-        deactivate=False, confirmed=True, slug=instance.site_engistrement
+        deactivate=False, confirmed=True, slug=site_engistrement
     ).count() != 0
 
 
-def no_doc_with_num_pm(instance):
-    if instance.chef_doc == "sans_doc" and instance.num_progres_menage != "":
+def no_doc_with_num_pm(chef_doc, num_progres_menage):
+    # print(chef_doc, ' iii ', num_progres_menage)
+    if chef_doc == "sdoc" and num_progres_menage != "":
         return True
     return False
 
 
-def requise_num_progres_menage(instance):
-    if instance.pays_asile != "aligerie" and instance.num_progres_menage == "":
+def requise_num_progres_menage(pays_asile, num_progres_menage, chef_doc):
+    if pays_asile != "algerie" and num_progres_menage == "" and chef_doc == "formulaire_de_retour":
         return True
     return False
 
 
-def invalide_num_progres_menage(instance):
-    if instance.num_progres_menage:
+def invalide_num_progres_menage(num_pm):
+    if num_pm:
         try:
-            num_camp, incr = instance.num_progres_menage.split("-")
+            num_camp, incr = num_pm.split("-")
         except Exception:
             return True
         if len(incr) != 8:
@@ -45,14 +47,19 @@ def invalide_num_progres_menage(instance):
     return False
 
 
-def invalide_num_tel(instance):
-    if len("{}".format(instance.tel)) < 8 and instance.tel == 0:
+def invalide_num_tel(tel):
+    print(tel)
+    if not tel or tel == '0':
+        return False
+    print(len("{}".format(tel)))
+    if len("{}".format(tel)) < 9:
         return True
     return False
 
 
-def not_empty_num_progres_menage_alg(instance):
-    if instance.pays_asile == "algerie" and instance.num_progres_menage != "":
+def not_empty_num_progres_menage_alg(pays_asile, num_progres_menage):
+    print(pays_asile, ' :: ', num_progres_menage)
+    if pays_asile == "algerie" and num_progres_menage != "":
         return True
     return False
 
@@ -72,7 +79,7 @@ def no_chef_manage(instance):
 
 
 def checker(sender, instance, *args, **kwargs):
-
+    # print(instance)
     targ = instance
     targ.is_zero_member = zero_member(instance)
     targ.is_requise_num_progres_menage = requise_num_progres_menage(instance)

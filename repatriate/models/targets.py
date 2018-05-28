@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
 from desk.models import Provider, RegistrationSite
-# from repatriate.target_checks import checker
+from repatriate.target_checks import checker
 logger = logging.getLogger(__name__)
 
 
@@ -54,6 +54,12 @@ class TargetTypeAssistance(models.Model):
 class TargetManager(models.Manager):
     def get_queryset(self):
         return super(TargetManager, self).get_queryset().filter(deleted=False)
+
+
+class TargetValidateManager(models.Manager):
+    def get_queryset(self):
+        return super(TargetValidateManager, self).get_queryset().filter(
+            deleted=False, is_validated=False)
 
 
 class Target(models.Model):
@@ -152,13 +158,15 @@ class Target(models.Model):
         (EL, "Elevage"),
         (PC, "Petit commerce")
     ])
-    F = "formulaire_de_retour"
-    A = "attestation_de_refugie"
-    C = "carte_des_ration"
+    FR = "formulaire_de_retour"
+    AR = "attestation_de_refugie"
+    CR = "carte_des_ration"
+    SD = "sdoc"
     DOC_ENREGISTREMENT = OrderedDict([
-        (F, "volontaire Formulaire de retour volontaire"),
-        (A, "Attestation de réfugié"),
-        (C, "Carte des ration")
+        (FR, "Formulaire de retour volontaire"),
+        (AR, "Attestation de réfugié"),
+        (CR, "Carte des ration"),
+        (SD, "Sans document")
     ])
 
     U = "1"
@@ -230,20 +238,22 @@ class Target(models.Model):
     date = models.DateField()
     debut = models.DateTimeField(default=timezone.now)
     fin = models.DateTimeField(default=timezone.now)
-    nom_agent = models.CharField(blank=True, max_length=100)
-    nu_enregistrement = models.CharField(blank=True, max_length=100)
+    nom_agent = models.CharField("Nom de l'agent", blank=True, max_length=100)
+    nu_enregistrement = models.CharField(
+        "Numéro d'enregistrement", blank=True, max_length=100)
     site_engistrement = models.ForeignKey(
-        RegistrationSite, related_name="target_registrations_sites")
-    date_arrivee = models.DateField(blank=True, max_length=100)
+        RegistrationSite, verbose_name="Site d'enregestrement",
+        related_name="target_registrations_sites")
+    date_arrivee = models.DateField("Date d'arrivée", blank=True, max_length=100)
     date_entretien = models.DateField(blank=True, max_length=100)
     continent_asile = models.CharField(blank=True, null=True, max_length=100)
     pays_asile = models.CharField(blank=True, null=True, max_length=100)
     ville_asile = models.CharField(blank=True, null=True, max_length=100)
     camp = models.CharField(blank=True, null=True, max_length=100)
     camp_other = models.CharField(blank=True, null=True, max_length=100)
-    num_progres_menage_alg = models.CharField(null=True, blank=True, max_length=100)
-    num_progres_menage = models.CharField(blank=True, max_length=100)
-    point_de_entree = models.CharField(null=True, blank=True, max_length=100)
+    # num_progres_menage_alg = models.CharField(null=True, blank=True, max_length=100)
+    num_progres_menage = models.CharField("Numéro progres", null=True, blank=True, max_length=50)
+    point_de_entree = models.CharField("Point d'entrée", null=True, blank=True, max_length=100)
     continent_naissance = models.CharField(null=True, blank=True, max_length=100)
     pays_naissance = models.CharField(null=True, blank=True, max_length=100)
     lieu_naissance = models.CharField(null=True, blank=True, max_length=100)
@@ -263,7 +273,8 @@ class Target(models.Model):
     actuelle_nom_generale_utilise = models.CharField(null=True, blank=True, max_length=100)
     rue = models.CharField(null=True, blank=True, max_length=100)
     porte = models.CharField(null=True, blank=True, max_length=100)
-    tel = models.CharField(null=True, blank=True, default=0, max_length=20)
+    tel = models.CharField("Numéro de Téléphone", null=True, blank=True, default=0, max_length=20)
+    tel2 = models.CharField("Numéro de Téléphone2", null=True, blank=True, default=0, max_length=20)
     abris = models.BooleanField(default=False)
     nature_construction = models.CharField(null=True, blank=True, max_length=100)
     nature_construction_other = models.CharField(
@@ -273,6 +284,7 @@ class Target(models.Model):
     type_hebergement_other = models.CharField(
         null=True, blank=True, max_length=100)
     membre_pays = models.BooleanField(default=True)
+    nb_membre = models.IntegerField(null=True, blank=True, default=0)
     nbre_membre_reste = models.IntegerField(null=True, blank=True, default=0)
     # Sante_Appuipyschosocial
     etat_sante = models.BooleanField(default=True)
@@ -322,9 +334,23 @@ class Target(models.Model):
     is_no_chef_manage = models.BooleanField(default=True)
     is_no_doc_with_num_pm = models.BooleanField(default=True)
     is_site_not_existe = models.BooleanField(default=True)
+    is_validated = models.BooleanField(default=False)
 
-    objects = models.Manager() # The default manager.
-    active_objects = TargetManager() # The EmployeeManager manager.
+    objects = models.Manager()
+    active_objects = TargetManager()
+    validate_objects = TargetValidateManager()
+
+    @property
+    def validated(self):
+        return (self.is_requise_num_progres_menage or
+                self.is_invalide_num_progres_menage or
+                self.is_not_empty_num_progres_menage_alg or
+                self.is_invalide_num_tel or
+                self.is_zero_member or
+                self.is_many_chef_menage or
+                self.is_no_chef_manage or
+                self.is_no_doc_with_num_pm or
+                self.is_site_not_existe)
 
     def get_absolute_url(self):
         return reverse('correction_target', kwargs={'id': self.identifier})
@@ -381,6 +407,7 @@ class Target(models.Model):
         self.is_no_chef_manage = self.no_chef_manage()
         self.is_no_doc_with_num_pm = self.no_doc_with_num_pm()
         self.is_site_not_existe = self.site_not_existe()
+
         super(Target, self).save(*args, **kwargs)
 
     def attachments(self):
@@ -560,14 +587,17 @@ class Target(models.Model):
 
     def no_chef_manage(self):
         from repatriate.models import Person
-        if Person.objects.filter(target=self, membre_lien="chef_de_famille").count() < 1:
+        if Person.objects.filter(
+                target=self, membre_lien="chef_de_famille").count() < 1:
             return True
         return False
 
-    def num_pm_existe(self):
+    def same_num_pm(self):
         return Target.objects.filter(
-            deleted=False,
-            num_progres_menage=self.num_progres_menage).count() != 0
+            deleted=False, num_progres_menage=self.num_progres_menage)
+
+    def num_pm_existe(self):
+        return self.same_num_pm().count() > 0
 
     def site_not_existe(self):
         return RegistrationSite.objects.filter(

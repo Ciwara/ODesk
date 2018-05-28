@@ -1,25 +1,14 @@
 {% extends "base_admin.html" %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n widget_tweaks bootstrap_tags %}
 {% block title %} {% trans "Controle" %}{% endblock %}
 
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
 {% block content %}
-
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1>Monitoring</h1>
+    <form class="form-horizontal" method="post">{% csrf_token %}
+        <legend>Correction de l'enregistrement de l'agent <b>{{selected_person.nom_agent}}</b> du site <b>{{selected_person.site_engistrement}}</b></legend>
+        {{ person_form|as_bootstrap }}
+        <div class="form-actions">
+          <button type="submit" class="btn btn-info" name="_fixed_person">Corriger</button>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            {{msg_result}}
-            <form action= {% url 'controle' %} class="form-group"  method="post"> {% csrf_token %}
-                <div  class="form-group">
-                    <div> {{search_form.num_progres_individuel}} <input type="submit" name="_search" class="btn btn-sm btn-primary" value="OK" /></div>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    </form>
 {% endblock %}
