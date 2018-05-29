@@ -2,7 +2,7 @@
 
 
 import xlwt
-
+from datetime import datetime
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -145,13 +145,21 @@ def get_profession(value):
 
 def get_date(date):
     if date:
-        date = date.strftime("%Y/%m/%d")
+        date = date.strftime("%x")
     return date
+
+
+def date_format(strdate):
+    return datetime.strptime(strdate, '%Y-%m-%d')
 
 
 @login_required
 # @app.task
-def export_migrants_xls(request):
+def export_migrants_xls(request, *args, **kwargs):
+
+    start_date = date_format(kwargs["start"])
+    end_date = date_format(kwargs["end"])
+    print(start_date)
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="migrant_data.xls"'
 
@@ -175,7 +183,8 @@ def export_migrants_xls(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    for row in Person.objects.all():
+    for row in Person.objects.filter(survey__date_entretien__gte=start_date,
+                                     survey__date_entretien__lte=end_date):
         row_num += 1
         col_num = 0
         ws.write(row_num, col_num, row.survey.instance_id, font_style)

@@ -25,6 +25,6 @@ urlpatterns = [
     url(r'^survey-table/$', views.survey_table, name='survey_table'),
     # url(r'^chart/$', chart, name='chart'),
     url(r'^$', views.dashboard, name='dashboard_mig'),
-    url(r'^export/xls/$',
+    url(r'^export/xls/(?P<start>.*)/(?P<end>.*)$',
         views.export_migrants_xls, name='export_migrants_xls'),
 ]
