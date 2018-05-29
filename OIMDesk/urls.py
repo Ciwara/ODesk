@@ -43,7 +43,6 @@ urlpatterns = [
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-# urlpatterns += static(settings.ODK_DIR_URL, document_root=settings.BASE_ODK_DIR)
 
 urlpatterns += [
     url(r'^odk-media/(?P<path>.*)$', serve, {

@@ -16,13 +16,12 @@ class Command(BaseCommand):
         forms = FormID.objects.filter(active=True)
         if FormID.IN_PROGRESS not in [f.status for f in forms]:
             for form in forms:
-                form.in_progress()
-                get_odk_data(form)
-                form.not_in_progress()
-                form.clean_media()
                 try:
-                    read_csv(form.get_migrant_csv_file, form.data_json)
-                    read_csv(form.get_ig_manage_csv_file, form.data_info_g_json)
+                    form.in_progress()
+                    get_odk_data(form)
                 except Exception as e:
-                    # raise e
                     pass
+                form.clean_media()
+                form.not_in_progress()
+                read_csv(form.get_migrant_csv_file, form.data_json)
+                read_csv(form.get_ig_manage_csv_file, form.data_info_g_json)

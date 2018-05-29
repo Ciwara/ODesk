@@ -150,7 +150,7 @@ def get_date(date):
 
 
 def date_format(strdate):
-    return datetime.strptime(strdate, '%Y-%m-%d')
+    return datetime.strptime(strdate, '%d-%m-%Y')
 
 
 @login_required

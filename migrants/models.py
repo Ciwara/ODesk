@@ -261,10 +261,10 @@ class Person(models.Model):
 
     @property
     def get_membre_photo_name(self):
+
         return os.path.join(
             os.path.dirname(self.membre_photo),
-            os.path.basename(self.membre_photo).split('-')[0] +
-            os.path.splitext(self.membre_photo)[1])
+            os.path.basename(self.membre_photo))
 
     @property
     def verbose_sex(self):
