@@ -6,11 +6,18 @@
 
 {% block content %}
     {% include "_message.html" with msg=target_form.errors %}
-    <form class="form-horizontal" method="post">{% csrf_token %}
-        <legend>Correction de l'enregistrement de l'agent <b>{{selected_target.nom_agent}}</b> du site <b>{{selected_target.site_engistrement}}</b></legend>
-        {{ target_form|as_bootstrap }}
-        <div class="form-actions">
-          <button type="submit" class="btn btn-info" name="_fixed_target">Corriger</button>
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <form class="form-horizontal" method="post">{% csrf_token %}
+                <legend>Correction de l'enregistrement de l'agent <b>{{selected_target.nom_agent}}</b> du site <b>{{selected_target.site_engistrement}}</b></legend>
+                {{ target_form|as_bootstrap }}
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-info" name="_fixed_target">Corriger</button>
+                </div>
+            </form>
         </div>
-    </form>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <h3>Helper</h3>
+        </div>
+    </div>
 {% endblock %}

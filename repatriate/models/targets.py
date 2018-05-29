@@ -17,7 +17,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
 from desk.models import Provider, RegistrationSite
-from repatriate.target_checks import checker
+
+from repatriate.target_checks import (
+    invalide_num_progres_menage, requise_num_progres_menage, invalide_num_tel,
+    not_empty_num_progres_menage_alg, no_doc_with_num_pm, num_pm_existe)
+
 logger = logging.getLogger(__name__)
 
 
@@ -334,6 +338,7 @@ class Target(models.Model):
     is_no_chef_manage = models.BooleanField(default=True)
     is_no_doc_with_num_pm = models.BooleanField(default=True)
     is_site_not_existe = models.BooleanField(default=True)
+    is_num_pm_existe = models.BooleanField(default=True)
     is_validated = models.BooleanField(default=False)
 
     objects = models.Manager()
@@ -350,6 +355,7 @@ class Target(models.Model):
                 self.is_many_chef_menage or
                 self.is_no_chef_manage or
                 self.is_no_doc_with_num_pm or
+                self.is_num_pm_existe or
                 self.is_site_not_existe)
 
     def get_absolute_url(self):
@@ -399,14 +405,19 @@ class Target(models.Model):
             self.identifier = self.instance_id
 
         self.is_zero_member = self.zero_member()
-        self.is_requise_num_progres_menage = self.requise_num_progres_menage()
-        self.is_invalide_num_progres_menage = self.invalide_num_progres_menage()
-        self.is_invalide_num_tel = self.invalide_num_tel()
-        self.is_not_empty_num_progres_menage_alg = self.not_empty_num_progres_menage_alg()
+        self.is_requise_num_progres_menage = requise_num_progres_menage(
+            self.pays_asile, self.num_progres_menage, self.chef_doc)
+        self.is_invalide_num_progres_menage = invalide_num_progres_menage(
+            self.num_progres_menage)
+        self.is_invalide_num_tel = invalide_num_tel(self.tel)
+        self.is_not_empty_num_progres_menage_alg = not_empty_num_progres_menage_alg(
+            self.pays_asile, self.num_progres_menage)
+        self.is_no_doc_with_num_pm = no_doc_with_num_pm(
+            self.chef_doc, self.num_progres_menage)
+        self.is_num_pm_existe = num_pm_existe(self.num_progres_menage)
+        self.is_site_not_existe = self.site_not_existe()
         self.is_many_chef_menage = self.many_chef_menage()
         self.is_no_chef_manage = self.no_chef_manage()
-        self.is_no_doc_with_num_pm = self.no_doc_with_num_pm()
-        self.is_site_not_existe = self.site_not_existe()
 
         super(Target, self).save(*args, **kwargs)
 
@@ -546,35 +557,6 @@ class Target(models.Model):
         return Person.objects.filter(target=self)
 
     # Check functions
-    def no_doc_with_num_pm(self):
-        if self.chef_doc == "sans_doc" and self.num_progres_menage != "":
-            return True
-        return False
-
-    def requise_num_progres_menage(self):
-        if self.pays_asile != "aligerie" and self.num_progres_menage == "":
-            return True
-        return False
-
-    def invalide_num_progres_menage(self):
-        if self.num_progres_menage:
-            try:
-                num_camp, incr = self.num_progres_menage.split("-")
-            except Exception:
-                return True
-            if len(incr) != 8:
-                return True
-        return False
-
-    def invalide_num_tel(self):
-        if len("{}".format(self.tel)) < 8 and self.tel == 0:
-            return True
-        return False
-
-    def not_empty_num_progres_menage_alg(self):
-        if self.pays_asile == "algerie" and self.num_progres_menage != "":
-            return True
-        return False
 
     def zero_member(self):
         return self.get_membres().count() == 0

@@ -16,15 +16,15 @@
                     {% if invalide_num_progres_menage %}
                     <tr class="table-warning"><th colspan="3">Numéro progres ménage invalide.</th></tr>
                         {% for el in invalide_num_progres_menage %}
-                        <tr><th>{{el.site_engistrement_}}</th><td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}} à <b>{{el.site_engistrement}}</b></td><td>
-                          <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                            <tr><th>{{el.site_engistrement_}}</th><td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}} à <b>{{el.site_engistrement}}</b></td><td>
+                            <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
                     {% endif %}
                     {% if invalide_num_pi %}
                         <tr class="table-warning"><th colspan="3">Numéro progres individuel invalide.</th></tr>
                         {% for el in invalide_num_pi %}
-                        <tr><th>{{el.site_engistrement_}}</th><td>Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}} à <b>{{el.target.site_engistrement}}.</b></td><td>
-                          <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                            <tr><th>{{el.site_engistrement_}}</th><td>Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}} à <b>{{el.target.site_engistrement}}.</b></td><td>
+                            <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
                     {% endif %}
                     <tr class="table-warning"><th colspan="3">Numéro progres ménage avec le pays d'asile Algerie.</th></tr>

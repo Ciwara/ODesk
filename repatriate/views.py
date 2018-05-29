@@ -271,12 +271,11 @@ def person_correction(request, *args, **kwargs):
     id_url = kwargs["id"]
     selected_person = Person.objects.get(identifier=id_url)
     person_form = FixedPersonForm(request.POST or None, instance=selected_person)
-    if request.method == 'POST' and '_fixed_target' in request.POST:
+    if request.method == 'POST' and '_fixed_person' in request.POST:
         if person_form.is_valid():
-            # notice = person_form.save(commit=False)
-            # notice.author = Person.objects.filter()
             person_form.save()
-            messages.success(request, 'Error message here')
+            messages.success(request, '{} a été corrigé avec succès'.format(
+                selected_person))
             return redirect("/repatriate/desk-controle")
     context.update({'selected_person': selected_person, 'person_form': person_form})
 

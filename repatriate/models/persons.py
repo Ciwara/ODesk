@@ -13,10 +13,6 @@ from django.utils import timezone
 from jsonfield.fields import JSONField
 from django.urls import reverse
 
-# from hamed.identifiers import full_random_id
-# from desk.utils import get_attachment, PERSONAL_FILES
-# from hamed.ona import delete_submission
-
 # from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -297,6 +293,7 @@ class Person(models.Model):
         self.is_suspect_new_member = self.suspect_new_member()
         self.is_suspect_update_member = self.suspect_update_member()
         self.is_sans_doc_avec_num_pi = self.sans_doc_avec_num_pi()
+
         super(Person, self).save(*args, **kwargs)
 
     @property

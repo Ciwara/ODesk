@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'migrants',
     'repatriate',
     'kronos',
+    'django_forms_bootstrap',
 ]
 
 MIDDLEWARE = [
@@ -153,7 +154,6 @@ SITE_ID = 1
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_ODK_DIR = os.path.join(BASE_DIR, 'odkextractor')
 ODK_DIR_URL = '/okdstatic/'
-# MEDIA_ODK_ROOT = os.path.join(BASE_ODK_DIR, 'data', "media")
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

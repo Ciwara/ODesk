@@ -7,6 +7,9 @@ from django import forms
 
 from django.core.exceptions import ValidationError
 
+from repatriate.person_checks import (
+    invalide_num_progres_individuel,
+    requise_num_progres_individuel)
 from repatriate.target_checks import (
     invalide_num_progres_menage, not_empty_num_progres_menage_alg,
     invalide_num_tel, no_doc_with_num_pm, requise_num_progres_menage)
@@ -43,12 +46,12 @@ class TargetForm(forms.ModelForm):
         exclude = []
         fields = [
             'date_arrivee',
+            'chef_doc',
             'site_engistrement',
             'nu_enregistrement',
             'pays_asile',
             'num_progres_menage',
             'point_de_entree',
-            'chef_doc',
             'num_doc',
             'tel',
             'tel2'
@@ -64,31 +67,25 @@ class TargetForm(forms.ModelForm):
         num_progres_menage = self.cleaned_data.get('num_progres_menage')
         chef_doc = self.cleaned_data.get('chef_doc')
         pays_asile = self.cleaned_data.get('pays_asile')
-        print(chef_doc, "chef_doc")
+
+        if not_empty_num_progres_menage_alg(pays_asile, num_progres_menage):
+            raise ValidationError("Algerie n'a pas de numéro progres menage.")
+
         if no_doc_with_num_pm(chef_doc, num_progres_menage):
             raise ValidationError(
                 "Un sans document ne peut pas avoir un numéro progress.")
-
-        if invalide_num_progres_menage(num_progres_menage):
-            raise ValidationError("Numéro progres invalide XXX-YYYYYYYY")
 
         if requise_num_progres_menage(pays_asile, num_progres_menage, chef_doc):
             raise ValidationError(
                 "Avec un VRF le numéro progres ménage est obligatoire")
 
-        print(self.cleaned_data)
+        if invalide_num_progres_menage(num_progres_menage):
+            raise ValidationError("Numéro progres invalide XXX-YYYYYYYY")
 
     def clean_tel(self):
         tel = self.cleaned_data.get('tel')
         if invalide_num_tel(tel):
             raise ValidationError("Numéro de tel incorrecte.")
-
-    def clean_num_progres_menage_alg(self):
-        pays_asile = self.cleaned_data.get('pays_asile')
-        num_p_m = self.cleaned_data.get('num_progres_menage')
-
-        if not_empty_num_progres_menage_alg(pays_asile, num_p_m):
-            raise ValidationError("Algerie n'a pas de numéro progres menage.")
 
 
 class FixedPersonForm(forms.ModelForm):
@@ -128,7 +125,8 @@ class FixedPersonForm(forms.ModelForm):
             'a_qui',
         ]
         exclude = []
-        membre_ddn = forms.DateField(
-            widget=forms.DateInput(format='%m/%d/%Y'),
-            input_formats=('%m/%d/%Y', )
-        )
+
+    def clean_num_progres_individuel(self):
+        num_progres_individuel = self.cleaned_data.get('num_progres_individuel')
+        if invalide_num_progres_individuel(num_progres_individuel):
+            raise ValidationError("Numéro progres invalide XXX-YYYYYYYY")

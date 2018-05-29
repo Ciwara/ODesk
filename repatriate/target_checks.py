@@ -24,14 +24,16 @@ def site_not_existe(site_engistrement):
 
 
 def no_doc_with_num_pm(chef_doc, num_progres_menage):
-    # print(chef_doc, ' iii ', num_progres_menage)
+    # Un sans document ne peut pas avoir un numéro progres menage.
     if chef_doc == "sdoc" and num_progres_menage != "":
         return True
     return False
 
 
 def requise_num_progres_menage(pays_asile, num_progres_menage, chef_doc):
-    if pays_asile != "algerie" and num_progres_menage == "" and chef_doc == "formulaire_de_retour":
+    if pays_asile == "algerie":
+        return False
+    if not num_progres_menage and chef_doc == "formulaire_de_retour":
         return True
     return False
 
@@ -48,18 +50,15 @@ def invalide_num_progres_menage(num_pm):
 
 
 def invalide_num_tel(tel):
-    print(tel)
     if not tel or tel == '0':
         return False
-    print(len("{}".format(tel)))
-    if len("{}".format(tel)) < 9:
+    if len("{}".format(tel)) < 8:
         return True
     return False
 
 
 def not_empty_num_progres_menage_alg(pays_asile, num_progres_menage):
-    print(pays_asile, ' :: ', num_progres_menage)
-    if pays_asile == "algerie" and num_progres_menage != "":
+    if pays_asile == "algerie" and num_progres_menage:
         return True
     return False
 
@@ -73,21 +72,6 @@ def many_chef_menage(instance):
 
 def no_chef_manage(instance):
     from repatriate.models import Person
-    if Person.objects.filter(target=instance, membre_lien="chef_de_famille").count() < 1:
+    if Person.objects.filter(target=instance, membre_lien="chef_de_famille").count() == 0:
         return True
     return False
-
-
-def checker(sender, instance, *args, **kwargs):
-    # print(instance)
-    targ = instance
-    targ.is_zero_member = zero_member(instance)
-    targ.is_requise_num_progres_menage = requise_num_progres_menage(instance)
-    targ.is_invalide_num_progres_menage = invalide_num_progres_menage(instance)
-    targ.is_invalide_num_tel = invalide_num_tel(instance)
-    targ.is_not_empty_num_progres_menage_alg = not_empty_num_progres_menage_alg(instance)
-    targ.is_many_chef_menage = many_chef_menage(instance)
-    targ.is_no_chef_manage = no_chef_manage(instance)
-    targ.is_no_doc_with_num_pm = no_doc_with_num_pm(instance)
-    targ.is_site_not_existe = site_not_existe(instance)
-    targ.save()

@@ -1,6 +1,6 @@
 
 .navbar-inverse {
-    background-color: #161617;
+   /* background-color: #161617;*/
     border-color: transparent;
     color: white;
 }
@@ -15,8 +15,7 @@
 
 .table .thead-msah th {
     color: #fff;
-    background-color: #004403;;
-    border-color: #32383e;
+    background-color: #0c500e;
 }
 .bg-msah {
     background-color: #033261!important;
@@ -30,4 +29,3 @@
     margin: 0 0 3px;
     padding: 4px 5px;
 }
-/*form {margin: 1em}*/
