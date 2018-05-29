@@ -9,6 +9,7 @@ import os
 import reversion
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -175,14 +176,24 @@ class Survey(models.Model):
             instance_id=self.instance_id, nom_agent=self.nom_agent,
             lieu_region=self.adresse_mali_lieu_region)
 
+    def person_url(self):
+        return reverse("person_table", args=[self.instance_id])
+
     def get_menage_photo_doc_voyage_name(self, name):
         return os.path.splitext(name)[0].split('-')[0]
 
     @property
-    def get_menage_photo_doc_voyage_url(self):
+    def get_menage_photo_doc_voyage(self):
+        name, exten = os.path.splitext(os.path.basename(self.menage_photo_doc_voyage))
         return os.path.join(
-            settings.BASE_ODK_DIR, self.get_menage_photo_doc_voyage_name(
-                self.menage_photo_doc_voyage))
+            os.path.dirname(self.menage_photo_doc_voyage),
+            name.split('-')[0] + exten)
+
+    # @property
+    # def get_menage_photo_doc_voyage_url(self):
+    #     return os.path.join(
+    #         settings.BASE_ODK_DIR, self.get_menage_photo_doc_voyage_name(
+    #             self.menage_photo_doc_voyage))
 
     def persons(self):
         return Person.objects.filter(survey=self)
@@ -259,12 +270,16 @@ class Person(models.Model):
     #     upload_to='membre_photo/%Y/%m/%d/', blank=True, verbose_name=(
     #         "Photo document de voyage"))
 
+    def person_detail_url(self):
+        return reverse("person", args=[self.id])
+
     @property
     def get_membre_photo_name(self):
-
+        name, exten = os.path.splitext(
+            os.path.basename(self.membre_photo))
         return os.path.join(
             os.path.dirname(self.membre_photo),
-            os.path.basename(self.membre_photo))
+            name.split('-')[0] + exten)
 
     @property
     def verbose_sex(self):
