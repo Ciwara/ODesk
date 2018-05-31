@@ -10,11 +10,19 @@ def zero_member(ident):
     return Person.active_objects.filter(target__identifier=ident).count() == 0
 
 
-def num_pm_existe(num_progres_menage):
-    from repatriate.models import Target
-    return Target.objects.filter(
-        deleted=False,
-        num_progres_menage=num_progres_menage).count() != 0
+def num_pm_existe(instance):
+    if not instance.num_progres_menage:
+        return False
+    from repatriate.models import Target, DuplicateProgresMenage
+    target = Target.active_objects.exclude(
+        instance_id=instance.instance_id).filter(
+        num_progres_menage=instance.num_progres_menage)
+    if target.count() > 0:
+        data = {
+            "old_target": instance,
+            "new_target": target[0]
+        }
+        DuplicateProgresMenage.objects.get_or_create(**data)
 
 
 def site_not_existe(site_engistrement):
@@ -30,10 +38,10 @@ def no_doc_with_num_pm(chef_doc, num_progres_menage):
     return False
 
 
-def requise_num_progres_menage(pays_asile, num_progres_menage, chef_doc):
+def requise_num_progres_menage(pays_asile, num_progres_menage):
     if pays_asile == "algerie":
         return False
-    if not num_progres_menage and chef_doc == "formulaire_de_retour":
+    if not num_progres_menage:
         return True
     return False
 

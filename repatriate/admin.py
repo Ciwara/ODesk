@@ -3,8 +3,24 @@ from django.contrib import admin
 # Register your models here.
 # from desk.models.Entities import RegistrationSite
 from repatriate.models import (
-    Collect, Target, Settings, Person, ContactTemoin,
+    Collect, Target, Settings, Person, ContactTemoin, DuplicateProgresMenage,
     OrganizationTarget, TargetTypeAssistance, VulnerabilityPerson)
+
+
+@admin.register(DuplicateProgresMenage)
+class DuplicateProgresMenageAdmin(admin.ModelAdmin):
+
+    model = DuplicateProgresMenage
+
+    list_display = [
+        'old_target',
+        'new_target',
+        'fixed_by',
+        'detection_date',
+        'fix_date',
+        'fixed',
+    ]
+    list_filter = ['fixed_by', 'fixed']
 
 
 @admin.register(VulnerabilityPerson)
@@ -49,18 +65,16 @@ class PersonAdmin(admin.ModelAdmin):
     model = Person
 
     list_display = ('__str__', 'num_progres_individuel',
-                    'membre_age',
+                    'is_doublon_pm_pi',
                     'is_invalide_num_pi',
                     'is_not_empty_num_pi_alg',
                     'is_vrf_wihtout_num_pi',
                     'is_sans_doc_avec_num_pi',
-                    'is_num_pi_sans_num_pm',
-                    'is_suspect_new_member',
-                    'is_suspect_update_member',)
+                    'is_num_pi_sans_num_pm')
     list_filter = [
+    'target',
         'is_invalide_num_pi', 'is_num_pi_sans_num_pm',
         'is_not_empty_num_pi_alg', 'is_vrf_wihtout_num_pi',
-        'is_suspect_new_member', 'is_suspect_update_member',
         'is_sans_doc_avec_num_pi', 'membre_sexe', 'membre_vulnerabilite',
         'dispo_doc_etat_civil', 'partage_info_perso',
         'existe_centre_etat_civil', 'au_moins_deux_temoins', 'referer']
@@ -76,9 +90,8 @@ class TargetAdmin(admin.ModelAdmin):
     list_filter = [
         'is_zero_member', 'is_requise_num_progres_menage',
         'is_invalide_num_progres_menage', 'is_invalide_num_tel',
-        'is_not_empty_num_progres_menage_alg', 'is_many_chef_menage',
-        'is_no_chef_manage', 'is_no_doc_with_num_pm', 'is_site_not_existe',
-        'beneficiez_lassistance', 'abris', 'membre_pays',
+        'is_not_empty_num_progres_menage_alg', 'is_no_doc_with_num_pm',
+        'is_site_not_existe', 'beneficiez_lassistance', 'abris', 'membre_pays',
         'etat_sante', 'suivi_formation', 'metier_pays_prove',
         'formation_socio_prof', 'projet_activite', 'camp', 'site_engistrement']
 

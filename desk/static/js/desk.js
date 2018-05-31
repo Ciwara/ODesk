@@ -103,6 +103,7 @@ $('.datepicker').datepicker({
     daysOfWeekHighlighted: "6,0",
     autoclose: true,
     todayHighlight: true,
-    format: "dd-mm-yyyy"
+    format: "dd-mm-yyyy",
+    language: "fr"
 });
 $('.datepicker').datepicker("setDate", new Date());

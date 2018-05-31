@@ -16,7 +16,8 @@ from django.urls import reverse
 # from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-# from desk.models import Entity, Provider
+from repatriate.person_checks import (
+    no_doc_with_num_pi, requise_num_progres_individuel, invalide_num_progres_individuel)
 
 logger = logging.getLogger(__name__)
 
@@ -222,12 +223,12 @@ class Person(models.Model):
 
     # Checks
     is_invalide_num_pi = models.BooleanField(default=True)
+    is_requise_num_progres_individuel = models.BooleanField(default=True)
     is_not_empty_num_pi_alg = models.BooleanField(default=True)
     is_vrf_wihtout_num_pi = models.BooleanField(default=True)
     is_sans_doc_avec_num_pi = models.BooleanField(default=True)
     is_num_pi_sans_num_pm = models.BooleanField(default=True)
-    is_suspect_new_member = models.BooleanField(default=True)
-    is_suspect_update_member = models.BooleanField(default=True)
+    is_doublon_pm_pi = models.BooleanField(default=True)
 
     objects = models.Manager() # The default manager.
     active_objects = PersonManager()
@@ -286,13 +287,13 @@ class Person(models.Model):
     def save(self, *args, **kwargs):
         if not self.identifier:
             self.identifier = self.create_identifier()
-        self.is_invalide_num_pi = self.invalide_num_pi()
+        self.is_invalide_num_pi = invalide_num_progres_individuel(
+            self.num_progres_individuel)
         self.is_num_pi_sans_num_pm = self.num_pi_sans_num_pm()
         self.is_not_empty_num_pi_alg = self.not_empty_num_pi_alg()
         self.is_vrf_wihtout_num_pi = self.vrf_wihtout_num_pi()
-        self.is_suspect_new_member = self.suspect_new_member()
-        self.is_suspect_update_member = self.suspect_update_member()
-        self.is_sans_doc_avec_num_pi = self.sans_doc_avec_num_pi()
+        self.is_doublon_pm_pi = self.num_pi_existe()
+        self.is_sans_doc_avec_num_pi = no_doc_with_num_pi(self.num_progres_individuel)
 
         super(Person, self).save(*args, **kwargs)
 
@@ -302,52 +303,35 @@ class Person(models.Model):
                 self.is_num_pi_sans_num_pm or
                 self.is_not_empty_num_pi_alg or
                 self.is_vrf_wihtout_num_pi or
-                self.is_suspect_new_member or
-                self.is_suspect_update_member or
+                self.is_doublon_pm_pi or
                 self.is_sans_doc_avec_num_pi)
+
+    def num_pi_existe(self):
+        from repatriate.models import Person
+        if not self.num_progres_individuel:
+            return False
+        # duplicate_mg = False
+        duplicate_pn = False
+        d_pn = Person.active_objects.exclude(
+            identifier=self.identifier).filter(
+            num_progres_individuel=self.num_progres_individuel)
+        if d_pn:
+            duplicate_pn = True
+            # if d_pn.target.num_progres_menage == self.target.num_progres_menage:
+            #     duplicate_mg = True
+        return duplicate_pn
 
     def num_pi_sans_num_pm(self):
         if self.target.num_progres_menage == "" and self.num_progres_individuel != "":
             return True
         return False
 
-    def invalide_num_pi(self):
-        if self.num_progres_individuel:
-            try:
-                num_camp, incr = self.num_progres_individuel.split("-")
-            except Exception as e:
-                print(e)
-                return False
-            if len(incr) != 8:
-                return True
-        return False
-
     def not_empty_num_pi_alg(self):
-        if self.target.pays_asile == "algerie" and self.num_progres_individuel != "":
+        if self.target.pays_asile == "algerie" and self.num_progres_individuel:
             return True
         return False
 
     def vrf_wihtout_num_pi(self):
-        if self.target.chef_doc == "formulaire_de_retour_volontaire" and self.num_progres_individuel == "":
-            return True
-        return False
-
-    def sans_doc_avec_num_pi(self):
-        if self.target.chef_doc == "sans_doc" and self.num_progres_individuel == "":
-            return True
-        return False
-
-    def num_pi_existe(self):
-        return Person.objects.filter(
-            deleted=False, num_progres_individuel=self.num_progres_individuel).count() != 0
-
-    def suspect_new_member(self):
-        if not self.num_pi_existe() and self.target.num_pm_existe():
-            print(self.num_pi_existe(), ' ', "Num_pi_existe")
-            return True
-        return False
-
-    def suspect_update_member(self):
-        if self.num_pi_existe() and self.target.num_pm_existe():
+        if self.target.chef_doc == "formulaire_de_retour_volontaire" and not self.num_progres_individuel:
             return True
         return False

@@ -8,7 +8,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from repatriate.person_checks import (
-    invalide_num_progres_individuel,
+    invalide_num_progres_individuel, no_doc_with_num_pi,
     requise_num_progres_individuel)
 from repatriate.target_checks import (
     invalide_num_progres_menage, not_empty_num_progres_menage_alg,
@@ -73,14 +73,14 @@ class TargetForm(forms.ModelForm):
 
         if no_doc_with_num_pm(chef_doc, num_progres_menage):
             raise ValidationError(
-                "Un sans document ne peut pas avoir un numéro progress.")
+                "Un sans document ne peut pas avoir un numéro progres.")
 
-        if requise_num_progres_menage(pays_asile, num_progres_menage, chef_doc):
+        if requise_num_progres_menage(pays_asile, num_progres_menage):
             raise ValidationError(
-                "Avec un VRF le numéro progres ménage est obligatoire")
+                "Numéro progres ménage est obligatoire.")
 
         if invalide_num_progres_menage(num_progres_menage):
-            raise ValidationError("Numéro progres invalide XXX-YYYYYYYY")
+            raise ValidationError("Numéro progres invalide [XXX-YYYYYYYY]")
 
     def clean_tel(self):
         tel = self.cleaned_data.get('tel')
@@ -128,5 +128,13 @@ class FixedPersonForm(forms.ModelForm):
 
     def clean_num_progres_individuel(self):
         num_progres_individuel = self.cleaned_data.get('num_progres_individuel')
+
+        if no_doc_with_num_pi(num_progres_individuel):
+            raise ValidationError("Un sans document ne peut avoir un numéro progres")
+
+        if requise_num_progres_individuel(num_progres_individuel):
+            raise ValidationError("Numéro progres individuel est obligatoire.")
+
         if invalide_num_progres_individuel(num_progres_individuel):
-            raise ValidationError("Numéro progres invalide XXX-YYYYYYYY")
+            raise ValidationError("Numéro progres individuel invalide [XXX-YYYYYYYY]")
+

@@ -12,7 +12,7 @@
                     <tr><th colspan="8">Situation hebdo.</th></tr>
                     <tr class="thead-msah"><th>Nombre de ménage</th><th>Données désagrégées</th><th>Bébés (0-4 ans)</th>
                         <th>Enfant (5-11 ans)</th><th>Enfant (12-17 ans)</th><th>Adultes (18-59 ans)</th>
-                        <th>Personnes (+ de 60 ans)</th><th>TOTAL</th></tr></thead>
+                        <th>Personnes âgée(+ de 60 ans)</th><th>TOTAL</th></tr></thead>
                 </thead>
                 <tbody class="">
                     <tr>
@@ -59,22 +59,36 @@
                 <table class="table table-sm table-bordered table">
                     <thead class="thead-msah"><th colspan="4">
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Contôle doublons</th>
-                        </thead><tbody class="">
-                        <tr class="table-warning"><th colspan="2">Numéro progres ménage et numéro progres individuel existe.</th></tr>
-                        <tr>
-                            <td><button type="button" class="btn btn-sm btn-info popover-info" data-toggle="popover" title="M. Moussa Keta. 30 ans" data-content="N° progres menage : 463-18H09494 N° progres individuel : 463-00004301 Tel 76030301">info</button>
-                                Enquête faite par Moustapha Apaul Maïga le 02 avril 2018</td>
-                            <td><a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle"></em> Garder</a></td></tr>
-                        <tr>
-                            <td><button type="button" class="btn btn-sm btn-info popover-info" data-toggle="popover" title="M. Moussa Keta. 30 ans" data-content="N° progres menage : 463-18H09494 N° progres individuel : 463-00004301 Tel : 69392900">info</button>
-                            Enquête faite par Van le 14 mai 2018</td>
-                            <td><a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle"></em> Garder</a></td>
-                        </tr>
-                        <tr class="table-warning"><th colspan="2">Numéro progres ménage et numéro progres individuel existe pas.</th></tr>
+                        </thead>
+                    <tbody class="">
+                        <tr class=""><th colspan="2">Numéro progres ménage et numéro progres individuel existe.</th></tr>
+                        {% if d_progres_m %}
+                            {% for dt in d_progres_m %}
+                                <tr class="alert-warning">
+                                    <td><span class="badge badge-warning">{{dt.old_target.num_progres_menage}}</span>
+                                        <span class="badge badge-secondary">{{dt.old_target.site_engistrement}}</span>
+                                        Enquête faite par {{dt.old_target.nom_agent}} le {{dt.old_target.date_entretien}} <span class="badge badge-dark"><i class="fa fa-phone"></i> {{dt.old_target.tel}}</span>
+                                    </td>
+                                    <td rowspan="2" class="button-manager btn-bg btn-default">
+                                        <a href="{{dt.merge_manager_url}}"><em class="fa fa-arrow-circle-right"> Gérer</em> </a>
+                                    </td>
+                                </tr>
+                                <tr class="alert-warning">
+                                    <td><span class="badge badge-warning">{{dt.new_target.num_progres_menage}}</span>
+                                        <span class="badge badge-secondary">{{dt.new_target.site_engistrement}}</span>
+                                        Enquête faite par {{dt.new_target.nom_agent}} le {{dt.new_target.date_entretien}} <span class="badge badge-dark"><i class="fa fa-phone"></i> {{dt.new_target.tel}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" ></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        <tr class=""><th colspan="2">Numéro progres ménage et numéro progres individuel existe pas.</th></tr>
                         <tr>
                             <td><button type="button" class="btn btn-sm btn-info popover-info" data-toggle="popover" title="M. Seydou Moustapha. 26 ans" data-content="N° progres menage : 875-18H01094 N° progres individuel : 875-00001201 Tel : 74202028">info</button>
                             Enquête faite par Moustapha Apaul Maïga le 9 avril 2018</td>
-                            <td><a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle"></em> Ajouter comme membre</a></td>
+                            <td><a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle"></em>Ajouter comme membre</a></td>
                         </tr>
                       </tbody>
                 </table>
@@ -88,18 +102,21 @@
                 </thead>
                 <tbody >
                     {% if invalide_num_progres_menage %}
-                    <tr class="table-warning"><th colspan="3">Numéro progres ménage invalide.</th></tr>
+                        <tr class="table-warning"><th colspan="3">Numéro progres ménage invalide.</th></tr>
                         {% for el in invalide_num_progres_menage %}
-                        <tr><td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}}</td><td>
-                          <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                            <tr>
+                                <td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}}</td>
+                                <td><a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle"></em> Corriger</a></td>
+                            </tr>
                         {% endfor %}
                     {% endif %}
                     {% if invalide_num_pi %}
                         <tr class="table-warning"><th colspan="3">Numéro progres individuel invalide.</th></tr>
                         {% for el in invalide_num_pi %}
-                        {{el}}hhh
-                        <tr><td>Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}}</td><td>
-                          <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                            <tr>
+                                <td>Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}}</td>
+                                <td><a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td>
+                            </tr>
                         {% endfor %}
                     {% endif %}
                     <tr class="table-warning"><th colspan="3">Numéro progres ménage avec le pays d'asile Algerie.</th></tr>

@@ -25,10 +25,41 @@ from repatriate.target_checks import (
 logger = logging.getLogger(__name__)
 
 
+class NotFixManager(models.Manager):
+    def get_queryset(self):
+        return super(NotFixManager, self).get_queryset().filter(fixed=False)
+
+
+class DuplicateProgresMenage(models.Model):
+
+    class Meta:
+        unique_together = (('old_target', 'new_target'),)
+        ordering = ['-detection_date']
+
+    old_target = models.ForeignKey("Target", related_name='old_targets')
+    new_target = models.ForeignKey("Target", related_name='new_targets')
+    fixed_by = models.ForeignKey(
+        Provider, related_name="fixed_by_provider", null=True, blank=True)
+    detection_date = models.DateTimeField(
+        "Date de detection", default=timezone.now)
+    fix_date = models.DateTimeField("Date de correction", default=timezone.now)
+    fixed = models.BooleanField("Corriger", default=False)
+
+    objects = models.Manager()
+    not_fix_objects = NotFixManager()
+
+    def __str__(self):
+        return "{old_target}/{new_target}/{fixed_by}".format(
+            old_target=self.old_target, new_target=self.new_target,
+            fixed_by=self.fixed_by)
+
+    def merge_manager_url(self):
+        return reverse('merge_manager', kwargs={'id': self.id})
+
+
 class OrganizationTarget(models.Model):
 
     class Meta:
-
         unique_together = (('organization', 'target'),)
 
     organization = models.CharField(blank=True, null=True, max_length=100)
@@ -334,11 +365,11 @@ class Target(models.Model):
     is_not_empty_num_progres_menage_alg = models.BooleanField(default=True)
     is_invalide_num_tel = models.BooleanField(default=True)
     is_zero_member = models.BooleanField(default=True)
-    is_many_chef_menage = models.BooleanField(default=True)
-    is_no_chef_manage = models.BooleanField(default=True)
+    # is_many_chef_menage = models.BooleanField(default=True)
+    # is_no_chef_manage = models.BooleanField(default=True)
     is_no_doc_with_num_pm = models.BooleanField(default=True)
     is_site_not_existe = models.BooleanField(default=True)
-    is_num_pm_existe = models.BooleanField(default=True)
+    # is_num_pm_existe = models.BooleanField(default=True)
     is_validated = models.BooleanField(default=False)
 
     objects = models.Manager()
@@ -352,11 +383,12 @@ class Target(models.Model):
                 self.is_not_empty_num_progres_menage_alg or
                 self.is_invalide_num_tel or
                 self.is_zero_member or
-                self.is_many_chef_menage or
-                self.is_no_chef_manage or
                 self.is_no_doc_with_num_pm or
-                self.is_num_pm_existe or
+                # self.is_num_pm_existe or
                 self.is_site_not_existe)
+
+    # def merge_manager_url(self):
+    #     return reverse('merge_manager', kwargs={'id': self.identifier})
 
     def get_absolute_url(self):
         return reverse('correction_target', kwargs={'id': self.identifier})
@@ -414,11 +446,8 @@ class Target(models.Model):
             self.pays_asile, self.num_progres_menage)
         self.is_no_doc_with_num_pm = no_doc_with_num_pm(
             self.chef_doc, self.num_progres_menage)
-        self.is_num_pm_existe = num_pm_existe(self.num_progres_menage)
         self.is_site_not_existe = self.site_not_existe()
-        self.is_many_chef_menage = self.many_chef_menage()
-        self.is_no_chef_manage = self.no_chef_manage()
-
+        num_pm_existe(self)
         super(Target, self).save(*args, **kwargs)
 
     def attachments(self):
@@ -563,14 +592,14 @@ class Target(models.Model):
 
     def many_chef_menage(self):
         from repatriate.models import Person
-        if Person.objects.filter(target=self, membre_lien="chef_de_famille").count() > 1:
+        if Person.objects.filter(target=self, membre_lien="chef_de_famille").count() != 1:
             return True
         return False
 
     def no_chef_manage(self):
         from repatriate.models import Person
         if Person.objects.filter(
-                target=self, membre_lien="chef_de_famille").count() < 1:
+                target=self, membre_lien="chef_de_famille").count() == 0:
             return True
         return False
 
@@ -578,8 +607,8 @@ class Target(models.Model):
         return Target.objects.filter(
             deleted=False, num_progres_menage=self.num_progres_menage)
 
-    def num_pm_existe(self):
-        return self.same_num_pm().count() > 0
+    # def num_pm_existe(self):
+    #     return self.same_num_pm().count() > 0
 
     def site_not_existe(self):
         return RegistrationSite.objects.filter(

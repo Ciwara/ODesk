@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^desk-controle$', views.desk_controle, name='controle'),
     url(r'^desk-monitoring$', views.desk_monitoring, name='monitoring'),
     url(r'^target_validated/(?P<pk>.*)', views.target_validated, name='tvalidated'),
+    url(r'^merge-manager/(?P<id>.*)', views.merge_manager, name='merge_manager'),
     url(r'^target-correction/(?P<id>.*)', views.target_correction, name='correction_target'),
     url(r'^person-correction/(?P<id>.*)', views.person_correction, name='correction_person'),
     url(r'^export-xls/(?P<start>.*)/(?P<end>.*)', views.export_xls, name='export_xls'),

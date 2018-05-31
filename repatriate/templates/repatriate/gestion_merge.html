@@ -1,0 +1,103 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n permission_tags widget_tweaks %}
+{% block title %} {% trans "Controle" %}{% endblock %}
+
+{% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
+{% block content %}
+    <h4>Gérer les conflits</h4>
+    {% if user|has_role:'desk_assistant_admin, desk_admin' %}
+        <hr/>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <table class="table table-sm table-bordered table-striped table">
+                    <thead class="thead-dark">
+                        <tr><th colspan="2">Info. ménage</th></tr>
+                    </thead>
+                    <thead class="thead-merge">
+                        <th colspan="2">Site <span class="badge badge-light">{{target_old.site_engistrement}}</span> le <span class="badge badge-light">{{target_old.date_entretien}}</span> par <span class="badge badge-light">{{target_old.nom_agent}}</span</th></thead>
+                    <thead class="">
+                        <th colspan="2">Progres Menage : <span class="badge badge-danger">{{target_old.num_progres_menage}}</span> Contact : <span class="badge badge-dark">{{target_old.tel}} {{target_old.tel2}}</span></th>
+                    </thead>
+                    <tbody class="">
+                        <tr>
+                            <tr><th>Pays d'asile</th> <td>{{target_old.pays_asile}}</td></tr>
+                            <tr><th>ville_asile</th> <td>{{target_old.ville_asile}}</td></tr>
+                            <tr><th>Profession du Chef de menage</th> <td>{{target_old.chef_profession}}</td></tr>
+                            <tr><th>Document</th> <td>{{target_old.chef_doc}}</td></tr>
+                        <tr>
+                        <thead class="thead-dark">
+                            <tr><th colspan="2">Info. membres</th></tr>
+                        </thead>
+                    </tbody>
+                    {% for m in target_old.get_membres %}
+                        <thead class="thead-merge">
+                            <th colspan="2"> Membre : <span class="badge badge-light">{{m.membre_nom}} {{m.membre_prenom}}</span></th>
+                        </thead>
+                        <tbody class="">
+                            <tr><th>Progres individuel</th> <td><span class="badge badge-dark">{{m.num_progres_individuel}}</span></td></tr>
+                            <tr><th>Lien</th> <td>{{m.membre_lien}}</td></tr>
+                            <tr><th>Sexe</th> <td>{{m.membre_sexe}}</td></tr>
+                            <tr><th>Date de naissance</th> <td>{{m.membre_ddn}}</td></tr>
+                            <tr><th>Profession</th> <td>{{m.profession}}</td></tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <table class="table table-sm table-bordered table-striped table">
+                    <thead class="thead-dark">
+                        <tr><th colspan="2">Info. ménage</th></tr>
+                    </thead>
+                    <thead class="thead-merge">
+                        <th colspan="2">Site <span class="badge badge-light">{{target.site_engistrement}}</span> le <span class="badge badge-light">{{target.date_entretien}}</span> par <span class="badge badge-light">{{target.nom_agent}}</span</th></thead>
+                    <thead class="">
+                        <th colspan="2">Progres Menage : <span class="badge badge-danger">{{target.num_progres_menage}}</span> Contact : <span class="badge badge-dark">{{target.tel}} {{target.tel2}}</span></th>
+                    </thead>
+                    <tbody class="">
+                        <tr>
+                            <tr><th>Pays d'asile</th> <td>{{target.pays_asile}}</td></tr>
+                            <tr><th>ville_asile</th> <td>{{target.ville_asile}}</td></tr>
+                            <tr><th>Profession du Chef de menage</th> <td>{{target.chef_profession}}</td></tr>
+                            <tr><th>Document</th> <td>{{target.chef_doc}}</td></tr>
+                        <tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                        <tr><th colspan="2">Info. membres</th></tr>
+                    </thead>
+                    {% for m in target.get_membres %}
+                        <thead class="thead-merge">
+                            <th colspan="2">
+                                {% if m.num_pi_existe %}
+                                    <a class="btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-edit"></em> Mise à jour</a>
+                                {% else %}
+                                    <a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ajouter</a>
+                                {% endif %}
+                                    <a class="btn-danger btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ignorer</a>
+
+                                Membre : <span class="badge badge-light">{{m.membre_nom}} {{m.membre_prenom}}</span></th>
+                        </thead>
+                        <tbody class="">
+                            <tr><th>Progres individuel</th> <td><span class="badge badge-dark">{{m.num_progres_individuel}}</span></td></tr>
+                            <tr><th>Lien</th> <td>{{m.membre_lien}}</td></tr>
+                            <tr><th>Sexe</th> <td>{{m.membre_sexe}}</td></tr>
+                            <tr><th>Date de naissance</th> <td>{{m.membre_ddn}}</td></tr>
+                            <tr><th>Profession</th> <td>{{m.profession}}</td></tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1>KDKDK</h1>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block onJQready %}
+$(function () {
+  $('.popover-info').popover({
+    container: 'body'
+  })
+})
+{% endblock %}

@@ -29,3 +29,14 @@
     margin: 0 0 3px;
     padding: 4px 5px;
 }
+
+.button-manager {
+    text-align: center;background-color: #17a2b8;font-size: 3em;
+}
+a {color: #fff}
+a :hover {text-decoration:none;color: #eee}
+.table .thead-merge th {
+    color: #fff;
+    background-color: #8a8a8a;
+    border-color: #f9f9f9;
+}

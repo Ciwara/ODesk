@@ -5,23 +5,20 @@
 # Check functions
 
 
-def num_pi_existe(num_progres_individuel):
+def no_doc_with_num_pi(num_progres_individuel):
     from repatriate.models import Person
-    return Person.objects.filter(
-        deleted=False,
-        num_progres_individuel=num_progres_individuel).count() != 0
-
-
-def no_doc_with_num_pi(chef_doc, num_progres_individuel):
-    if chef_doc == "sdoc" and num_progres_individuel != "":
+    pn = Person.objects.filter(num_progres_individuel=num_progres_individuel)[0]
+    if pn.target.chef_doc == "sdoc" and num_progres_individuel != "":
         return True
     return False
 
 
-def requise_num_progres_individuel(pays_asile, num_progres_menage, chef_doc):
-    if pays_asile == "algerie":
+def requise_num_progres_individuel(num_progres_individuel):
+    from repatriate.models import Person
+    pn = Person.objects.filter(num_progres_individuel=num_progres_individuel)[0]
+    if pn.target.pays_asile == "algerie":
         return False
-    if not num_progres_menage and chef_doc == "formulaire_de_retour":
+    if not num_progres_individuel and pn.target.chef_doc == "formulaire_de_retour":
         return True
     return False
 
@@ -35,4 +32,3 @@ def invalide_num_progres_individuel(num_pm):
         if len(incr) != 8:
             return True
     return False
-

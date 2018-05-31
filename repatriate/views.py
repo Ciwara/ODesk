@@ -17,7 +17,7 @@ from OIMDesk.roles import (
 from desk.models import Provider
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
-from repatriate.models import Person, Target
+from repatriate.models import Person, Target, DuplicateProgresMenage
 
 
 @login_required
@@ -84,16 +84,19 @@ def desk_controle(request):
 
     prov = Provider.objects.get(username=request.user.username)
 
+    context = {"user": prov}
     if has_role(prov, [DeskControle]):
         srv = Target.active_objects.filter(site_engistrement=prov.site)
         pn = Person.active_objects.filter(target__site_engistrement=prov.site)
     if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
+
+        # Recherche de doublons
+        d_progres_m = DuplicateProgresMenage.not_fix_objects.all()
+        context.update({'d_progres_m': d_progres_m})
     else:
         redirect('/')
-
-    context = {"user": prov}
 
     if request.method == 'POST' and '_per_Date' in request.POST:
         period_form = SearchFormPerPeriod(request.POST or None)
@@ -122,16 +125,12 @@ def desk_controle(request):
     num_pi_sans_num_pm = pn.filter(is_num_pi_sans_num_pm=True)
     not_empty_num_pi_alg = pn.filter(is_not_empty_num_pi_alg=True)
     vrf_wihtout_num_pi = pn.filter(is_vrf_wihtout_num_pi=True)
-    suspect_new_member = pn.filter(is_suspect_new_member=True)
-    suspect_update_member = pn.filter(is_suspect_update_member=True)
     sans_doc_avec_num_pi = pn.filter(is_sans_doc_avec_num_pi=True)
     zero_member = srv.filter(is_zero_member=True)
     requise_num_progres_menage = srv.filter(is_requise_num_progres_menage=True)
     invalide_num_progres_menage = srv.filter(is_invalide_num_progres_menage=True)
     invalide_num_tel = srv.filter(is_invalide_num_tel=True)
     not_empty_num_progres_menage_alg = srv.filter(is_not_empty_num_progres_menage_alg=True)
-    many_chef_menage = srv.filter(is_many_chef_menage=True)
-    no_chef_manage = srv.filter(is_no_chef_manage=True)
     no_doc_with_num_pm = srv.filter(is_no_doc_with_num_pm=True)
     site_not_existe = srv.filter(is_site_not_existe=True)
 
@@ -140,16 +139,12 @@ def desk_controle(request):
         'num_pi_sans_num_pm': num_pi_sans_num_pm,
         'not_empty_num_pi_alg': not_empty_num_pi_alg,
         'vrf_wihtout_num_pi': vrf_wihtout_num_pi,
-        'suspect_new_member': suspect_new_member,
-        'suspect_update_member': suspect_update_member,
         'sans_doc_avec_num_pi': sans_doc_avec_num_pi,
         'zero_member': zero_member,
         'requise_num_progres_menage': requise_num_progres_menage,
         'invalide_num_progres_menage': invalide_num_progres_menage,
         'invalide_num_tel': invalide_num_tel,
         'not_empty_num_progres_menage_alg': not_empty_num_progres_menage_alg,
-        'many_chef_menage': many_chef_menage,
-        'no_chef_manage': no_chef_manage,
         'no_doc_with_num_pm': no_doc_with_num_pm,
         'site_not_existe': site_not_existe,
     })
@@ -227,8 +222,7 @@ def desk_monitoring(request):
     num_pi_sans_num_pm = pn.filter(is_num_pi_sans_num_pm=True)
     not_empty_num_pi_alg = pn.filter(is_not_empty_num_pi_alg=True)
     vrf_wihtout_num_pi = pn.filter(is_vrf_wihtout_num_pi=True)
-    suspect_new_member = pn.filter(is_suspect_new_member=True)
-    suspect_update_member = pn.filter(is_suspect_update_member=True)
+    doublon_pm_pi = pn.filter(is_doublon_pm_pi=True)
     sans_doc_avec_num_pi = pn.filter(is_sans_doc_avec_num_pi=True)
     zero_member = srv.filter(is_zero_member=True)
     requise_num_progres_menage = srv.filter(is_requise_num_progres_menage=True)
@@ -245,8 +239,7 @@ def desk_monitoring(request):
         'num_pi_sans_num_pm': num_pi_sans_num_pm,
         'not_empty_num_pi_alg': not_empty_num_pi_alg,
         'vrf_wihtout_num_pi': vrf_wihtout_num_pi,
-        'suspect_new_member': suspect_new_member,
-        'suspect_update_member': suspect_update_member,
+        'doublon_pm_pi': doublon_pm_pi,
         'sans_doc_avec_num_pi': sans_doc_avec_num_pi,
         'zero_member': zero_member,
         'requise_num_progres_menage': requise_num_progres_menage,
@@ -308,6 +301,18 @@ def target_validated(request, *args, **kwargs):
     selected_target.validation_status = Target.VALIDATED
     selected_target.save()
     return redirect("/home")
+
+
+@login_required
+def merge_manager(request, *args, **kwargs):
+    context = {}
+    template = loader.get_template('repatriate/gestion_merge.html')
+    slug = kwargs["id"]
+    d_progres_m = DuplicateProgresMenage.not_fix_objects.get(id=slug)
+    target = d_progres_m.new_target
+    target_old = d_progres_m.old_target
+    context.update({"target": target, "target_old": target_old})
+    return HttpResponse(template.render(context, request))
 
 
 def get_date(date):
