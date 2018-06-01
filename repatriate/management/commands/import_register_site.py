@@ -11,7 +11,9 @@ from django.core.management import call_command
 
 import csv
 
-from desk.models import Entity, RegistrationSite
+from desk.models import Entity
+
+from repatriate.models import RegistrationSite
 
 
 class Command(BaseCommand):
@@ -33,7 +35,6 @@ class Command(BaseCommand):
 
         # print("Importing countries...")
         for entry in csv_reader:
-            print(entry)
             if csv_reader.line_num == 1:
                 continue
             slug = entry.get('code')
@@ -58,4 +59,4 @@ class Command(BaseCommand):
                 )
             except Exception as e:
                 print(e)
-            # print(r_site)
+            print(r_site)

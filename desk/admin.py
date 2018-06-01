@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
-    Entity, EntityType, Provider, RegistrationSite, DictLabel, Project)
+    Entity, EntityType, Provider, DictLabel, Project)
 
 
 @admin.register(Entity)
@@ -17,12 +17,6 @@ class EntityAdmin(admin.ModelAdmin):
     list_filter = ('type',)
     ordering = ('slug',)
     search_fields = ('slug', 'name')
-
-
-@admin.register(RegistrationSite)
-class RegistrationSiteAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'slug', 'name', 'confirmed')
-    list_filter = ('confirmed',)
 
 
 @admin.register(DictLabel)
@@ -50,8 +44,8 @@ class ProviderAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'password1', 'password2', 'email',
-                       'is_superuser', 'is_staff', 'is_active', 'site',
-                       'project')}),
+                       'is_superuser', 'is_staff', 'is_active',)
+        }),
         ("Personnal info", {
             'classes': ('wide',),
             'fields': ('gender', 'title', 'maiden_name', 'first_name',
@@ -60,7 +54,7 @@ class ProviderAdmin(UserAdmin):
 
     fieldsets = (
         (None, {'fields': (
-            'username', 'password', 'email', 'project', 'site')}),
+            'username', 'password', 'email')}),
         (_('Personal info'), {'fields': ('gender', 'title', 'maiden_name',
                                          'first_name', 'middle_name',
                                          'last_name', 'position')}),
@@ -77,7 +71,6 @@ class EntityTypeAdmin(admin.ModelAdmin):
 
 
 # admin.site.register(Role)
-admin.site.register(Project)
 # admin.site.register(Group)
 # admin.site.register(Participation)
 # admin.site.register(PeriodicTask)

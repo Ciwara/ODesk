@@ -20,47 +20,6 @@ logger = logging.getLogger(__name__)
 _s = lambda l: sorted(l, key=lambda e: e.name)
 
 
-class Project(models.Model):
-
-    slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
-    name = models.CharField(max_length=200)
-    desciption = models.TextField(blank=True, null=True)
-    active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return "{name}".format(name=self.name)
-
-
-class RegistrationSManager(models.Manager):
-    def get_queryset(self):
-        return super(RegistrationSManager, self).get_queryset(
-        ).filter(confirmed=False)
-
-
-class RegistrationSite(models.Model):
-
-    slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
-    name = models.CharField(null=True,blank=True, max_length=200)
-    project = models.ForeignKey("Project", blank=True, null=True, related_name='entity_projects')
-    active = models.BooleanField(default=True)
-    locality = TreeForeignKey("Entity", null=True, related_name="site_localities")
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
-    geometry = models.TextField(blank=True, null=True)
-    deactivate = models.BooleanField(default=False)
-    confirmed = models.BooleanField(default=False)
-
-    objects = models.Manager()
-    confirme_objects = RegistrationSManager()
-
-    def __str__(self):
-        return "{name} / {locality}".format(
-            name=self.name, locality=self.locality)
-
-    def active(self):
-        return self.filter(active=True)
-
-
 class EntityQuerySet(models.QuerySet):
 
     def active(self):

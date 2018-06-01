@@ -4,7 +4,20 @@ from django.contrib import admin
 # from desk.models.Entities import RegistrationSite
 from repatriate.models import (
     Collect, Target, Settings, Person, ContactTemoin, DuplicateProgresMenage,
-    OrganizationTarget, TargetTypeAssistance, VulnerabilityPerson)
+    OrganizationTarget, TargetTypeAssistance, VulnerabilityPerson,
+    RegistrationSite, RegistrationSiteProvider)
+
+
+@admin.register(RegistrationSiteProvider)
+class RegistrationSiteProviderAdmin(admin.ModelAdmin):
+    list_display = ('__str__',)
+    list_filter = ('provider', 'site',)
+
+
+@admin.register(RegistrationSite)
+class RegistrationSiteAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'slug', 'name', 'confirmed')
+    list_filter = ('confirmed',)
 
 
 @admin.register(DuplicateProgresMenage)
@@ -72,7 +85,7 @@ class PersonAdmin(admin.ModelAdmin):
                     'is_sans_doc_avec_num_pi',
                     'is_num_pi_sans_num_pm')
     list_filter = [
-    'target',
+        'target',
         'is_invalide_num_pi', 'is_num_pi_sans_num_pm',
         'is_not_empty_num_pi_alg', 'is_vrf_wihtout_num_pi',
         'is_sans_doc_avec_num_pi', 'membre_sexe', 'membre_vulnerabilite',

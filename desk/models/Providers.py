@@ -15,10 +15,21 @@ from django.core import validators
 from django.utils import timezone
 # from desk.signals import logged_in, logged_out
 from desk.models.common import ActiveManager
-from desk.models.Entities import Entity, RegistrationSite
+from desk.models.Entities import Entity
 
 from rolepermissions.roles import get_user_roles, assign_role
 from OIMDesk.roles import Guest
+
+
+class Project(models.Model):
+
+    slug = models.SlugField(_("Slug"), max_length=15, primary_key=True)
+    name = models.CharField(max_length=200)
+    desciption = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "{name}".format(name=self.name)
 
 
 class ProviderManager(UserManager):
@@ -92,10 +103,6 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                                    verbose_name=_("Maiden Name"))
     position = models.CharField(max_length=250, blank=True, null=True,
                                 verbose_name=_("Position"))
-    project = models.ForeignKey("Project", blank=True, null=True, related_name='provider_projects')
-    site = models.ForeignKey(RegistrationSite, blank=True, null=True,
-                             verbose_name=_("Registration site"),
-                             related_name='registrations_sites')
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
     email = models.EmailField(_("email address"), blank=True, null=True)
@@ -220,7 +227,7 @@ class Provider(AbstractBaseUser, PermissionsMixin):
         return ugettext("{title}{short_name}").format(**data).strip()
 
     def get_access(self, at=None):
-
+        return self.get_roles()
         if not self.is_active:
             return ugettext("Désactivé")
         if not self.site:

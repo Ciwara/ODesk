@@ -16,7 +16,8 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
-from desk.models import Provider, RegistrationSite
+from desk.models import Provider
+from repatriate.models import RegistrationSite
 
 from repatriate.target_checks import (
     invalide_num_progres_menage, requise_num_progres_menage, invalide_num_tel,
@@ -278,7 +279,7 @@ class Target(models.Model):
         "Numéro d'enregistrement", blank=True, max_length=100)
     site_engistrement = models.ForeignKey(
         RegistrationSite, verbose_name="Site d'enregestrement",
-        related_name="target_registrations_sites")
+        related_name="target_registration_sites")
     date_arrivee = models.DateField("Date d'arrivée", blank=True, max_length=100)
     date_entretien = models.DateField(blank=True, max_length=100)
     continent_asile = models.CharField(blank=True, null=True, max_length=100)

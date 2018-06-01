@@ -17,7 +17,8 @@ from OIMDesk.roles import (
 from desk.models import Provider
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
-from repatriate.models import Person, Target, DuplicateProgresMenage
+from repatriate.models import (
+    Person, Target, DuplicateProgresMenage, RegistrationSiteProvider)
 
 
 @login_required
@@ -83,11 +84,12 @@ def desk_controle(request):
     template = loader.get_template('repatriate/desk_controle.html')
 
     prov = Provider.objects.get(username=request.user.username)
-
+    sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
     context = {"user": prov}
     if has_role(prov, [DeskControle]):
-        srv = Target.active_objects.filter(site_engistrement=prov.site)
-        pn = Person.active_objects.filter(target__site_engistrement=prov.site)
+        srv = Target.active_objects.filter(site_engistrement__in=sites)
+        print("COUNT", srv)
+        pn = Person.active_objects.filter(target__site_engistrement__in=sites)
     if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
@@ -218,40 +220,6 @@ def desk_monitoring(request):
     else:
         redirect('/')
 
-    invalide_num_pi = pn.filter(is_invalide_num_pi=True)
-    num_pi_sans_num_pm = pn.filter(is_num_pi_sans_num_pm=True)
-    not_empty_num_pi_alg = pn.filter(is_not_empty_num_pi_alg=True)
-    vrf_wihtout_num_pi = pn.filter(is_vrf_wihtout_num_pi=True)
-    doublon_pm_pi = pn.filter(is_doublon_pm_pi=True)
-    sans_doc_avec_num_pi = pn.filter(is_sans_doc_avec_num_pi=True)
-    zero_member = srv.filter(is_zero_member=True)
-    requise_num_progres_menage = srv.filter(is_requise_num_progres_menage=True)
-    invalide_num_progres_menage = srv.filter(is_invalide_num_progres_menage=True)
-    invalide_num_tel = srv.filter(is_invalide_num_tel=True)
-    not_empty_num_progres_menage_alg = srv.filter(is_not_empty_num_progres_menage_alg=True)
-    many_chef_menage = srv.filter(is_many_chef_menage=True)
-    no_chef_manage = srv.filter(is_no_chef_manage=True)
-    no_doc_with_num_pm = srv.filter(is_no_doc_with_num_pm=True)
-    site_not_existe = srv.filter(is_site_not_existe=True)
-
-    context.update({
-        'invalide_num_pi': invalide_num_pi,
-        'num_pi_sans_num_pm': num_pi_sans_num_pm,
-        'not_empty_num_pi_alg': not_empty_num_pi_alg,
-        'vrf_wihtout_num_pi': vrf_wihtout_num_pi,
-        'doublon_pm_pi': doublon_pm_pi,
-        'sans_doc_avec_num_pi': sans_doc_avec_num_pi,
-        'zero_member': zero_member,
-        'requise_num_progres_menage': requise_num_progres_menage,
-        'invalide_num_progres_menage': invalide_num_progres_menage,
-        'invalide_num_tel': invalide_num_tel,
-        'not_empty_num_progres_menage_alg': not_empty_num_progres_menage_alg,
-        'many_chef_menage': many_chef_menage,
-        'no_chef_manage': no_chef_manage,
-        'no_doc_with_num_pm': no_doc_with_num_pm,
-        'site_not_existe': site_not_existe,
-    })
-
     return HttpResponse(template.render(context, request))
 
 
@@ -334,10 +302,10 @@ def export_xls(request, *args, **kwargs):
 
     start = date_format(kwargs["start"])
     end = date_format(kwargs["end"])
-    print(start, '  ', end)
     prov = Provider.objects.get(username=request.user.username)
+    sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
     if has_role(prov, [DeskControle]):
-        pn = Person.active_objects.filter(target__site_engistrement=prov.site)
+        pn = Person.active_objects.filter(target__site_engistrement__in=sites)
     if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         pn = Person.active_objects.all()
     else:

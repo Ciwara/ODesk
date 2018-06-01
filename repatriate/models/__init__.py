@@ -5,6 +5,7 @@
 import logging
 
 from repatriate.models.settings import Settings
+from repatriate.models.registration_site import RegistrationSite, RegistrationSiteProvider
 from repatriate.models.collects import Collect
 from repatriate.models.persons import Person
 from repatriate.models.targets import (
