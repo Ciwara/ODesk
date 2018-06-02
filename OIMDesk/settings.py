@@ -158,6 +158,8 @@ ODK_DIR_URL = '/okdstatic/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
+# ROLEPERMISSIONS_REGISTER_ADMIN = True
+
 try:
     from OIMDesk.settings_local import *
 except ImportError:

@@ -47,27 +47,24 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = Provider
-        fields = ('username', 'full_name', 'email',
-                  'site')
+        fields = ('username', 'gender', 'title', 'first_name', 'last_name',
+                  'phone', 'phone2', 'project', 'email',)
         # exclude = ['email']
 
         widgets = {
-            # 'date_of_birth': forms.DateInput(attrs={'class': 'datepicker'}),
             'full_name': forms.TextInput(attrs={
                 'placeholder': "Nom et prénom"}),
-            'site': forms.TextInput(attrs={
-                'placeholder': "Adresse"}),
             # 'date_of_birth': forms.TextInput(
             #     attrs={'placeholder': "Date", 'class': 'datepicker'}),
         }
 
-    username = forms.CharField(max_length=255, required=True)
-    full_name = forms.CharField(max_length=200)
-    date_of_birth = forms.DateField(label="Date de naissance")
-    site = forms.CharField(max_length=100)
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    # username = forms.CharField(max_length=255, required=True)
+    # phone = forms.IntegerField(label="Téléphone")
+    # phone2 = forms.IntegerField(label="Téléphone 2")
+    password1 = forms.CharField(
+        label='Mot de passe', widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label='Password confirmation', widget=forms.PasswordInput)
+        label='Confirmation', widget=forms.PasswordInput)
 
     def login(self, request):
         username = self.cleaned_data.get('username')
@@ -102,9 +99,10 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = Provider
-        fields = (
-            'email', 'password', 'is_active', 'is_admin')
-        exclude = ['is_admin']
 
-    def clean_password(self):
-        return self.initial["password"]
+        fields = ('title', 'first_name', 'last_name', 'gender',
+                  'email', 'phone', 'phone2', 'project', 'email', 'is_active')
+        exclude = ['is_admin', "password"]
+
+    # def clean_password(self):
+    #     return self.initial["password"]

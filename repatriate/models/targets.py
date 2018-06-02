@@ -439,7 +439,7 @@ class Target(models.Model):
 
         self.is_zero_member = self.zero_member()
         self.is_requise_num_progres_menage = requise_num_progres_menage(
-            self.pays_asile, self.num_progres_menage, self.chef_doc)
+            self.pays_asile, self.num_progres_menage)
         self.is_invalide_num_progres_menage = invalide_num_progres_menage(
             self.num_progres_menage)
         self.is_invalide_num_tel = invalide_num_tel(self.tel)

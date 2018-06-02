@@ -1,4 +1,7 @@
-
+.page {
+    margin-top: 2em;
+    margin-bottom:  1em;
+}
 .navbar-inverse {
    /* background-color: #161617;*/
     border-color: transparent;
@@ -15,7 +18,11 @@
 
 .table .thead-msah th {
     color: #fff;
-    background-color: #0c500e;
+    background-color: #0f7312;
+}
+.table .thead-msah-title th {
+    color: #FFF;
+    background-color: #424c65;
 }
 .bg-msah {
     background-color: #033261!important;

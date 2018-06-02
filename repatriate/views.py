@@ -18,7 +18,8 @@ from desk.models import Provider
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
 from repatriate.models import (
-    Person, Target, DuplicateProgresMenage, RegistrationSiteProvider)
+    Person, Target, DuplicateProgresMenage,
+    RegistrationSiteProvider, RegistrationSite)
 
 
 @login_required
@@ -134,7 +135,7 @@ def desk_controle(request):
     invalide_num_tel = srv.filter(is_invalide_num_tel=True)
     not_empty_num_progres_menage_alg = srv.filter(is_not_empty_num_progres_menage_alg=True)
     no_doc_with_num_pm = srv.filter(is_no_doc_with_num_pm=True)
-    site_not_existe = srv.filter(is_site_not_existe=True)
+    site_not_existe = srv.filter(site_engistrement__confirmed=True)
 
     context.update({
         'invalide_num_pi': invalide_num_pi,

@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from django.core.mail import send_mail
 from django.core import validators
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 # from desk.signals import logged_in, logged_out
 from desk.models.common import ActiveManager
 from desk.models.Entities import Entity
@@ -106,6 +107,9 @@ class Provider(AbstractBaseUser, PermissionsMixin):
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
     email = models.EmailField(_("email address"), blank=True, null=True)
+    phone = models.IntegerField("Téléphone", default=0)
+    phone2 = models.IntegerField("Téléphone 2", null=True, blank=True)
+    project = models.ForeignKey("Project", related_name='projects')
     is_staff = models.BooleanField(
         _("staff status"), default=False,
         help_text=_("Designates whether the user can "
@@ -131,6 +135,9 @@ class Provider(AbstractBaseUser, PermissionsMixin):
             return qs.get(username=username)
         except cls.DoesNotExist:
             return None
+
+    def edite_url(self):
+        return reverse("user_change", args=[self.pk])
 
     def save(self, *args, **kwargs):
 

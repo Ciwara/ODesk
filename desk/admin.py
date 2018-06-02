@@ -1,13 +1,18 @@
 from django.contrib import admin
-
-# Register your models here.
-
-
 from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
     Entity, EntityType, Provider, DictLabel, Project)
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+
+    list_display = ('slug', 'name', 'desciption', 'active')
+    list_filter = ('active',)
+    ordering = ('slug',)
+    search_fields = ('slug', 'name')
 
 
 @admin.register(Entity)

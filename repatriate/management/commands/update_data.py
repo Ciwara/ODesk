@@ -15,7 +15,8 @@ from repatriate.models import (
     TargetTypeAssistance, OrganizationTarget, Collect, Target,
     Person, ContactTemoin, VulnerabilityPerson)
 
-from desk.models import Provider, RegistrationSite
+# from desk.models import Provider
+from repatriate.models import RegistrationSite
 OTHER = "other"
 
 

@@ -16,13 +16,27 @@ from django.shortcuts import redirect
 from rolepermissions.checkers import has_role
 
 from desk.models import Entity, Provider
-from OIMDesk.roles import *
 from repatriate.models import Target, Person
 from django.core.mail import send_mail
+from OIMDesk.roles import (
+    DeskAssistantAdmin, DNDSTech, DeskAdmin, DeskControle)
 
 
 def index(request):
     context = {'page_slug': 'index'}
+
+    # if form.is_valid():
+    #     subject = form.cleaned_data['subject']
+    #     message = form.cleaned_data['message']
+    #     sender = form.cleaned_data['sender']
+    #     cc_myself = form.cleaned_data['cc_myself']
+    #     recipients = ['faddev@gmail.com']
+
+    #     if cc_myself:
+    #         recipients.append(sender)
+
+    #     send_mail(subject, message, sender, recipients)
+    #     return HttpResponseRedirect('/')
 
     return render(request, 'index.html', context)
 
@@ -31,27 +45,16 @@ def index(request):
 def home(request, *args, **kwargs):
     context = {}
     prov = Provider.objects.get(username=request.user.username)
-    if has_role(prov, [DeskControle]):
-        return redirect("controle")
-    if has_role(prov, [DeskAssistantAdmin]):
-        return redirect("monitoring")
-    if has_role(prov, [DeskAdmin]):
-        return redirect("user_manager")
-
-    if form.is_valid():
-        subject = form.cleaned_data['subject']
-        message = form.cleaned_data['message']
-        sender = form.cleaned_data['sender']
-        cc_myself = form.cleaned_data['cc_myself']
-        recipients = ['faddev@gmail.com']
-
-        if cc_myself:
-            recipients.append(sender)
-
-        send_mail(subject, message, sender, recipients)
-        return HttpResponseRedirect('/')
-
-    return render(request, 'home.html', context)
+    if has_role(prov, [DeskAdmin, DeskAssistantAdmin, DNDSTech]):
+        return render(request, 'home.html', context)
+    if prov.project.slug == "hcr":
+        return redirect("dashboard_rep")
+    if prov.project.slug == "oim":
+        return redirect("dashboard_mig")
+    if prov.project.slug == "all":
+        return render(request, 'home.html', context)
+    else:
+        return redirect("/")
 
 
 @login_required
