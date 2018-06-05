@@ -5,7 +5,7 @@
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
 {% block content %}
     <h4>Gérer les conflits</h4>
-    {% if user|has_role:'desk_assistant_admin, desk_admin' %}
+    {% if user|has_role:'desk_assistant_admin,desk_admin' %}
         <hr/>
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -72,8 +72,7 @@
                                 {% else %}
                                     <a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ajouter</a>
                                 {% endif %}
-                                    <a class="btn-danger btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ignorer</a>
-
+                                <a class="btn-danger btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ignorer</a>
                                 Membre : <span class="badge badge-light">{{m.membre_nom}} {{m.membre_prenom}}</span></th>
                         </thead>
                         <tbody class="">
@@ -89,7 +88,7 @@
         </div>
     {% else %}
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h1>KDKDK</h1>
+            <h1>Problème de permission veuillez contacter le administrateur.</h1>
         </div>
     {% endif %}
 {% endblock %}

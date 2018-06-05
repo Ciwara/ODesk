@@ -43,6 +43,24 @@ class DeskControle(AbstractUserRole):
     }
 
 
+class GestionMigrant(AbstractUserRole):
+    available_permissions = {
+        'controle_data': True,
+        'create_valide': True,
+        'create_export_xls': True,
+        'create_edite_data': True,
+    }
+
+
+class AgentMigrant(AbstractUserRole):
+    available_permissions = {
+        'controle_data': True,
+        'create_valide': True,
+        'create_export_xls': True,
+        'create_edite_data': True,
+    }
+
+
 class PartnerOIM(AbstractUserRole):
     available_permissions = {
         'can_vew': True,

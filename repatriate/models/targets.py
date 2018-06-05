@@ -95,7 +95,7 @@ class TargetManager(models.Manager):
 class TargetValidateManager(models.Manager):
     def get_queryset(self):
         return super(TargetValidateManager, self).get_queryset().filter(
-            deleted=False, is_validated=False)
+            deleted=False, is_validated=True)
 
 
 class Target(models.Model):
@@ -385,7 +385,6 @@ class Target(models.Model):
                 self.is_invalide_num_tel or
                 self.is_zero_member or
                 self.is_no_doc_with_num_pm or
-                # self.is_num_pm_existe or
                 self.is_site_not_existe)
 
     # def merge_manager_url(self):

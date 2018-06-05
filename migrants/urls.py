@@ -18,13 +18,14 @@ from django.conf.urls import url
 from migrants import views
 
 urlpatterns = [
+    url(r'^$', views.dashboard, name='dashboard_mig'),
     url(r'^table$', views.table, name='table'),
     url(r'^person/(?P<pk>.*)', views.person, name='person'),
     url(r'^person-table/(?P<iid>.*)', views.person_table, name='person_table'),
     url(r'^person-photo/(?P<key_odk>.*)', views.show_media, name='person_photo'),
     url(r'^survey-table/$', views.survey_table, name='survey_table'),
-    # url(r'^chart/$', chart, name='chart'),
-    url(r'^$', views.dashboard, name='dashboard_mig'),
+    url(r'^find-mig/$', views.find_mig, name='find_mig'),
+    url(r'^data-mig/$', views.database_mig, name='database_mig'),
     url(r'^export/xls/(?P<start>.*)/(?P<end>.*)$',
         views.export_migrants_xls, name='export_migrants_xls'),
 ]

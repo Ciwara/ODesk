@@ -9,10 +9,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
-
-# from rolepermissions.decorators import has_role_decorator
-# from rolepermissions.decorators import has_permission_decorator
-# from rolepermissions.roles import get_user_roles
 from rolepermissions.checkers import has_role
 
 from desk.models import Entity, Provider

@@ -90,8 +90,24 @@ def table(request):
 def survey_table(request):
 
     surveys = Survey.objects.all()
-    # for survey in surveys:
-    #     survey.person_url = reverse("person_table", args=[survey.instance_id])
+    context = {"surveys": surveys}
+    template = loader.get_template('migrants/survey_tables.html')
+
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def database_mig(request):
+    persons = Person.objects.all()
+    context = {"persons": persons}
+    template = loader.get_template('migrants/person_tables.html')
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def find_mig(request):
+
+    surveys = Survey.objects.all()
     context = {"surveys": surveys}
     template = loader.get_template('migrants/survey_tables.html')
 
@@ -104,9 +120,6 @@ def person_table(request, *args, **kwargs):
 
     survey = Survey.objects.get(instance_id=iid)
     persons = Person.objects.filter(survey=survey)
-    # for person in persons:
-    #     person.person_detail_url = reverse("person", args=[person.id])
-
     context = {"persons": persons}
     template = loader.get_template('migrants/person_tables.html')
 

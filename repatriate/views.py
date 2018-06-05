@@ -91,19 +91,17 @@ def desk_controle(request):
         srv = Target.active_objects.filter(site_engistrement__in=sites)
         print("COUNT", srv)
         pn = Person.active_objects.filter(target__site_engistrement__in=sites)
-    if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
+    elif has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
-
         # Recherche de doublons
         d_progres_m = DuplicateProgresMenage.not_fix_objects.all()
         context.update({'d_progres_m': d_progres_m})
     else:
-        redirect('/')
+        return redirect('/')
 
     if request.method == 'POST' and '_per_Date' in request.POST:
         period_form = SearchFormPerPeriod(request.POST or None)
-        print("SearchFormPerPeriod")
         date_s = request.POST.get('start_date').replace("/", "-")
         date_e = request.POST.get('end_date').replace("/", "-")
         return redirect("export-xls/{start}/{end}".format(start=date_s, end=date_e))
@@ -201,25 +199,6 @@ def desk_controle(request):
         "nb_person_m": nb_person_m,
         "nb_person_f": nb_person_f,
     })
-
-    return HttpResponse(template.render(context, request))
-
-
-@login_required
-def desk_monitoring(request):
-
-    template = loader.get_template('repatriate/desk_monitoring.html')
-    user = request.user
-
-    context = {"user": user}
-
-    prov = Provider.objects.get(username=request.user.username)
-
-    if has_role(prov, [DeskAdmin, DNDSTech, DeskAssistantAdmin]):
-        srv = Target.active_objects.all()
-        pn = Person.active_objects.all()
-    else:
-        redirect('/')
 
     return HttpResponse(template.render(context, request))
 
@@ -389,6 +368,7 @@ def export_xls(request, *args, **kwargs):
     font_style = xlwt.XFStyle()
 
     for row in pn:
+        print(row)
         row_num += 1
         col_num = 0
         ws.write(row_num, col_num, row.target.identifier, font_style)

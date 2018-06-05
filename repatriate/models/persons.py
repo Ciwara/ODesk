@@ -54,9 +54,16 @@ class VulnerabilityPerson(models.Model):
             sub_besoin=self.sub_besoin)
 
 
-class PersonManager(models.Manager):
+class PersonActiveManager(models.Manager):
     def get_queryset(self):
-        return super(PersonManager, self).get_queryset().filter(deleted=False)
+        return super(PersonActiveManager, self).get_queryset().filter(
+            deleted=False)
+
+
+class PersonValideManager(models.Manager):
+    def get_queryset(self):
+        return super(PersonActiveManager, self).get_queryset().filter(
+            deleted=False, target__is_validated=True)
 
 
 class Person(models.Model):
@@ -231,7 +238,8 @@ class Person(models.Model):
     is_doublon_pm_pi = models.BooleanField(default=True)
 
     objects = models.Manager() # The default manager.
-    active_objects = PersonManager()
+    active_objects = PersonActiveManager()
+    validated_objects = PersonValideManager()
 
     def name(self):
         return "{}-{}-{}-{}".format(

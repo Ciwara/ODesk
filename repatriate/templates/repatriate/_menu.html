@@ -1,0 +1,19 @@
+
+{% load permission_tags %}
+
+{% if user|has_role:'desk_assistant_admin,desk_controle,desk_admin,dnds_tech' %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'controle' %}">
+            <button class="btn btn-secondary btn-sm">
+              <i class="fa fa-list-ul" aria-hidden="true"></i> Desk Côntrole <span class="badge badge-pill badge-warning">{{count_error}}</span>
+            </button>
+        </a>
+    </li>
+{% endif %}
+  <li class="nav-item">
+      <a class="nav-link" href="{% url 'controle' %}">
+          <button class="btn btn-secondary btn-sm">
+            <i class="fa fa-list-ul" aria-hidden="true"></i> Contacts <span class="badge badge-pill badge-warning">{{count_error}}</span>
+          </button>
+      </a>
+  </li>

@@ -14,19 +14,15 @@
     <!-- Custom styles for this template -->
     <link href="{% static 'css/full-slider.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
-
-        <link href="{% static 'css/desk.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="{% static 'css/desk.css' %}" rel="stylesheet">
     {% block extra_head %}
     {% endblock %}
   </head>
-
   <body>
-        {% include "_menu.html" %}
+    {% include "_menu.html" %}
     <!-- Navigation -->
-
     {% block banner %} {% endblock %}
-
     <!-- Page Content -->
     <section class="py-5">
       <div class="container page" id="{% block page-id %}{% endblock %}">
@@ -36,18 +32,18 @@
     </section>
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
-      <div class="container">
+      <div class="container-fluid">
         <div class="text-center">
           <small>Copyright © IBS-MAli SARL 2018</small>
         </div>
       </div>
     </footer>
-        {% include "_tags_js.html" %}
-        <script type="text/javascript">
-            $(document).ready(function(){
-                {% block onJQready %}{% endblock %}
-            });
-       </script>
+      {% include "_tags_js.html" %}
+      <script type="text/javascript">
+          $(document).ready(function(){
+              {% block onJQready %}{% endblock %}
+          });
+     </script>
     <!-- Bootstrap core JavaScript -->
   </body>
 </html>
