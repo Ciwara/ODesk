@@ -20,7 +20,7 @@
 }
 .table .thead-msah-title th {
     color: #FFF;
-    background-color: #424c65;
+    background-color: #343a40;
 }
 .bg-msah {
     background-color: #033261!important;
@@ -34,7 +34,7 @@
     padding: 4px 5px;
 }
 .button-manager {
-    text-align: center;background-color: #17a2b8;font-size: 3em;
+    text-align: center;background-color: #868d96;font-size: 3em;
 }
 a {color: #000}
 a :hover {text-decoration:none;color: #eee}

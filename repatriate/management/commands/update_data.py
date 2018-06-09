@@ -76,14 +76,15 @@ class Command(BaseCommand):
                 site_engistrement.name = site_engist
                 site_engistrement.confirmed = False
                 site_engistrement.save()
-
             t_data = {
                 "collect": collect,
+                "duration": targ.get("_duration"),
+                "submission_time": targ.get("_submission_time"),
                 "date": targ.get("date"),
                 "debut": targ.get("debut"),
                 "fin": targ.get("fin"),
                 "nom_agent": targ.get("info-generales-generales/nom_agent"),
-                "nu_enregistrement": targ.get("info-generales-generales/nu_enregistrement"),
+                "num_enregistrement": targ.get("info-generales-generales/nu_enregistrement"),
                 "site_engistrement": site_engistrement,
                 "date_arrivee": targ.get("info-generales-generales/date_arrivee"),
                 "date_entretien": targ.get("info-generales-generales/date_entretien"),
@@ -120,6 +121,7 @@ class Command(BaseCommand):
                 "type_hebergement_other": targ.get("hebergement/type_hebergement_other"),
 
                 "membre_pays": self.get_bol(targ.get("info-generale-membres/membre_pays")),
+                # "membres_count": targ.get("info-generale-membres/membres_count'"),
                 "nb_membre": targ.get("info-generale-membres/nb_membre"),
                 "nbre_membre_reste": targ.get("info-generale-membres/nbre_membre_reste"),
                 "etat_sante": self.get_bol(targ.get("sante-appuipyschosocial/etat_sante")),
@@ -133,7 +135,6 @@ class Command(BaseCommand):
 
                 "suivi_formation": self.get_bol(targ.get("formation-experience/suivi_formation")),
                 "domaine_formation": targ.get("formation-experience/domaine_formation"),
-
                 "metier_pays_prove": self.get_bol(targ.get("formation-experience/metier_pays_prove")),
                 "exercice_secteur": targ.get("formation-experience/exercice_secteur"),
                 "exercice_secteur_other": targ.get("formation-experience/exercice_secteur_other"),
@@ -141,18 +142,17 @@ class Command(BaseCommand):
                 "formation_socio_prof": self.get_bol(targ.get("reinsertion-prof/formation_socio_prof")),
                 "secteur_prof": targ.get("reinsertion-prof/secteur_prof"),
                 "secteur_prof_other": targ.get("reinsertion-prof/secteur_prof_other"),
-
                 "projet_activite": self.get_bol(targ.get('reinsertion-prof/projet_activite')),
                 "type_projet": targ.get("reinsertion-prof/type_projet"),
                 "souhait_activite": targ.get("reinsertion-prof/souhait_activite"),
                 "souhait_activite_other": targ.get("reinsertion-prof/souhait_activite_other"),
-
                 "lieu_region": targ.get("reinsertion-prof/lieu-activite/lieu_region"),
                 "lieu_cercle": targ.get("reinsertion-prof/lieu-activite/lieu_cercle"),
                 "lieu_commune": targ.get("reinsertion-prof/lieu-activite/lieu_commune"),
                 "lieu_qvf": targ.get("reinsertion-prof/lieu-activite/lieu_qvf"),
                 "lieu_non_generale_utilise": targ.get("reinsertion-prof/lieu-activite/lieu_non_generale_utilise"),
                 "signature": targ.get("signature"),
+                "form_dataset": targ,
             }
             target, ok = Target.objects.get_or_create(
                 instance_id=targ.get("meta/instanceID"), defaults=t_data)
@@ -176,10 +176,13 @@ class Command(BaseCommand):
             if not data_members:
                 continue
             for person in data_members:
+                print(person.get("info-generale-membres/membres/membre_prenom"))
                 p_data = {
                     "target": target,
+                    "form_dataset": person,
                     "membre_nom": person.get("info-generale-membres/membres/membre_nom"),
                     "membre_prenom": person.get("info-generale-membres/membres/membre_prenom"),
+                    "membre_photo": person.get("info-generale-membres/membres/membre_photo"),
                     "membre_sexe": person.get("info-generale-membres/membres/membre_sexe"),
                     "membre_ddn": person.get("info-generale-membres/membres/membre_ddn"),
                     "membre_age": person.get("info-generale-membres/membres/membre_age"),
@@ -187,8 +190,22 @@ class Command(BaseCommand):
                     "membre_lien": person.get("info-generale-membres/membres/membre_lien"),
                     "membre_scolaire": person.get("info-generale-membres/membres/membre_scolaire"),
                     "num_progres_individuel": person.get("info-generale-membres/membres/num_progres_individul"),
-                    "membre_vulnerabilite": self.get_bol(person.get("info-generale-membres/membres/membre-vulnerabilite")),
+                    "membre_vulnerabilite": self.get_bol(person.get("info-generale-membres/membres/membre_vulnerabilite")),
                     "dispo_doc_etat_civil": self.get_bol(person.get("info-generale-membres/membres/dispo_doc_etat_civil")),
+                    "membre_document": person.get('info-generale-membres/membres/etat-civil-dispo/membre_document'),
+                    "num_acte_naissance": person.get('info-generale-membres/membres/etat-civil-dispo/num_acte_naissance'),
+                    "photo_acte_adn": person.get('info-generale-membres/membres/etat-civil-dispo/photo_acte_adn'),
+                    "num_acte_mariage": person.get('info-generale-membres/membres/etat-civil-dispo/num_acte_mariage'),
+                    "photo_acte_mariage": person.get('info-generale-membres/membres/etat-civil-dispo/photo_acte_mariage'),
+                    "scan_nina": person.get('info-generale-membres/membres/etat-civil-dispo/scan_nina'),
+                    "saisie_nina": person.get('info-generale-membres/membres/etat-civil-dispo/saisie_nina'),
+                    "scan_passeport_biometric": person.get('info-generale-membres/membres/etat-civil-dispo/scan_passeport_biometric'),
+                    "saisie_passeport_biometric": person.get('info-generale-membres/membres/etat-civil-dispo/saisie_passeport_biometric'),
+                    "photo_passeport": person.get('info-generale-membres/membres/etat-civil-dispo/photo_passeport'),
+                    "num_carte_identite_national": person.get('info-generale-membres/membres/etat-civil-dispo/num_carte_identite_national'),
+                    "photo_carte_identite_national": person.get('info-generale-membres/membres/etat-civil-dispo/photo_carte_identite_national'),
+                    "num_carte_consulaire": person.get('info-generale-membres/membres/etat-civil-dispo/num_carte_consulaire'),
+                    "photo_carte_consulaire": person.get('info-generale-membres/membres/etat-civil-dispo/photo_carte_consulaire'),
                     "partage_info_perso": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/partage_info_perso")),
                     "referer": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/referer")),
                     "a_qui": person.get('info-generale-membres/membres/etat-civil-non-dispo/a_qui'),
@@ -209,16 +226,15 @@ class Command(BaseCommand):
                     "centre_etat_civil": person.get("info-generale-membres/membres/etat-civil-non-dispo/centre_etat_civil"),
                     "centre_etat_civil_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/centre_etat_civil_other"),
                     "au_moins_deux_temoins": self.get_bol(person.get("info-generale-membres/membres/etat-civil-non-dispo/au_moins_deux_temoins")),
-                    "num_acte_naissance": person.get("info-generale-membres/membres/etat-civil-dispo/num_acte_naissance"),
-                    "num_acte_mariage": person.get("info-generale-membres/membres/etat-civil-dispo/num_acte_mariage"),
-                    "num_carte_nina": person.get("info-generale-membres/membres/etat-civil-dispo/num_carte_nina"),
-                    "num_carte_identite_national": person.get("info-generale-membres/membres/etat-civil-dispo/num_carte_identite_national"),
-                    "num_passeport": person.get("info-generale-membres/membres/etat-civil-dispo/num_passeport"),
                     "raison_non_dispo": person.get("info-generale-membres/membres/etat-civil-non-dispo/raison_non_dispo"),
                     "raison_non_dispo_other": person.get("info-generale-membres/membres/etat-civil-non-dispo/raison_non_dispo_other"),
                 }
-                pn, ok = Person.objects.update_or_create(**p_data)
-                les_contacts = person.get('info-generale-membres/membres/etat-civil-non-dispo/les_contacts')
+                try:
+                    pn, ok = Person.objects.update_or_create(**p_data)
+                except Exception as e:
+                    print(e)
+                    continue
+                les_contacts = person.get('info-generale-membres/membres/etat-civil-non-dispo/les-temoins')
                 if les_contacts:
                     for ctt in les_contacts:
                         data = {

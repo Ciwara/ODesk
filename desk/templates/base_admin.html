@@ -15,7 +15,6 @@
         </title>
         <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
         <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
         <!-- Page level plugin CSS -->
         <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -35,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 
-            {% if user|has_role:'desk_admin, dnds_tech' %}
+            {% if user|has_role:'desk_admin,dnds_tech' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
@@ -83,13 +82,6 @@
                 {% endif %}
                 </ul>
               </li>
-            {% endif %}
-            {% if user|has_role:'gestion_migrant' %}
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Données brutes">
-                    <a class="nav-link" href="{% url 'database_mig' %}">
-                          <i class="fa fa-database"></i><span class="nav-link-text"> Données</span>
-                    </a>
-                  </li>
             {% endif %}
           </ul>
           <ul class="navbar-nav sidenav-toggler">

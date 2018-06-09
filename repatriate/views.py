@@ -87,16 +87,17 @@ def desk_controle(request):
     prov = Provider.objects.get(username=request.user.username)
     sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
     context = {"user": prov}
-    if has_role(prov, [DeskControle]):
-        srv = Target.active_objects.filter(site_engistrement__in=sites)
-        print("COUNT", srv)
-        pn = Person.active_objects.filter(target__site_engistrement__in=sites)
-    elif has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
+    print(prov)
+    print(has_role(prov, [DeskControle]))
+    print(has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]))
+    if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
-        # Recherche de doublons
         d_progres_m = DuplicateProgresMenage.not_fix_objects.all()
         context.update({'d_progres_m': d_progres_m})
+    elif has_role(prov, [DeskControle]):
+        srv = Target.active_objects.filter(site_engistrement__in=sites)
+        pn = Person.active_objects.filter(target__site_engistrement__in=sites)
     else:
         return redirect('/')
 
@@ -127,13 +128,12 @@ def desk_controle(request):
     not_empty_num_pi_alg = pn.filter(is_not_empty_num_pi_alg=True)
     vrf_wihtout_num_pi = pn.filter(is_vrf_wihtout_num_pi=True)
     sans_doc_avec_num_pi = pn.filter(is_sans_doc_avec_num_pi=True)
-    zero_member = srv.filter(is_zero_member=True)
     requise_num_progres_menage = srv.filter(is_requise_num_progres_menage=True)
     invalide_num_progres_menage = srv.filter(is_invalide_num_progres_menage=True)
     invalide_num_tel = srv.filter(is_invalide_num_tel=True)
     not_empty_num_progres_menage_alg = srv.filter(is_not_empty_num_progres_menage_alg=True)
     no_doc_with_num_pm = srv.filter(is_no_doc_with_num_pm=True)
-    site_not_existe = srv.filter(site_engistrement__confirmed=True)
+    site_not_existe = srv.filter(is_site_not_existe=True)
 
     context.update({
         'invalide_num_pi': invalide_num_pi,
@@ -141,7 +141,6 @@ def desk_controle(request):
         'not_empty_num_pi_alg': not_empty_num_pi_alg,
         'vrf_wihtout_num_pi': vrf_wihtout_num_pi,
         'sans_doc_avec_num_pi': sans_doc_avec_num_pi,
-        'zero_member': zero_member,
         'requise_num_progres_menage': requise_num_progres_menage,
         'invalide_num_progres_menage': invalide_num_progres_menage,
         'invalide_num_tel': invalide_num_tel,
@@ -252,6 +251,53 @@ def target_validated(request, *args, **kwargs):
 
 
 @login_required
+def end_merge_target(request, *args, **kwargs):
+    identifier = kwargs["id"]
+    tgt = Target.active_objects.get(identifier=identifier)
+    dup = DuplicateProgresMenage.not_fix_objects.get(new_target=tgt)
+    dup.fixed_by = Provider.objects.get(username=request.user.username)
+    dup.fix_date = timezone.datetime.now()
+    dup.fixed = True
+    dup.save()
+    target = dup.new_target
+    target.deleted = True
+    target.save()
+    messages.success(request, 'a été add avec succès')
+    return redirect('controle')
+
+
+@login_required
+def merge_add(request, *args, **kwargs):
+    identifier = kwargs["id"]
+    pn = Person.active_objects.get(identifier=identifier)
+    dup = DuplicateProgresMenage.not_fix_objects.get(new_target=pn.target)
+    # old_pn = dup.old_target
+    pn.target = dup.old_target
+    pn.save()
+    messages.success(request, 'a été add avec succès')
+
+    return redirect('merge_manager', id=dup.id)
+
+
+@login_required
+def merge_update(request, *args, **kwargs):
+    identifier = kwargs["id"]
+    new_pn = Person.active_objects.get(identifier=identifier)
+    dup = DuplicateProgresMenage.not_fix_objects.get(new_target=new_pn.target)
+    old_pn = dup.old_target
+    for u in old_pn.get_membres():
+        if u.num_progres_individuel == new_pn.num_progres_individuel:
+            new_pn.target = old_pn
+            new_pn.save()
+            u.deleted = True
+            u.save()
+            messages.success(request, '{} a été update avec succès'.format(new_pn))
+            break
+
+    return redirect('merge_manager', id=dup.id)
+
+
+@login_required
 def merge_manager(request, *args, **kwargs):
     context = {}
     template = loader.get_template('repatriate/gestion_merge.html')
@@ -307,7 +353,7 @@ def export_xls(request, *args, **kwargs):
     columns = [
         'identifier',
         'nom_agent',
-        'nu_enregistrement',
+        'num_enregistrement',
         'site_engistrement',
         'date_arrivee',
         'date_entretien',
@@ -375,7 +421,7 @@ def export_xls(request, *args, **kwargs):
         col_num += 1
         ws.write(row_num, col_num, row.target.nom_agent, font_style)
         col_num += 1
-        ws.write(row_num, col_num, row.target.nu_enregistrement, font_style)
+        ws.write(row_num, col_num, row.target.num_enregistrement, font_style)
         col_num += 1
         ws.write(row_num, col_num, row.target.site_engistrement.name, font_style)
         col_num += 1

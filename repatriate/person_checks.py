@@ -5,17 +5,13 @@
 # Check functions
 
 
-def no_doc_with_num_pi(num_progres_individuel):
-    from repatriate.models import Person
-    pn = Person.objects.filter(num_progres_individuel=num_progres_individuel)[0]
-    if pn.target.chef_doc == "sdoc" and num_progres_individuel != "":
+def no_doc_with_num_pi(pn, num_progres_individuel):
+    if pn.target.chef_doc == "sdoc" and num_progres_individuel:
         return True
     return False
 
 
-def requise_num_progres_individuel(num_progres_individuel):
-    from repatriate.models import Person
-    pn = Person.objects.filter(num_progres_individuel=num_progres_individuel)[0]
+def requise_num_progres_individuel(pn, num_progres_individuel):
     if pn.target.pays_asile == "algerie":
         return False
     if not num_progres_individuel and pn.target.chef_doc == "formulaire_de_retour":

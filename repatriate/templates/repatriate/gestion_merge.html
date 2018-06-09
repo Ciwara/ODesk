@@ -31,7 +31,7 @@
                     </tbody>
                     {% for m in target_old.get_membres %}
                         <thead class="thead-merge">
-                            <th colspan="2"> Membre : <span class="badge badge-light">{{m.membre_nom}} {{m.membre_prenom}}</span></th>
+                            <th colspan="2"> Membre : <span class="badge badge-light"><a href="{{m.get_absolute_url}}">{{m.membre_nom}} {{m.membre_prenom}}</a></span></th>
                         </thead>
                         <tbody class="">
                             <tr><th>Progres individuel</th> <td><span class="badge badge-dark">{{m.num_progres_individuel}}</span></td></tr>
@@ -46,7 +46,8 @@
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                 <table class="table table-sm table-bordered table-striped table">
                     <thead class="thead-dark">
-                        <tr><th colspan="2">Info. ménage</th></tr>
+                        <tr><th>Info. ménage <span class="badge badge-warning">New</span></th><th>
+                                    <a class="btn-primary btn-sm" href="{{target.end_merge_url}}"><em class="fa fa-edit"></em> Fin de merge</a></th></tr>
                     </thead>
                     <thead class="thead-merge">
                         <th colspan="2">Site <span class="badge badge-light">{{target.site_engistrement}}</span> le <span class="badge badge-light">{{target.date_entretien}}</span> par <span class="badge badge-light">{{target.nom_agent}}</span</th></thead>
@@ -66,16 +67,16 @@
                     </thead>
                     {% for m in target.get_membres %}
                         <thead class="thead-merge">
-                            <th colspan="2">
+                            <th>Membre : <span class="badge badge-light"><a href="{{m.get_absolute_url}}">{{m.membre_nom}} {{m.membre_prenom}}</a></span></th>
+                            <th>
                                 {% if m.num_pi_existe %}
-                                    <a class="btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-edit"></em> Mise à jour</a>
+                                    <a class="btn-warning btn-sm" href="{{m.update_person_url}}"><em class="fa fa-edit"></em> Mise à jour</a>
                                 {% else %}
-                                    <a class="btn-info btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ajouter</a>
+                                    <a class="btn-info btn-sm" href="{{m.add_person_url}}"><em class="fa fa-plus"></em> Ajouter</a>
                                 {% endif %}
-                                <a class="btn-danger btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-plus-circle"></em> Ignorer</a>
-                                Membre : <span class="badge badge-light">{{m.membre_nom}} {{m.membre_prenom}}</span></th>
+                            </th>
                         </thead>
-                        <tbody class="">
+                        <tbody>
                             <tr><th>Progres individuel</th> <td><span class="badge badge-dark">{{m.num_progres_individuel}}</span></td></tr>
                             <tr><th>Lien</th> <td>{{m.membre_lien}}</td></tr>
                             <tr><th>Sexe</th> <td>{{m.membre_sexe}}</td></tr>

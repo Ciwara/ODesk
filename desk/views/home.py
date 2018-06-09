@@ -41,8 +41,10 @@ def index(request):
 def home(request, *args, **kwargs):
     context = {}
     prov = Provider.objects.get(username=request.user.username)
-    if has_role(prov, [DeskAdmin, DeskAssistantAdmin, DNDSTech]):
+    if has_role(prov, [DeskAdmin, DNDSTech]):
         return render(request, 'home.html', context)
+    if has_role(prov, [DeskAssistantAdmin]):
+        return redirect("controle")
     if prov.project.slug == "hcr":
         return redirect("dashboard_rep")
     if prov.project.slug == "oim":

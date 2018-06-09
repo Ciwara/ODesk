@@ -6,7 +6,7 @@ import logging
 
 from django.db import models
 
-from mptt.models import MPTTModel, TreeForeignKey
+from mptt.models import TreeForeignKey
 from desk.models import Provider, Entity
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class RegistrationSManager(models.Manager):
     def get_queryset(self):
         return super(RegistrationSManager, self).get_queryset(
-        ).filter(confirmed=False)
+        ).filter(confirmed=False, deactivate=False)
 
 
 class RegistrationSite(models.Model):
@@ -34,8 +34,8 @@ class RegistrationSite(models.Model):
     confirme_objects = RegistrationSManager()
 
     def __str__(self):
-        return "{name} / {locality}".format(
-            name=self.name, locality=self.locality)
+        return "{slug} ({name}) / {locality}".format(
+            name=self.name, locality=self.locality, slug=self.slug)
 
     def active(self):
         return self.filter(active=True)

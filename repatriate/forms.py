@@ -12,7 +12,8 @@ from repatriate.person_checks import (
     requise_num_progres_individuel)
 from repatriate.target_checks import (
     invalide_num_progres_menage, not_empty_num_progres_menage_alg,
-    invalide_num_tel, no_doc_with_num_pm, requise_num_progres_menage)
+    invalide_num_tel, no_doc_with_num_pm, requise_num_progres_menage,
+    site_not_existe)
 from repatriate.models import Person, Target
 
 
@@ -41,14 +42,19 @@ class SearchForm(forms.Form):
 
 class TargetForm(forms.ModelForm):
 
+    identifier = forms.CharField(
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+
     class Meta:
         model = Target
         exclude = []
         fields = [
+            'identifier',
+            'site_engistrement',
             'date_arrivee',
             'chef_doc',
-            'site_engistrement',
-            'nu_enregistrement',
+            'num_enregistrement',
             'pays_asile',
             'num_progres_menage',
             'point_de_entree',
@@ -62,8 +68,15 @@ class TargetForm(forms.ModelForm):
             input_formats=('%m/%d/%Y', )
         )
 
-    def clean_num_progres_menage(self):
+    def clean_site_engistrement(self):
+        site_engistrement = self.cleaned_data.get('site_engistrement')
+        if site_not_existe(site_engistrement):
+            print("site_not_existe")
+            raise ValidationError(
+                "Ce site est non attribué ou valider.")
+        return self.cleaned_data.get('site_engistrement')
 
+    def clean_num_progres_menage(self):
         num_progres_menage = self.cleaned_data.get('num_progres_menage')
         chef_doc = self.cleaned_data.get('chef_doc')
         pays_asile = self.cleaned_data.get('pays_asile')
@@ -89,10 +102,14 @@ class TargetForm(forms.ModelForm):
 
 
 class FixedPersonForm(forms.ModelForm):
+    identifier = forms.CharField(
+        widget=forms.TextInput(attrs={'readonly':'readonly'})
+    )
 
     class Meta:
         model = Person
         fields = [
+            'identifier',
             'membre_nom',
             'membre_prenom',
             'membre_sexe',
@@ -104,11 +121,15 @@ class FixedPersonForm(forms.ModelForm):
             'num_progres_individuel',
             'membre_vulnerabilite',
             'dispo_doc_etat_civil',
+            'membre_document',
             'num_acte_naissance',
             'num_acte_mariage',
-            'num_carte_nina',
+            'scan_nina',
+            'saisie_nina',
+            'scan_passeport_biometric',
+            'saisie_passeport_biometric',
             'num_carte_identite_national',
-            'num_passeport',
+            'num_carte_consulaire',
             'nom_pere',
             'prenom_pere',
             'profession_pere',
@@ -128,13 +149,14 @@ class FixedPersonForm(forms.ModelForm):
 
     def clean_num_progres_individuel(self):
         num_progres_individuel = self.cleaned_data.get('num_progres_individuel')
+        identifier = self.cleaned_data.get('identifier')
+        pn = Person.objects.get(identifier=identifier)
 
-        if no_doc_with_num_pi(num_progres_individuel):
+        if no_doc_with_num_pi(pn, num_progres_individuel):
             raise ValidationError("Un sans document ne peut avoir un numéro progres")
 
-        if requise_num_progres_individuel(num_progres_individuel):
+        if requise_num_progres_individuel(pn, num_progres_individuel):
             raise ValidationError("Numéro progres individuel est obligatoire.")
 
         if invalide_num_progres_individuel(num_progres_individuel):
             raise ValidationError("Numéro progres individuel invalide [XXX-YYYYYYYY]")
-

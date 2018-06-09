@@ -21,7 +21,8 @@ from repatriate.models import RegistrationSite
 
 from repatriate.target_checks import (
     invalide_num_progres_menage, requise_num_progres_menage, invalide_num_tel,
-    not_empty_num_progres_menage_alg, no_doc_with_num_pm, num_pm_existe)
+    not_empty_num_progres_menage_alg, no_doc_with_num_pm, num_pm_existe,
+    site_not_existe)
 
 logger = logging.getLogger(__name__)
 
@@ -265,7 +266,8 @@ class Target(models.Model):
     validated_by = models.ForeignKey(
         Provider, null=True, blank=True, verbose_name=_("Validated By"),
         related_name='repat_own_validated_reports')
-
+    duration = models.IntegerField(default=0)
+    submission_time = models.DateTimeField("Date de soumission", null=True, blank=True)
     identifier = models.CharField(max_length=100, primary_key=True)
     collect = models.ForeignKey('Collect', related_name='targets')
     instance_id = models.CharField(max_length=100)
@@ -275,7 +277,7 @@ class Target(models.Model):
     debut = models.DateTimeField(default=timezone.now)
     fin = models.DateTimeField(default=timezone.now)
     nom_agent = models.CharField("Nom de l'agent", blank=True, max_length=100)
-    nu_enregistrement = models.CharField(
+    num_enregistrement = models.CharField(
         "Numéro d'enregistrement", blank=True, max_length=100)
     site_engistrement = models.ForeignKey(
         RegistrationSite, verbose_name="Site d'enregestrement",
@@ -319,8 +321,8 @@ class Target(models.Model):
         max_length=20, blank=True, null=True, choices=HEBERGEMENTS.items())
     type_hebergement_other = models.CharField(
         null=True, blank=True, max_length=100)
-    membre_pays = models.BooleanField(default=True)
     nb_membre = models.IntegerField(null=True, blank=True, default=0)
+    membre_pays = models.BooleanField(default=True)
     nbre_membre_reste = models.IntegerField(null=True, blank=True, default=0)
     # Sante_Appuipyschosocial
     etat_sante = models.BooleanField(default=True)
@@ -365,9 +367,6 @@ class Target(models.Model):
     is_invalide_num_progres_menage = models.BooleanField(default=True)
     is_not_empty_num_progres_menage_alg = models.BooleanField(default=True)
     is_invalide_num_tel = models.BooleanField(default=True)
-    is_zero_member = models.BooleanField(default=True)
-    # is_many_chef_menage = models.BooleanField(default=True)
-    # is_no_chef_manage = models.BooleanField(default=True)
     is_no_doc_with_num_pm = models.BooleanField(default=True)
     is_site_not_existe = models.BooleanField(default=True)
     # is_num_pm_existe = models.BooleanField(default=True)
@@ -383,7 +382,7 @@ class Target(models.Model):
                 self.is_invalide_num_progres_menage or
                 self.is_not_empty_num_progres_menage_alg or
                 self.is_invalide_num_tel or
-                self.is_zero_member or
+                # self.is_zero_member or
                 self.is_no_doc_with_num_pm or
                 self.is_site_not_existe)
 
@@ -392,6 +391,9 @@ class Target(models.Model):
 
     def get_absolute_url(self):
         return reverse('correction_target', kwargs={'id': self.identifier})
+
+    def end_merge_url(self):
+        return reverse('end_merge_target', kwargs={'id': self.identifier})
 
     @property
     def type_assistance(self):
@@ -402,6 +404,7 @@ class Target(models.Model):
         return OrganizationTarget.objects.filter(target=self).all()
 
     def name(self):
+        # return self.num_progres_menage
         return "{site} - {num_p_m}".format(
             site=self.site_engistrement.name.upper(),
             num_p_m=self.num_progres_menage)
@@ -436,7 +439,6 @@ class Target(models.Model):
         if not self.identifier:
             self.identifier = self.instance_id
 
-        self.is_zero_member = self.zero_member()
         self.is_requise_num_progres_menage = requise_num_progres_menage(
             self.pays_asile, self.num_progres_menage)
         self.is_invalide_num_progres_menage = invalide_num_progres_menage(
@@ -446,7 +448,7 @@ class Target(models.Model):
             self.pays_asile, self.num_progres_menage)
         self.is_no_doc_with_num_pm = no_doc_with_num_pm(
             self.chef_doc, self.num_progres_menage)
-        self.is_site_not_existe = self.site_not_existe()
+        self.is_site_not_existe = site_not_existe(self.site_engistrement)
         num_pm_existe(self)
         super(Target, self).save(*args, **kwargs)
 
@@ -610,10 +612,6 @@ class Target(models.Model):
     # def num_pm_existe(self):
     #     return self.same_num_pm().count() > 0
 
-    def site_not_existe(self):
-        return RegistrationSite.objects.filter(
-            deactivate=False, confirmed=True,
-            slug=self.site_engistrement).count() != 0
 
 
 # models.signals.post_save.connect(checker, sender=Target)

@@ -1,16 +1,21 @@
 {% extends "base_admin.html" %}
 {% load staticfiles i18n permission_tags widget_tweaks %}
 {% block title %} {% trans "Controle" %}{% endblock %}
-
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
 {% block content %}
-    <h4>
-        {% if user|has_role:'desk_assistant_admin,desk_admin' %}
-            Assistant(e) Admin
-        {% else %}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <h6>
+        {% if user|has_role:'desk_controle' %}
             Desk Contôle de {{user.site}}
         {% endif %}
-    </h4>
+        {% if user|has_role:'desk_assistant_admin' %}
+            Assistant(e) Admin
+        {% endif %}
+        {% if user|has_role:'dnds_tech,desk_admin' %}
+            Administrateur
+        {% endif %}
+    </h6>
     <div class="row">
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <table class="table table-sm table-bordered" style="text-align: center;">
@@ -67,7 +72,7 @@
                         <i class="fa fa-spinner fa-spin fa-1x fa-fw" aria-hidden="true"></i> Contôle doublons</th>
                         </thead>
                     <tbody class="">
-                        <tr class=""><th colspan="2">Numéro progres ménage existe.</th></tr>
+                        <tr class="table-warning"><th colspan="2">Numéro progres ménage existe.</th></tr>
                         {% if d_progres_m %}
                             {% for dt in d_progres_m %}
                                 <tr class="alert-secondary">
@@ -90,12 +95,6 @@
                                 </tr>
                             {% endfor %}
                         {% endif %}
-
-                        <tr><th colspan="3"> Site non attribué.</th></tr>
-                        {% for el in site_not_existe %}
-                            <tr class="table-warning"><th>{{el.site_engistrement}}</th><td>Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
-                              <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
-                        {% endfor %}
                       </tbody>
                 </table>
             </div>
@@ -108,23 +107,29 @@
                         <i class="fa fa-spinner fa-spin fa-1x fa-fw" aria-hidden="true"></i> Contôle de qualité </th>
                     </thead>
                     <tbody >
-                        {% if invalide_num_progres_menage %}
+                        <tr class="table-warning"><th colspan="3"> Site non attribué.</th></tr>
+                            {% for el in site_not_existe %}
+                            <tr>
+                                <td><span class="badge badge-danger">{{el.site_engistrement}}</span></td>
+                                <td><span class="badge badge-secondary"></span>
+                                    Enquête faite par <b> {{el.nom_agent}}</b> le{{el.date_entretien}} <span class="badge badge-dark"><i class="fa fa-phone"></i> {{el.tel}}</span>
+                                </td>
+                                <td><a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td>
+                            </tr>
+                        {% endfor %}
                         <tr class="table-warning"><th colspan="3">Numéro progres ménage invalide.</th></tr>
-                            {% for el in invalide_num_progres_menage %}
-                                <tr><th><span class="badge badge-danger">{{el.num_progres_menage}}</span></th><td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}} à <b>{{el.site_engistrement}}</b></td><td>
-                                <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
-                            {% endfor %}
-                        {% endif %}
-                        {% if invalide_num_pi %}
-                            <tr class="table-warning"><th colspan="3">Numéro progres individuel invalide.</th></tr>
-                            {% for el in invalide_num_pi %}
-                                <tr><th><span class="badge badge-danger">{{el.num_progres_individuel}}</span></th><td> <span class="badge badge-secondary">{{el.membre_nom}} {{el.membre_prenom}}</span> Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}} à <b>{{el.target.site_engistrement}}.</b></td><td>
-                                <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
-                            {% endfor %}
-                        {% endif %}
+                        {% for el in invalide_num_progres_menage %}
+                            <tr><th><span class="badge badge-danger">{{el.num_progres_menage}}</span></th><td>Enquête faite par <b> {{el.nom_agent }}</b>  le {{el.date_entretien}} à <b>{{el.site_engistrement}}</b></td><td>
+                            <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                        {% endfor %}
+                        <tr class="table-warning"><th colspan="3">Numéro progres individuel invalide.</th></tr>
+                        {% for el in invalide_num_pi %}
+                            <tr><th><span class="badge badge-danger">{{el.num_progres_individuel}}</span></th><td> <span class="badge badge-secondary">{{el.membre_nom}} {{el.membre_prenom}}</span> Enquête faite par <b> {{el.target.nom_agent }} </b>  le {{el.target.date_entretien}} à <b>{{el.target.site_engistrement}}.</b></td><td>
+                            <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
+                        {% endfor %}
                         <tr class="table-warning"><th colspan="3">Numéro progres ménage avec le pays d'asile Algerie.</th></tr>
                         {% for el in not_empty_num_progres_menage_alg %}
-                            <tr><th></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
+                            <tr><th><span class="badge badge-danger">{{el.num_progres_menage}}</span></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
                               <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
                         <tr class="table-warning"><th colspan="3">Numéro de téléphone non valide.</th></tr>
@@ -132,21 +137,27 @@
                             <tr><th><span class="badge badge-danger">{{el.tel}}</span></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
                               <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
+                        {% if zero_member %}
                         <tr class="table-warning"><th colspan="3">Ménage sans membre.</th></tr>
                         {% for el in zero_member %}
                             <tr><th></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
                               <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
+                        {% endif %}
+                        {% if many_chef_menage %}
                         <tr class="table-warning"><th colspan="3">Ménage avec plusieurs chef.</th></tr>
                         {% for el in many_chef_menage %}
                             <tr><th></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
                               <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
+                        {% endif %}
+                        {% if no_chef_manage %}
                         <tr class="table-warning"><th colspan="3">Ménage sans chef.</th></tr>
                         {% for el in no_chef_manage %}
                             <tr><th></th><td> Enquête faite par <b> {{el.nom_agent }} </b>  le {{el.date_entretien}}</td><td>
                               <a class="btn btn-warning btn-sm" href="{{el.get_absolute_url}}"><em class="fa fa-check-circle "></em> Corriger</a></td></tr>
                         {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>

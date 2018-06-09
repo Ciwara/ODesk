@@ -99,9 +99,9 @@ class TargetAdmin(admin.ModelAdmin):
     model = Target
 
     list_display = ('identifier', 'site_engistrement', 'num_progres_menage', 'validation_status',
-                    'pays_asile', 'site_engistrement', 'camp')
+                    'pays_asile', 'site_engistrement', 'submission_time', 'date_entretien', 'camp')
     list_filter = [
-        'is_zero_member', 'is_requise_num_progres_menage',
+        'is_requise_num_progres_menage',
         'is_invalide_num_progres_menage', 'is_invalide_num_tel',
         'is_not_empty_num_progres_menage_alg', 'is_no_doc_with_num_pm',
         'is_site_not_existe', 'beneficiez_lassistance', 'abris', 'membre_pays',

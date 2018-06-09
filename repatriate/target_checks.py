@@ -27,9 +27,9 @@ def num_pm_existe(instance):
 
 
 def site_not_existe(site_engistrement):
-    return RegistrationSite.objects.filter(
-        deactivate=False, confirmed=True, slug=site_engistrement
-    ).count() != 0
+    if site_engistrement.deactivate or not site_engistrement.confirmed:
+        return True
+    return False
 
 
 def no_doc_with_num_pm(chef_doc, num_progres_menage):

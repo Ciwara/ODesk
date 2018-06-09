@@ -175,6 +175,7 @@ class Person(models.Model):
     target = models.ForeignKey('Target', related_name='targets')
     membre_nom = models.CharField(blank=True, null=True, max_length=100)
     membre_prenom = models.CharField(blank=True, null=True, max_length=100)
+    membre_photo = models.CharField(blank=True, null=True, max_length=100)
     membre_sexe = models.CharField(
         blank=True, null=True, choices=GENDERS.items(), max_length=20)
     membre_ddn = models.DateField(blank=True, null=True)
@@ -185,14 +186,26 @@ class Person(models.Model):
         "Niveau scolaire", choices=Niveau.items(), blank=True, null=True, max_length=100)
     num_progres_individuel = models.CharField(blank=True, null=True, max_length=100)
     membre_vulnerabilite = models.BooleanField(default=False)
+    besoin_specifique = models.CharField(max_length=50, blank=True, null=True)
+    sub_besoin = models.CharField(max_length=50, blank=True, null=True)
     dispo_doc_etat_civil = models.BooleanField(default=False)
+
     # info-etat-civil-dispo
-    num_acte_naissance = models.CharField(blank=True, null=True, max_length=100)
-    num_acte_mariage = models.CharField(blank=True, null=True, max_length=100)
-    num_carte_nina = models.CharField(blank=True, null=True, max_length=100)
-    num_carte_identite_national = models.CharField(
-        blank=True, null=True, max_length=100)
-    num_passeport = models.CharField(blank=True, null=True, max_length=100)
+    membre_document = models.CharField(blank=True, null=True, max_length=50)
+    num_acte_naissance = models.CharField(blank=True, null=True, max_length=50)
+    photo_acte_adn = models.CharField(blank=True, null=True, max_length=50)
+    num_acte_mariage = models.CharField(blank=True, null=True, max_length=50)
+    photo_acte_mariage = models.CharField(blank=True, null=True, max_length=50)
+    scan_nina = models.CharField(blank=True, null=True, max_length=50)
+    saisie_nina = models.CharField(blank=True, null=True, max_length=50)
+    scan_passeport_biometric = models.CharField(blank=True, null=True, max_length=50)
+    saisie_passeport_biometric = models.CharField(blank=True, null=True, max_length=50)
+    photo_passeport = models.CharField(blank=True, null=True, max_length=50)
+    num_carte_identite_national = models.CharField(blank=True, null=True, max_length=50)
+    photo_carte_identite_national = models.CharField(blank=True, null=True, max_length=50)
+    num_carte_consulaire = models.CharField(blank=True, null=True, max_length=50)
+    photo_carte_consulaire = models.CharField(blank=True, null=True, max_length=50)
+
     # info-etat-civil-non-dispo
     raison_non_dispo = models.CharField(
         null=True, blank=True, choices=RAISON_DOC_NON_DISPO.items(), max_length=50)
@@ -200,16 +213,17 @@ class Person(models.Model):
         blank=True, null=True, max_length=100)
     partage_info_perso = models.BooleanField(default=False)
     # info-etablissement-docu
-    # year_ddn = models.IntegerField(blank=True, null=True)
     naissance_region = models.CharField(blank=True, null=True, max_length=100)
     naissance_cercle = models.CharField(blank=True, null=True, max_length=100)
     naissance_commune = models.CharField(blank=True, null=True, max_length=100)
     # info-parents
+    # parents-p
     nom_pere = models.CharField(blank=True, null=True, max_length=100)
     prenom_pere = models.CharField(blank=True, null=True, max_length=100)
     profession_pere = models.CharField(blank=True, null=True, max_length=100)
     niveau_education_pere = models.CharField(
         choices=Niveau.items(), blank=True, null=True, max_length=100)
+    # parents-m
     nom_mere = models.CharField(blank=True, null=True, max_length=100)
     prenom_mere = models.CharField(blank=True, null=True, max_length=100)
     profession_mere = models.CharField(blank=True, null=True, max_length=100)
@@ -221,6 +235,7 @@ class Person(models.Model):
         blank=True, null=True, choices=CENTRE_ETAT_CIVIL.items(), max_length=100)
     centre_etat_civil_other = models.CharField(blank=True, null=True, max_length=100)
     au_moins_deux_temoins = models.BooleanField(default=False)
+    # # les-temoins
     referer = models.BooleanField(default=False)
     a_qui = models.CharField(
         blank=True, null=True, choices=REFERENCE.items(), max_length=100)
@@ -248,6 +263,12 @@ class Person(models.Model):
     def get_absolute_url(self):
         return reverse('correction_person', kwargs={'id': self.identifier})
 
+    def update_person_url(self):
+        return reverse('update_person_url', kwargs={'id': self.identifier})
+
+    def add_person_url(self):
+        return reverse('add_person_url', kwargs={'id': self.identifier})
+
     def les_temoins(self):
         return ContactTemoin.objects.filter(person=self).all()
 
@@ -266,8 +287,7 @@ class Person(models.Model):
             identifier = "0000"
         return "S{s}{d}{id}".format(
             s=self.target.site_engistrement.slug,
-            d="{}{}".format(self.target.date.split("-")[0],
-                            self.target.date.split("-")[1]),
+            d=self.target.date_entretien.strftime("%Y%m"),
             id=self.add(identifier, "1"))
 
     def add(self, x, y):
@@ -301,7 +321,8 @@ class Person(models.Model):
         self.is_not_empty_num_pi_alg = self.not_empty_num_pi_alg()
         self.is_vrf_wihtout_num_pi = self.vrf_wihtout_num_pi()
         self.is_doublon_pm_pi = self.num_pi_existe()
-        self.is_sans_doc_avec_num_pi = no_doc_with_num_pi(self.num_progres_individuel)
+        self.is_sans_doc_avec_num_pi = no_doc_with_num_pi(
+            self, self.num_progres_individuel)
 
         super(Person, self).save(*args, **kwargs)
 
