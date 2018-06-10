@@ -20,9 +20,9 @@ from repatriate.models import Person, Target
 class SearchFormPerPeriod(forms.Form):
 
     start_date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker form-control', 'size': '10'}))
+        widget=forms.DateInput(attrs={'class': 'datepicker-p form-control', 'size': '10'}))
     end_date = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'datepicker form-control', 'size': '10'}))
+        widget=forms.DateInput(attrs={'class': 'datepicker-p form-control', 'size': '10'}))
 
 
 class SearchForm(forms.Form):
@@ -46,27 +46,26 @@ class TargetForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'readonly': 'readonly'})
     )
 
+    date_arrivee = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control'}))
+
     class Meta:
         model = Target
         exclude = []
         fields = [
             'identifier',
+            'pays_asile',
+            'chef_doc',
+            'num_progres_menage',
             'site_engistrement',
             'date_arrivee',
-            'chef_doc',
             'num_enregistrement',
-            'pays_asile',
-            'num_progres_menage',
             'point_de_entree',
             'num_doc',
             'tel',
             'tel2'
         ]
-
-        date_arrivee = forms.DateField(
-            widget=forms.DateInput(format='%m/%d/%Y'),
-            input_formats=('%m/%d/%Y', )
-        )
 
     def clean_site_engistrement(self):
         site_engistrement = self.cleaned_data.get('site_engistrement')
@@ -82,6 +81,7 @@ class TargetForm(forms.ModelForm):
         pays_asile = self.cleaned_data.get('pays_asile')
 
         if not_empty_num_progres_menage_alg(pays_asile, num_progres_menage):
+            print(pays_asile, num_progres_menage)
             raise ValidationError("Algerie n'a pas de numéro progres menage.")
 
         if no_doc_with_num_pm(chef_doc, num_progres_menage):
@@ -106,19 +106,22 @@ class FixedPersonForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'readonly':'readonly'})
     )
 
+    membre_ddn = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control', 'size': '10',
+                   'format': "dd/mm/yyyy"}))
+
     class Meta:
         model = Person
         fields = [
             'identifier',
+            'num_progres_individuel',
             'membre_nom',
             'membre_prenom',
             'membre_sexe',
             'membre_ddn',
-            'membre_age',
-            'membre_age_mois',
             'membre_lien',
             'membre_scolaire',
-            'num_progres_individuel',
             'membre_vulnerabilite',
             'dispo_doc_etat_civil',
             'membre_document',

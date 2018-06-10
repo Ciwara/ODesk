@@ -7,7 +7,7 @@
 {% block content %}
     {% include "_message.html" with msg=target_form.errors %}
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
             <form class="form-horizontal" method="post">{% csrf_token %}
                 <legend>Correction de l'enregistrement de l'agent <b>{{selected_target.nom_agent}}</b> du site <b>{{selected_target.site_engistrement}}</b></legend>
                 {{ target_form|as_bootstrap }}
@@ -16,7 +16,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <h3>Helper</h3>
         </div>
     </div>

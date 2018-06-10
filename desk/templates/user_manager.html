@@ -1,33 +1,33 @@
 {% extends "base_admin.html" %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n humanize %}
 {% block content %}
-    <h1>Gestion des utilisateurs</h1>
-    <hr>
+    <h6>Gestion des utilisateurs</h6>
     <div>
-        <a class="btn btn-secondary" href="{% url 'user_new' %}"><em class="fa fa-user-plus"></em> Nouvel utilisation</a>
+        <a class="btn btn-secondary" href="{% url 'user_new' %}"><em class="fa fa-user-plus"></em> Nouvel utilisateur</a>
     </div>
+    <hr>
     <table class="table table-striped table-bordered">
         <thead class="thead-msah">
             <tr>
                 <th>Compte</th>
-                <th>Nom complete</th>
+                <th>Rôles</th>
                 <th>Contacts</th>
                 <th>Projets</th>
                 <th>Status</th>
+                <th>Dernière connexion</th>
             </tr>
         </thead>
         {% for member in members %}
             <tr>
-                <td><a class="btn btn-sm btn-secondary" href="{{member.edite_url}}">{{member}}</a></td>
-                <td>{{member.get_full_name}}</td>
-                <td>
-                    {%if member.email %}<span class="badge badge-dark"><em class="fa fa-envelope"></em> {{member.email}}</span>{% endif %}
+                <td><a class="badge badge-info" href="{{member.edite_url}}">{{member.username}} / {{member.get_title_full_name}}</a></td>
+                <td>{{member.get_roles}}</td>
+                <td>{%if member.email %}<span class="badge badge-dark"><em class="fa fa-envelope"></em> {{member.email}}</span>{% endif %}
                     <span class="badge badge-dark">
-                        <em class="fa fa-phone"> </em> {{member.phone}} {%if member.phone2 %} / {{member.phone2}} {% endif %}
-                    </span>
+                        <em class="fa fa-phone"> </em> {{member.phone}} {%if member.phone2 %} / {{member.phone2}} {% endif %}</span>
                 </td>
                 <td> {{ member.project }}</td>
                 <td> {% if member.is_active %}<em class="fa fa-check-circle "></em>{% else %} {% endif %}</td>
+                <td>{{member.access_since|naturaltime}}</td>
             </tr>
         {% endfor %}
     </table>

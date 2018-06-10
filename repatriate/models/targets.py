@@ -126,17 +126,6 @@ class Target(models.Model):
         NOT_APPLICABLE: _("N/a")
     }
 
-    MALE = 'masculin'
-    FEMALE = 'female'
-    GENDERS = OrderedDict([
-        (MALE, "Masculin"),
-        (FEMALE, "Feminin")
-    ])
-    SEXES = OrderedDict([
-        (MALE, "Homme"),
-        (FEMALE, "Femme")
-    ])
-
     AI = "activite-indiv"
     AG = "activite-groupe"
     IEDE = "integre-entreprise"
@@ -382,7 +371,6 @@ class Target(models.Model):
                 self.is_invalide_num_progres_menage or
                 self.is_not_empty_num_progres_menage_alg or
                 self.is_invalide_num_tel or
-                # self.is_zero_member or
                 self.is_no_doc_with_num_pm or
                 self.is_site_not_existe)
 
@@ -406,12 +394,8 @@ class Target(models.Model):
     def name(self):
         # return self.num_progres_menage
         return "{site} - {num_p_m}".format(
-            site=self.site_engistrement.name.upper(),
+            site=self.tel,
             num_p_m=self.num_progres_menage)
-
-    @property
-    def verbose_sex(self):
-        return self.SEXES.get(self.gender)
 
     @property
     def dataset(self):
@@ -451,6 +435,14 @@ class Target(models.Model):
         self.is_site_not_existe = site_not_existe(self.site_engistrement)
         num_pm_existe(self)
         super(Target, self).save(*args, **kwargs)
+
+    def delete(self):
+        self.deleted = True
+        self.save()
+
+    def restory(self):
+        self.deleted = False
+        self.save()
 
     def attachments(self):
 
@@ -585,7 +577,7 @@ class Target(models.Model):
 
     def get_membres(self):
         from repatriate.models import Person
-        return Person.objects.filter(target=self)
+        return Person.objects.filter(target=self, deleted=False)
 
     # Check functions
 

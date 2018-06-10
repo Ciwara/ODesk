@@ -326,6 +326,14 @@ class Person(models.Model):
 
         super(Person, self).save(*args, **kwargs)
 
+    def delete(self):
+        self.deleted = True
+        self.save()
+
+    def restory(self):
+        self.deleted = False
+        self.save()
+
     @property
     def validated(self):
         return (self.is_invalide_num_pi or

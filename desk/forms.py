@@ -5,10 +5,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-# from tinymce.widgets import TinyMCE
-# from django.utils.translation import ugettext_lazy as _
-
-# from functools import partial
+from django.contrib.auth.models import Group
 
 from desk.models import (Provider)
 
@@ -48,19 +45,12 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = Provider
         fields = ('username', 'gender', 'title', 'first_name', 'last_name',
-                  'phone', 'phone2', 'project', 'email',)
+                  'phone', 'phone2', 'project', 'email', 'groups')
         # exclude = ['email']
 
-        widgets = {
-            'full_name': forms.TextInput(attrs={
-                'placeholder': "Nom et prénom"}),
-            # 'date_of_birth': forms.TextInput(
-            #     attrs={'placeholder': "Date", 'class': 'datepicker'}),
-        }
+        # widgets = {
+        # }
 
-    # username = forms.CharField(max_length=255, required=True)
-    # phone = forms.IntegerField(label="Téléphone")
-    # phone2 = forms.IntegerField(label="Téléphone 2")
     password1 = forms.CharField(
         label='Mot de passe', widget=forms.PasswordInput)
     password2 = forms.CharField(
@@ -77,7 +67,8 @@ class UserCreationForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
+            raise forms.ValidationError(
+                "Les mots de passe ne correspondent pas")
         return password2
 
     def save(self, commit=True):
@@ -101,7 +92,7 @@ class UserChangeForm(forms.ModelForm):
         model = Provider
 
         fields = ('title', 'first_name', 'last_name', 'gender',
-                  'email', 'phone', 'phone2', 'project', 'email', 'is_active')
+                  'email', 'phone', 'phone2', 'project', 'email', 'groups', 'is_active')
         exclude = ['is_admin', "password"]
 
     # def clean_password(self):

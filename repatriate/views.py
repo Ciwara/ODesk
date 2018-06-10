@@ -17,9 +17,8 @@ from OIMDesk.roles import (
 from desk.models import Provider
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
-from repatriate.models import (
-    Person, Target, DuplicateProgresMenage,
-    RegistrationSiteProvider, RegistrationSite)
+from repatriate.models import (Person, Target, DuplicateProgresMenage,
+                               RegistrationSiteProvider)
 
 
 @login_required
@@ -57,14 +56,18 @@ def dashboard(request):
         'data': [i.get('instance_id__count') for i in s]
     }
     menage_per_date_entrtien = {
-        'categories': [i.get('target__date_entretien').strftime('%d-%b-%y') for i in date_entre],
+        'categories': [i.get('target__date_entretien').strftime(
+            '%d-%b-%y') for i in date_entre],
         'text': "Nombre de retourné",
         'title': "Nombre total retourné par date arrivée.",
         'type': "line",
         'series': [
-            {"name": "Total", "data": [i.get('identifier__count') for i in date_entre]},
-            {"name": "Total homme", "data": [i.get('identifier__count') for i in date_entre_m]},
-            {"name": "Total femme", "data": [i.get('identifier__count') for i in date_entre_f]}]
+            {"name": "Total", "data": [i.get(
+                'identifier__count') for i in date_entre]},
+            {"name": "Total homme", "data": [i.get(
+                'identifier__count') for i in date_entre_m]},
+            {"name": "Total femme", "data": [i.get(
+                'identifier__count') for i in date_entre_f]}]
     }
 
     context = {"srv": srv,
@@ -85,11 +88,9 @@ def desk_controle(request):
     template = loader.get_template('repatriate/desk_controle.html')
 
     prov = Provider.objects.get(username=request.user.username)
-    sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
+    sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(
+        provider=prov)]
     context = {"user": prov}
-    print(prov)
-    print(has_role(prov, [DeskControle]))
-    print(has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]))
     if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
@@ -105,7 +106,8 @@ def desk_controle(request):
         period_form = SearchFormPerPeriod(request.POST or None)
         date_s = request.POST.get('start_date').replace("/", "-")
         date_e = request.POST.get('end_date').replace("/", "-")
-        return redirect("export-xls/{start}/{end}".format(start=date_s, end=date_e))
+        return redirect("export-xls/{start}/{end}".format(
+            start=date_s, end=date_e))
     else:
         period_form = SearchFormPerPeriod()
     context.update({'period_form': period_form})
@@ -260,8 +262,9 @@ def end_merge_target(request, *args, **kwargs):
     dup.fixed = True
     dup.save()
     target = dup.new_target
-    target.deleted = True
-    target.save()
+    target.delete()
+    for m in target.get_membres():
+        m.delete()
     messages.success(request, 'a été add avec succès')
     return redirect('controle')
 
@@ -285,6 +288,7 @@ def merge_update(request, *args, **kwargs):
     new_pn = Person.active_objects.get(identifier=identifier)
     dup = DuplicateProgresMenage.not_fix_objects.get(new_target=new_pn.target)
     old_pn = dup.old_target
+    # Supression du remplacer.
     for u in old_pn.get_membres():
         if u.num_progres_individuel == new_pn.num_progres_individuel:
             new_pn.target = old_pn

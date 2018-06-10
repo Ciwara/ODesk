@@ -74,7 +74,7 @@ def not_empty_num_progres_menage_alg(pays_asile, num_progres_menage):
 
 def many_chef_menage(instance):
     from repatriate.models import Person
-    if Person.objects.filter(target=instance, membre_lien="chef_de_famille").count() > 1:
+    if Person.active_objects.filter(target=instance, membre_lien="chef_de_famille").count() > 1:
         return True
     return False
 

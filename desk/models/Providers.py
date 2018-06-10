@@ -18,8 +18,8 @@ from django.core.urlresolvers import reverse
 from desk.models.common import ActiveManager
 from desk.models.Entities import Entity
 
-from rolepermissions.roles import get_user_roles, assign_role
-from OIMDesk.roles import Guest
+from rolepermissions.roles import get_user_roles
+# from repatriate.models import RegistrationSite
 
 
 class Project(models.Model):
@@ -81,25 +81,21 @@ class Provider(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(
         _("username"), max_length=50, primary_key=True,
-        help_text=_("Required. 50 characters or fewer. "
-                    "Letters, numbers and @/./+/-/_ characters"),
+        help_text=_("Champs obligatoires. 50 caractères ou moins. "
+                    "Lettres, chiffres et caractères @ /. / + / - / _"),
         validators=[validators.RegexValidator(re.compile("^[\w.@+-]+$"),
                     _("Enter a valid username."), "invalid")])
 
-    gender = models.CharField(max_length=30,
-                              choices=GENDERS.items(),
-                              default=UNKNOWN,
-                              verbose_name=_("Gender"))
-    title = models.CharField(max_length=50,
-                             choices=TITLES.items(),
-                             blank=True, null=True,
-                             verbose_name=_("Title"))
+    gender = models.CharField(max_length=30, choices=GENDERS.items(),
+                              default=UNKNOWN, verbose_name=_("Sexe"))
+    title = models.CharField(max_length=50, choices=TITLES.items(),
+                             blank=True, null=True, verbose_name=_("Titre"))
     first_name = models.CharField(max_length=100, blank=True, null=True,
-                                  verbose_name=_("First Name"))
+                                  verbose_name=_("Prénom"))
     middle_name = models.CharField(max_length=100, blank=True, null=True,
                                    verbose_name=_("Middle Name"))
     last_name = models.CharField(max_length=100, blank=True, null=True,
-                                 verbose_name=_("Last Name"))
+                                 verbose_name=_("Nom"))
     maiden_name = models.CharField(max_length=100, blank=True, null=True,
                                    verbose_name=_("Maiden Name"))
     position = models.CharField(max_length=250, blank=True, null=True,
@@ -108,8 +104,10 @@ class Provider(AbstractBaseUser, PermissionsMixin):
                                         verbose_name=_("Access Since"))
     email = models.EmailField(_("email address"), blank=True, null=True)
     phone = models.IntegerField("Téléphone", default=0)
-    phone2 = models.IntegerField("Téléphone 2", null=True, blank=True)
+    phone2 = models.IntegerField("Téléphone 2", default=0)
     project = models.ForeignKey("Project", related_name='projects')
+    # site = models.ManyToManyField(RegistrationSite, null=True, blank=True)
+
     is_staff = models.BooleanField(
         _("staff status"), default=False,
         help_text=_("Designates whether the user can "
