@@ -35,7 +35,7 @@
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% if not user.is_anonymous %}
-                        <a href=""><button class="dropdown-item" type="button"> <em class="fa fa-edit"></em> Paramètres</button></a>
+                        <a href="{% url 'change_password' %}"><button class="dropdown-item" type="button"> <em class="fa fa-edit"></em> Modifier le mot de passe.</button></a>
                         <div class="dropdown-divider"></div>
                         <a href="{% url 'logout' %}"><button class="dropdown-item" type="button"><span class="fa fa-sign-out"></span> Déconnexion</button></a>
                     {% else %}

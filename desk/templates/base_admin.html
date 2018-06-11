@@ -96,13 +96,16 @@
     <body class="fixed-nav sticky-footer bg-msah sidenav-toggled" id="page-top">
         <div class="content-wrapper">
             <div class="container-fluid">
-                    {% if messages %}
-                        <ul id="messages">
-                            {% for message in messages %}
-                            <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                          <li class="alert {% ifequal message.tags 'error' %} alert-danger {% endifequal %}{% ifequal message.tags 'success' %} alert-success {% endifequal %}">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            {{ message }}
+                          </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         {% block content %}

@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^user-change/(?P<pk>.*)$', provider.user_change, name='user_change'),
     url(r'^migrants/', include('migrants.urls')),
     url(r'^repatriate/', include('repatriate.urls')),
+    url(r'^password/$', provider.change_password, name='change_password'),
     url(r'^login/$',
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),

@@ -333,8 +333,8 @@ def export_xls(request, *args, **kwargs):
     start = date_format(kwargs["start"])
     end = date_format(kwargs["end"])
     prov = Provider.objects.get(username=request.user.username)
-    sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
     if has_role(prov, [DeskControle]):
+        sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
         pn = Person.active_objects.filter(target__site_engistrement__in=sites)
     if has_role(prov, [DeskAssistantAdmin, DeskAdmin, DNDSTech]):
         pn = Person.active_objects.all()
@@ -410,7 +410,8 @@ def export_xls(request, *args, **kwargs):
         'lieu_non_generale_utilise',
         'num_progres_individuel'
     ]
-
+    # columns = [f.name for f in Target._meta.get_fields()] + [
+    #     f.name for f in Person._meta.get_fields()]
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
 
@@ -418,7 +419,6 @@ def export_xls(request, *args, **kwargs):
     font_style = xlwt.XFStyle()
 
     for row in pn:
-        print(row)
         row_num += 1
         col_num = 0
         ws.write(row_num, col_num, row.target.identifier, font_style)
