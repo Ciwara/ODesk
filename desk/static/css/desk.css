@@ -23,7 +23,7 @@
     background-color: #343a40;
 }
 .bg-msah {
-    background-color: #033261!important;
+    /*background-color: #033261!important;*/
 }
 .error-msg {
     background-color: red;
@@ -45,6 +45,3 @@ a :hover {text-decoration:none;color: #eee}
     border-color: #f9f9f9;
 }
 body { margin-top:30px; }
-.alert-error {
-    background-color: red;
-}

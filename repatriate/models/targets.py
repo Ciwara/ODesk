@@ -605,5 +605,4 @@ class Target(models.Model):
     #     return self.same_num_pm().count() > 0
 
 
-
 # models.signals.post_save.connect(checker, sender=Target)
