@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
-    <object pk="cercle" model="desk.entitytype">
-        <field type="CharField" name="name">Cercle</field>
-    </object>
-    <object pk="commune" model="desk.entitytype">
-        <field type="CharField" name="name">Commune</field>
-    </object>
-    <object pk="country" model="desk.entitytype">
-        <field type="CharField" name="name">Pays</field>
-    </object>
-    <object pk="region" model="desk.entitytype">
-        <field type="CharField" name="name">Région</field>
-    </object>
-    <object pk="vfq" model="desk.entitytype">
-        <field type="CharField" name="name">Village</field>
-    </object>
+  <object model="desk.entitytype" pk="cercle">
+    <field name="name" type="CharField">Cercle</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
+  <object model="desk.entitytype" pk="commune">
+    <field name="name" type="CharField">Commune</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
+  <object model="desk.entitytype" pk="continent">
+    <field name="name" type="CharField">Continent</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
+  <object model="desk.entitytype" pk="country">
+    <field name="name" type="CharField">Pays</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
+  <object model="desk.entitytype" pk="region">
+    <field name="name" type="CharField">Région</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
+  <object model="desk.entitytype" pk="vfq">
+    <field name="name" type="CharField">Village</field>
+    <field name="short_name" type="CharField"><None></None></field>
+  </object>
 </django-objects>

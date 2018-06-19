@@ -3,8 +3,7 @@ from django.contrib import admin
 # Register your models here.
 # from desk.models.Entities import RegistrationSite
 from repatriate.models import (
-    Collect, Target, Settings, Person, ContactTemoin,
-     # DuplicateProgresMenage,
+    Collect, Target, Settings, Person, ContactTemoin, DuplicateProgresMenage,
     OrganizationTarget, TargetTypeAssistance, VulnerabilityPerson,
     RegistrationSite, RegistrationSiteProvider)
 
@@ -21,20 +20,20 @@ class RegistrationSiteAdmin(admin.ModelAdmin):
     list_filter = ('confirmed',)
 
 
-# @admin.register(DuplicateProgresMenage)
-# class DuplicateProgresMenageAdmin(admin.ModelAdmin):
+@admin.register(DuplicateProgresMenage)
+class DuplicateProgresMenageAdmin(admin.ModelAdmin):
 
-#     model = DuplicateProgresMenage
+    model = DuplicateProgresMenage
 
-#     list_display = [
-#         'old_target',
-#         'new_target',
-#         'fixed_by',
-#         'detection_date',
-#         'fix_date',
-#         'fixed',
-#     ]
-#     list_filter = ['fixed_by', 'fixed']
+    list_display = [
+        'old_target',
+        'new_target',
+        'fixed_by',
+        'detection_date',
+        'fix_date',
+        'fixed',
+    ]
+    list_filter = ['fixed_by', 'fixed']
 
 
 @admin.register(VulnerabilityPerson)

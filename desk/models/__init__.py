@@ -6,6 +6,3 @@ from desk.models.Entities import (EntityType, Entity)
 from desk.models.Dict import DictLabel
 from desk.models.Providers import Provider, Project
 # from desk.models.Numbers import PhoneNumber, PhoneNumberType
-# from desk.models.Projects import Domain, Cluster, Participation
-# from desk.models.Groups import Group
-# from desk.models.Privileges import Privilege, Accreditation

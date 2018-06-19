@@ -48,5 +48,5 @@
 {% block onJQready %}
   chartLine({{menage_per_date_entrtien|safe}}, "container");
   chartLine({{menage_per_prov|safe}}, "container1");
-  chartUpadteAfterRender({{menage_per_date_entrtien|safe}}, "container3");
+  chartUpadteAfterRender({{per_lieu_region|safe}}, "container3");
 {% endblock %}

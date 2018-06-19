@@ -13,7 +13,7 @@ class DNDSTech(AbstractUserRole):
     }
 
 
-class DeskAdmin(AbstractUserRole):
+class Admin(AbstractUserRole):
     available_permissions = {
         # 'controle_data': True,
         'create_assistant_user': True,
@@ -40,6 +40,12 @@ class DeskControle(AbstractUserRole):
         'create_valide': True,
         'create_export_xls': True,
         'create_edite_data': True,
+    }
+
+
+class DeskSupeviseur(AbstractUserRole):
+    available_permissions = {
+        'controle_data': True,
     }
 
 

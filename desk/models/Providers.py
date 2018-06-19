@@ -103,8 +103,10 @@ class Provider(AbstractBaseUser, PermissionsMixin):
     access_since = models.DateTimeField(default=timezone.now,
                                         verbose_name=_("Access Since"))
     email = models.EmailField(_("email address"), blank=True, null=True)
-    phone = models.IntegerField("Téléphone", default=0)
-    phone2 = models.IntegerField("Téléphone 2", default=0)
+    phone = models.CharField("Téléphone", max_length=50,
+                             blank=True, null=True)
+    phone2 = models.CharField("Téléphone 2", max_length=50,
+                              blank=True, null=True)
     project = models.ForeignKey("Project", related_name='projects')
     # site = models.ManyToManyField(RegistrationSite, null=True, blank=True)
 

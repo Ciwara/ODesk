@@ -15,7 +15,7 @@ from desk.models import Entity, Provider
 from repatriate.models import Target, Person
 from django.core.mail import send_mail
 from OIMDesk.roles import (
-    DeskAssistantAdmin, DNDSTech, DeskAdmin, DeskControle)
+    DeskAssistantAdmin, DNDSTech, Admin, DeskControle)
 
 
 def index(request):
@@ -41,7 +41,7 @@ def index(request):
 def home(request, *args, **kwargs):
     context = {}
     prov = Provider.objects.get(username=request.user.username)
-    if has_role(prov, [DeskAdmin, DNDSTech]):
+    if has_role(prov, [Admin, DNDSTech]):
         return render(request, 'home.html', context)
     if has_role(prov, [DeskAssistantAdmin]):
         return redirect("controle")
