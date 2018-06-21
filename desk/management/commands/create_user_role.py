@@ -11,7 +11,8 @@ import csv
 from django.core.management.base import BaseCommand
 # from django.core.management import call_command
 from rolepermissions.roles import assign_role
-from desk.models import RegistrationSite, Project, Provider
+from repatriate.models import RegistrationSite, RegistrationSiteProvider
+from desk.models import Project, Provider
 
 TODAY = datetime.date.today()
 
@@ -28,25 +29,43 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        headers = ['identifiant', 'nom', 'prenom', 'email', 'tel',
-                   'role', 'site', 'localite']
+        headers = [
+            'identifiant', 'nom', 'prenom', 'sexe', 'email', 'tel',
+            'remove_role', 'add_role', 'site', 'is_active']
         input_file = open(options.get('input_file'), 'r', encoding='utf-8')
         csv_reader = csv.DictReader(input_file, fieldnames=headers)
 
-        # cls = Entity
         for user in csv_reader:
-            print(user)
             if csv_reader.line_num == 1:
                 continue
             data = {
                 "first_name": user.get('prenom'),
                 "last_name": user.get('nom'),
                 "project": Project.objects.get(slug="hcr"),
-                "site": RegistrationSite.get(slug=user.get("site")),
                 "email": user.get('email'),
-                "tel": user.get('tel'),
+                "phone": user.get('tel'),
+                "is_active": True if user.get('is_active')=="oui" else False
             }
-            prov = Provider.objects.get_or_create(
-                username=user.get('identifiant'), **data)
+            # print(user)
+            # Add or update provider
+            prov, ok = Provider.objects.update_or_create(
+                username=user.get('identifiant'), defaults=data)
+            prov.set_password(user.get('identifiant'))
+            prov.save()
 
-            assign_role(prov, user.get("role"))
+            # Add RegistrationSiteProvider
+            for site_name in user.get("site").split("_"):
+                # get l'object RegistrationSite
+                try:
+                    rsite = RegistrationSite.objects.get(name=site_name)
+                except Exception as e:
+                    print("Site : {} error :{}".format(site_name, e))
+                    continue
+                try:
+                    RegistrationSiteProvider.objects.get_or_create(
+                        provider=prov, site=rsite)
+                except Exception as e:
+                    print(e)
+            # Add role
+            for role in user.get("add_role").split(" "):
+                assign_role(prov, role)

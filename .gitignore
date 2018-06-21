@@ -12,3 +12,4 @@ resources/*
 installation.md
 *.jar
 odkextractor/data/*
+*.csv
