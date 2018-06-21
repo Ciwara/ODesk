@@ -39,9 +39,8 @@ class Command(BaseCommand):
             call_command("loaddata", "fixtures/Entity-root.xml")
 
         print("Importing countries...")
-        # cls = Entity
+
         for entry in csv_reader:
-            print(entry)
             if csv_reader.line_num == 1:
                 continue
             slug = entry.get('code')
@@ -49,16 +48,18 @@ class Command(BaseCommand):
             # print("Name : {} Slug : {}".format(name, slug))
             entity_type = entry.get('type')
             parent_slug = entry.get('parent')
-            print(entry)
             try:
                 entity_type = EntityType.objects.get(slug=entity_type)
-                entity_parent = Entity.get_or_none(slug=parent_slug)
-            except Exception as e:
-                print(e)
-                # continue
-            parent_slug = entry.get('parent_slug')
+            except:
+                pass
+            try:
+                entity_parent = Entity.objects.get(slug=parent_slug)
+            except:
+                entity_parent = None
+
             latitude = entry.get('latitude')
             longitude = entry.get('longitude')
+
             try:
                 entity = Entity.objects.create(
                     slug=slug,
@@ -68,4 +69,4 @@ class Command(BaseCommand):
                     latitude=latitude or None,
                     longitude=longitude or None)
             except Exception as e:
-                print(e)
+                print("Entity :", e)

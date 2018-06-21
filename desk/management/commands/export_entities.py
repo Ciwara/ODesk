@@ -58,7 +58,7 @@ class Command(BaseCommand):
             writer = csv.DictWriter(csvfile, fieldnames=headers)
             writer.writeheader()
             for en_type in self.en_types.keys():
-                for entity in Entity.objects.filter(type=en_type):
+                for entity in Entity.objects.filter(type=en_type).order_by("name"):
                     print("Slug : {} - Name : {} ".format(
                         entity.slug, entity.name))
                     writer.writerow(self.get_dic_entity(entity))
