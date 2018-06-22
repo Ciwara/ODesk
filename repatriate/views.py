@@ -14,7 +14,7 @@ from rolepermissions.checkers import has_role
 
 from OIMDesk.roles import (
     DeskAssistantAdmin, DNDSTech, Admin, DeskControle)
-from desk.models import Provider
+from desk.models import Provider, Entity
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
 from repatriate.models import (Person, Target, DuplicateProgresMenage,
@@ -49,6 +49,7 @@ def dashboard(request):
         'title': "",
         'data': [i.get('id__count') for i in per_lieu_regions]
     }
+
     menage_per_prov = {
         'labels': [i.get('point_de_entree').title() for i in s],
         'label': "Nombre de retourné",
@@ -79,6 +80,58 @@ def dashboard(request):
                "total_male": total_male,
                "per_lieu_region": per_lieu_region
                }
+
+    nb_menage = srv.count()
+    pn = Person.objects.all()
+    nb_person = pn.count()
+    nb_person_f = pn.filter(membre_sexe=Person.FEMALE).count()
+    nb_person_m = pn.filter(membre_sexe=Person.MALE).count()
+
+    pn_0_4 = pn.filter(membre_age__lte=4)
+    pn_5_11 = pn.filter(membre_age__gte=5, membre_age__lte=11)
+    pn_12_17 = pn.filter(membre_age__gte=12, membre_age__lte=17)
+    pn_18_59 = pn.filter(membre_age__gte=18, membre_age__lte=59)
+    pn_plus60 = pn.filter(membre_age__gte=60)
+
+    pn_0_4_count_m = pn_0_4.filter(membre_sexe=Person.MALE).count()
+    pn_0_4_count_f = pn_0_4.filter(membre_sexe=Person.FEMALE).count()
+    pn_0_4_count = pn_0_4_count_m + pn_0_4_count_f
+    pn_5_11_count_m = pn_5_11.filter(membre_sexe=Person.MALE).count()
+    pn_5_11_count_f = pn_5_11.filter(membre_sexe=Person.FEMALE).count()
+    pn_5_11_count = pn_5_11_count_m + pn_5_11_count_f
+    pn_12_17_count_m = pn_12_17.filter(membre_sexe=Person.MALE).count()
+    pn_12_17_count_f = pn_12_17.filter(membre_sexe=Person.FEMALE).count()
+    pn_12_17_count = pn_12_17_count_f + pn_12_17_count_m
+    pn_18_59_count_m = pn_18_59.filter(membre_sexe=Person.MALE).count()
+    pn_18_59_count_f = pn_18_59.filter(membre_sexe=Person.FEMALE).count()
+    pn_18_59_count = pn_18_59_count_f + pn_18_59_count_m
+    plus60_count_m = pn_plus60.filter(membre_sexe=Person.MALE).count()
+    plus60_count_f = pn_plus60.filter(membre_sexe=Person.FEMALE).count()
+    plus60_count = plus60_count_f + plus60_count_m
+
+    context.update({
+        "srv": srv,
+        "pn_0_4_count_m": pn_0_4_count_m,
+        "pn_0_4_count_f": pn_0_4_count_f,
+        "pn_0_4_count": pn_0_4_count,
+        "pn_5_11_count_m": pn_5_11_count_m,
+        "pn_5_11_count_f": pn_5_11_count_f,
+        "pn_5_11_count": pn_5_11_count,
+        "pn_12_17_count_m": pn_12_17_count_m,
+        "pn_12_17_count_f": pn_12_17_count_f,
+        "pn_12_17_count": pn_12_17_count,
+        "pn_18_59_count_m": pn_18_59_count_m,
+        "pn_18_59_count_f": pn_18_59_count_f,
+        "pn_18_59_count": pn_18_59_count,
+        "plus60_count_m": plus60_count_m,
+        "plus60_count_f": plus60_count_f,
+        "plus60_count": plus60_count,
+        "nb_menage": nb_menage,
+        "nb_person": nb_person,
+        "nb_person_m": nb_person_m,
+        "nb_person_f": nb_person_f,
+    })
+
     return HttpResponse(template.render(context, request))
 
 

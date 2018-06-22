@@ -9,31 +9,41 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from rolepermissions.checkers import has_role
 
 from desk.models import Entity, Provider
 from repatriate.models import Target, Person
 from django.core.mail import send_mail
+from django.conf import settings
+from desk.forms import ContactForm
 from OIMDesk.roles import (
     DeskAssistantAdmin, DNDSTech, Admin, DeskControle)
+
+
+def success_view(request):
+    return HttpResponse('Success! Thank you for your message.')
 
 
 def index(request):
     context = {'page_slug': 'index'}
 
-    # if form.is_valid():
-    #     subject = form.cleaned_data['subject']
-    #     message = form.cleaned_data['message']
-    #     sender = form.cleaned_data['sender']
-    #     cc_myself = form.cleaned_data['cc_myself']
-    #     recipients = ['faddev@gmail.com']
-
-    #     if cc_myself:
-    #         recipients.append(sender)
-
-    #     send_mail(subject, message, sender, recipients)
-    #     return HttpResponseRedirect('/')
-
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, message, from_email, [settings.EMAIL_HOST_USER, 'ibfadiga@gmail.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('success')
+    context.update({"form": form})
     return render(request, 'index.html', context)
 
 

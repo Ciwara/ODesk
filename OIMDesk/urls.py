@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^login/$',
         auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
+    url('success/', home.success_view, name='success'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [

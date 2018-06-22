@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% load i18n %}
+{% load i18n bootstrap_tags %}
 
 {% block head_title %}Accueil{% endblock %}
 
@@ -8,11 +8,10 @@
         {% include "_banner.html" %}
 {% endblock %}
 {% block content %}
-    <div class="row">
+    <div class="row" id="index">
         <div class="col-xs-8 col-md-8">
             <!-- About Section -->
-            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" id="about">À propos</h3>
-
+            <h1 id="about">À propos</h1>
             <h2>La Politique de Développement Social et de Solidarité</h2>
 
             <h2>1. Rappel Historique</h2>
@@ -20,54 +19,30 @@
             <p>Aux premières heures de l’indépendance, le social était basé sur une approche médico- social dans les années soixante dix le concept de développement communautaire faisant  son apparition.</p>
             <p>Impliquant la participation des populations non seulement dans l’élaboration mais également dans la mise en œuvre  des programmes de développement.</p>
             <p>En 1991, notre pays s’engage dans l’édification d’un état démocratique, avec l’élargissement des espaces de liberté et fondé sur l’égalité entre toutes les catégories  et la protection pour tous.</p>
-            <p>En 1993 le gouvernement constatant que les inégalités sociales s’accentuent, que la société se fragmente, que les groupes ont revenues faibles se popularisent, et que le degré d’envergure sociale donc d’intégration se trouve de plus en plus menacé avait allait adopter une politique naturelle de Développement Sociale et de solidarité.</p>
-
-            <h2>2. OBJECTIFS ET ORIENTATIONS DE LA POLITIQUE</h2>
-
+            <p>En 1993 le gouvernement constatant que les inégalités sociales s’accentuent, que la société se fragmente, que les groupes ont revenues faibles se popularisent, et que le degré d’envergure sociale donc d’intégration se trouve de plus en plus menacé avait allait adopter une politique naturelle de Développement Sociale et de solidarité.</p></div>
+            <h2 id=objectif>2. OBJECTIFS ET ORIENTATIONS DE LA POLITIQUE</h2>
             <p>La finalité de la politique de développement social et de solidarité est de créer un environnement économique, politique, social, culturel, et juridique qui permette à tous de bénéficier du développement. Il s’agit  d’instaurer une société pour tous ou chaque individu, avec ses droit et ses responsabilités a un rôle actif à jouer.</p>
-
-            <h4>OBJECTIFDE LA POLITIQUE</h4>
-
+            <h2>OBJECTIF DE LA POLITIQUE</h2>
             <p>L’objectif majeur de la politique nationale de Développement Social et de Solidarité du Mali est d’assurer le bien être  des populations en réduisant les principales sources de détresse et d’instabilités sociales  en vue d’un développement humain durable.</p>
-
             <h4>ORIENTATIONS DE LA POLITIQUE</h4>
-
             <p>L’atteinte de l’objectif général de la politique nationale de Développement Social est d’assurée grâce à la mise en en œuvre de programmes articulés autour des orientations suivantes :</p>
             <ul>
                 <li> Le renforcement de la solidarité et de la lutte contre l’exclusion ;</li>
                 <li> La lutte contre la pauvreté ;</li>
                 <li> Le renforcement de la protection civile.</li>
             </ul>
-        </div>
         <div class="col-xs-4 col-md-4">
-
-              <!-- Search Widget -->
-              <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
         </div>
     </div>
     <div class="row">
         <!-- Contact Section -->
-        <div class="w3-container w3-padding-32" id="contact">
-            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Contact</h3>
-            <p>Lets get in touch and talk about your and our next project.</p>
-            <form action="/action_page.php" target="_blank">
-              <input class="w3-input" type="text" placeholder="Name" required name="Name">
-              <input class="w3-input w3-section" type="text" placeholder="Email" required name="Email">
-              <input class="w3-input w3-section" type="text" placeholder="Subject" required name="Subject">
-              <input class="w3-input w3-section" type="text" placeholder="Comment" required name="Comment">
-              <button class="w3-button w3-black w3-section" type="submit">
-                <i class="fa fa-paper-plane"></i> SEND MESSAGE
-              </button>
+        <div class="w3-container w3-padding-32" >
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                  <button type="submit">Send</button>
+                </div>
             </form>
         </div>
     </div>
