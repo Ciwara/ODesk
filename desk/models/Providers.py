@@ -14,12 +14,12 @@ from django.core.mail import send_mail
 from django.core import validators
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from mptt.models import TreeForeignKey
 # from desk.signals import logged_in, logged_out
 from desk.models.common import ActiveManager
 from desk.models.Entities import Entity
 
 from rolepermissions.roles import get_user_roles
-# from repatriate.models import RegistrationSite
 
 
 class Project(models.Model):
@@ -33,12 +33,22 @@ class Project(models.Model):
         return "{name}".format(name=self.name)
 
 
+class EntityProvider(models.Model):
+
+    class Meta:
+        app_label = 'desk'
+        verbose_name = _("EntityProvider")
+        unique_together = (('locality', 'provider'),)
+
+    locality = TreeForeignKey(Entity, related_name='entities',)
+    provider = models.ForeignKey("Provider",)
+
+
 class ProviderManager(UserManager):
 
     def create_superuser(self, username, email, password, **extra_fields):
-        u = self.create_user(username=username,
-                             password=password,
-                             **extra_fields)
+        u = self.create_user(
+            username=username, password=password, **extra_fields)
         u.is_staff = True
         u.is_active = True
         u.is_superuser = True
@@ -294,8 +304,7 @@ class Provider(AbstractBaseUser, PermissionsMixin):
         empty = ""
         return {
             'position': "{}".format(self.position) if self.position else empty,
-            'title': "{} "
-            .format(self.TITLES.get(self.title)) if self.title else empty,
+            'title': "{} ".format(self.TITLES.get(self.title)) if self.title else empty,
             'maiden': "{} "
             .format(self.maiden_name.upper()) if self.maiden_name else empty,
             'first': "{} "
@@ -311,4 +320,5 @@ class Provider(AbstractBaseUser, PermissionsMixin):
             .format(self.last_name.upper()) if self.last_name else empty,
             'access': self.get_access(),
         }
+
 reversion.register(Provider)

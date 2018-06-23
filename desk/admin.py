@@ -3,7 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
-    Entity, EntityType, Provider, DictLabel, Project)
+    Entity, EntityType, Provider, DictLabel, Project, EntityProvider)
+
+
+@admin.register(EntityProvider)
+class EntityProviderAdmin(admin.ModelAdmin):
+
+    list_display = ('locality', 'provider')
+    list_filter = ('provider',)
+    search_fields = ('locality', 'provider')
 
 
 @admin.register(Project)

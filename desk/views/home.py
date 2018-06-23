@@ -10,21 +10,44 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+# from django.shortcuts import render, redirect
 from rolepermissions.checkers import has_role
 
-from desk.models import Entity, Provider
-from repatriate.models import Target, Person
-from django.core.mail import send_mail
+from desk.models import Entity, Provider, EntityProvider
+from repatriate.models import Target, Person, RegistrationSiteProvider
+# from django.core.mail import send_mail
 from django.conf import settings
 from desk.forms import ContactForm
 from OIMDesk.roles import (
-    DeskAssistantAdmin, DNDSTech, Admin, DeskControle)
+    DeskAssistantAdmin, DNDSTech, SuperAdmin, DeskControle)
 
 
 def success_view(request):
     return HttpResponse('Success! Thank you for your message.')
+
+
+def contacts(request):
+
+    context = {}
+    c_list = []
+    for p in Provider.active.exclude(is_staff=True):
+        p_dic = {
+            "name": p.get_title_full_name(),
+            "tel": p.phone,
+            "mail": p.email,
+            "groups": ",".join([i.name for i in p.groups.all()]),
+            "roles": p.groups.all(),
+        }
+        ep = EntityProvider.objects.filter(provider=p)
+        if ep:
+            p_dic.update({"locality": ep})
+        rp = RegistrationSiteProvider.objects.filter(provider=p)
+        if rp:
+            p_dic.update({"sites": rp})
+        c_list.append(p_dic)
+    context.update({"c_list": c_list})
+    return render(request, 'contacts.html', context)
 
 
 def index(request):
@@ -51,7 +74,7 @@ def index(request):
 def home(request, *args, **kwargs):
     context = {}
     prov = Provider.objects.get(username=request.user.username)
-    if has_role(prov, [Admin, DNDSTech]):
+    if has_role(prov, [SuperAdmin, DNDSTech]):
         return render(request, 'home.html', context)
     if has_role(prov, [DeskAssistantAdmin]):
         return redirect("controle")

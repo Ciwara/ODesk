@@ -13,8 +13,8 @@ from django.utils import timezone
 from rolepermissions.checkers import has_role
 
 from OIMDesk.roles import (
-    DeskAssistantAdmin, DNDSTech, Admin, DeskControle)
-from desk.models import Provider, Entity
+    DeskAssistantAdmin, DNDSTech, SuperAdmin, DeskControle)
+from desk.models import Provider
 from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
 from repatriate.models import (Person, Target, DuplicateProgresMenage,
@@ -144,7 +144,7 @@ def desk_controle(request):
     sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(
         provider=prov)]
     context = {"user": prov}
-    if has_role(prov, [DeskAssistantAdmin, Admin, DNDSTech]):
+    if has_role(prov, [DeskAssistantAdmin, SuperAdmin, DNDSTech]):
         srv = Target.active_objects.all()
         pn = Person.active_objects.all()
         d_progres_m = DuplicateProgresMenage.not_fix_objects.all()
@@ -389,7 +389,7 @@ def export_xls(request, *args, **kwargs):
     if has_role(prov, [DeskControle]):
         sites = [rs.site.slug for rs in RegistrationSiteProvider.objects.filter(provider=prov)]
         pn = Person.active_objects.filter(target__site_engistrement__in=sites)
-    if has_role(prov, [DeskAssistantAdmin, Admin, DNDSTech]):
+    if has_role(prov, [DeskAssistantAdmin, SuperAdmin, DNDSTech]):
         pn = Person.active_objects.all()
     else:
         redirect('/')

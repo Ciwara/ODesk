@@ -13,7 +13,7 @@ class DNDSTech(AbstractUserRole):
     }
 
 
-class Admin(AbstractUserRole):
+class SuperAdmin(AbstractUserRole):
     available_permissions = {
         # 'controle_data': True,
         'create_assistant_user': True,
@@ -49,7 +49,13 @@ class DeskSupeviseur(AbstractUserRole):
     }
 
 
-class GestionMigrant(AbstractUserRole):
+class DeskAnalyse(AbstractUserRole):
+    available_permissions = {
+        'create_export_xls': True,
+    }
+
+
+class MigrationAdmin(AbstractUserRole):
     available_permissions = {
         'controle_data': True,
         'create_valide': True,
@@ -58,7 +64,7 @@ class GestionMigrant(AbstractUserRole):
     }
 
 
-class AgentMigrant(AbstractUserRole):
+class MigrationAgent(AbstractUserRole):
     available_permissions = {
         'controle_data': True,
         'create_valide': True,

@@ -4,5 +4,5 @@
 
 from desk.models.Entities import (EntityType, Entity)
 from desk.models.Dict import DictLabel
-from desk.models.Providers import Provider, Project
+from desk.models.Providers import Provider, Project, EntityProvider
 # from desk.models.Numbers import PhoneNumber, PhoneNumberType

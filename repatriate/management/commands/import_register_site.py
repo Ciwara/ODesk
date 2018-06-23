@@ -59,4 +59,4 @@ class Command(BaseCommand):
                 )
             except Exception as e:
                 print(e)
-            # print(r_site)
+            print(r_site)

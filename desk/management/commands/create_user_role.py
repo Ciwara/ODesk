@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 # from django.core.management import call_command
 from rolepermissions.roles import assign_role
 from repatriate.models import RegistrationSite, RegistrationSiteProvider
-from desk.models import Project, Provider
+from desk.models import Project, Provider, EntityProvider, Entity
 
 TODAY = datetime.date.today()
 
@@ -31,31 +31,31 @@ class Command(BaseCommand):
 
         headers = [
             'identifiant', 'nom', 'prenom', 'sexe', 'email', 'tel',
-            'remove_role', 'add_role', 'site', 'is_active']
+            'remove_role', 'add_role', 'site', 'is_active', 'locality']
         input_file = open(options.get('input_file'), 'r', encoding='utf-8')
         csv_reader = csv.DictReader(input_file, fieldnames=headers)
 
-        for user in csv_reader:
+        for row_user in csv_reader:
             if csv_reader.line_num == 1:
                 continue
             data = {
-                "first_name": user.get('prenom'),
-                "last_name": user.get('nom'),
+                "first_name": row_user.get('prenom'),
+                "last_name": row_user.get('nom'),
                 "project": Project.objects.get(slug="hcr"),
-                "email": user.get('email'),
-                "phone": user.get('tel'),
-                "is_active": True if user.get('is_active')=="oui" else False
+                "email": row_user.get('email'),
+                "phone": row_user.get('tel'),
+                "is_active": True if row_user.get('is_active')=="oui" else False
             }
             # print(user)
             # Add or update provider
             prov, ok = Provider.objects.update_or_create(
-                username=user.get('identifiant'), defaults=data)
-            prov.set_password(user.get('identifiant'))
+                username=row_user.get('identifiant'), defaults=data)
+            prov.set_password(row_user.get('identifiant'))
             prov.save()
 
             # Add RegistrationSiteProvider
-            for site_name in user.get("site").split("_"):
-                # get l'object RegistrationSite
+            for site_name in row_user.get("site").split("_"):
+                print(site_name)
                 try:
                     rsite = RegistrationSite.objects.get(name=site_name)
                 except Exception as e:
@@ -67,5 +67,13 @@ class Command(BaseCommand):
                 except Exception as e:
                     print(e)
             # Add role
-            for role in user.get("add_role").split(" "):
+            for role in row_user.get("add_role").split(" "):
+                print(role)
                 assign_role(prov, role)
+                if role == "desk_analyse":
+                    for locality in row_user.get("locality").split("_"):
+                        try:
+                            EntityProvider.objects.get_or_create(
+                                provider=prov, locality=Entity.objects.get(slug=locality))
+                        except Exception as e:
+                            raise

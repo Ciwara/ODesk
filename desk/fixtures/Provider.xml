@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
+  <object model="desk.provider" pk="adembele">
+    <field name="password" type="CharField">pbkdf2_sha256$36000$UYemddiCilMr$/wiDnYOslI8H/RwvcWtIsO68rQWLjFNEFo7ydZdLzi0=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
+    <field name="is_superuser" type="BooleanField">False</field>
+    <field name="gender" type="CharField">unknown</field>
+    <field name="title" type="CharField"><None></None></field>
+    <field name="first_name" type="CharField">Aïchata</field>
+    <field name="middle_name" type="CharField"><None></None></field>
+    <field name="last_name" type="CharField">DEMBELE</field>
+    <field name="maiden_name" type="CharField"><None></None></field>
+    <field name="position" type="CharField"><None></None></field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.834839+00:00</field>
+    <field name="email" type="CharField"></field>
+    <field name="phone" type="CharField">70252227</field>
+    <field name="phone2" type="CharField"><None></None></field>
+    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
+    <field name="is_staff" type="BooleanField">False</field>
+    <field name="is_active" type="BooleanField">True</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.555527+00:00</field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="9"></object></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="118"></object></field>
+  </object>
   <object model="desk.provider" pk="ant">
     <field name="password" type="CharField">pbkdf2_sha256$36000$vnwt04u5FJ8L$9SPSU8hbPhTDXyzTI00G0ru+gOkYz249nvi8n24gSeg=</field>
-    <field name="last_login" type="DateTimeField">2018-06-09T12:58:43+00:00</field>
+    <field name="last_login" type="DateTimeField">2018-06-22T14:47:28.046743+00:00</field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">male</field>
     <field name="title" type="CharField">mister</field>
@@ -19,11 +41,11 @@
     <field name="is_staff" type="BooleanField">True</field>
     <field name="is_active" type="BooleanField">True</field>
     <field name="date_joined" type="DateTimeField">2018-05-07T13:50:38+00:00</field>
-    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="7"></object></field>
-    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="7"></object><object pk="9"></object></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="118"></object></field>
   </object>
   <object model="desk.provider" pk="bdiallo">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$r8NZh9dgSv7C$9ElNjSV0B3V7Qo90DQaHuCHv8cY+EB+CVbSKoxP/OK8=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$bxnrt4shJgOH$3tvTCVrLRTIQg/pKy4DzjbWM3ffc+I/Gv5TaE0hrYqY=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -33,19 +55,19 @@
     <field name="last_name" type="CharField">DIALLO</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.300294+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.673520+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">76296851</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:15.835494+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:24.245679+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object></field>
   </object>
   <object model="desk.provider" pk="csylla">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$UxpGtdliykAq$YQe76SSdpCeBt5d4UN3B9CrhyQJsG2foPDIMJ1irc4k=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$IR30QZqtn9xl$zONX0aC0jk5FywK2z7AHJeB7nsy2TVSTCnQxn9D1qSA=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -55,63 +77,41 @@
     <field name="last_name" type="CharField">SYLLA</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.980762+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.334452+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">66771022</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:16.260837+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.020966+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="117"></object><object pk="118"></object><object pk="116"></object></field>
   </object>
-  <object model="desk.provider" pk="fad">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$wglxxj6aoQvr$8qQHeVrR1ZDSuENDUDL0oHicHyUhKXEdkKA2cLv47fY=</field>
-    <field name="last_login" type="DateTimeField">2018-06-22T14:10:50.134201+00:00</field>
-    <field name="is_superuser" type="BooleanField">True</field>
-    <field name="gender" type="CharField">male</field>
-    <field name="title" type="CharField">mister</field>
-    <field name="first_name" type="CharField"><None></None></field>
-    <field name="middle_name" type="CharField"><None></None></field>
-    <field name="last_name" type="CharField"><None></None></field>
-    <field name="maiden_name" type="CharField"><None></None></field>
-    <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-19T18:18:24.268547+00:00</field>
-    <field name="email" type="CharField"><None></None></field>
-    <field name="phone" type="CharField">0</field>
-    <field name="phone2" type="CharField">phone2</field>
-    <field name="project" rel="ManyToOneRel" to="desk.project">1</field>
-    <field name="is_staff" type="BooleanField">True</field>
-    <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-03-07T17:29:45+00:00</field>
-    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="7"></object></field>
-    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
-  </object>
-  <object model="desk.provider" pk="fat">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$ouL3iQRr1hTA$X3D40DZ05tS//OfmpxqgSxye/j17GFMLO9Xmd1BbIaI=</field>
-    <field name="last_login" type="DateTimeField">2018-06-09T12:05:35.012000+00:00</field>
+  <object model="desk.provider" pk="fdolo">
+    <field name="password" type="CharField">pbkdf2_sha256$36000$phttApdkjKZ0$d4gN9Yt56pG1Ff9AsO1DvJTMMd3b9+rotY1kDd1M7eQ=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
-    <field name="gender" type="CharField">female</field>
-    <field name="title" type="CharField">miss</field>
+    <field name="gender" type="CharField">unknown</field>
+    <field name="title" type="CharField"><None></None></field>
     <field name="first_name" type="CharField">Fatoumata</field>
     <field name="middle_name" type="CharField"><None></None></field>
-    <field name="last_name" type="CharField">Dolo</field>
+    <field name="last_name" type="CharField">DOLO</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-02T15:23:38.478000+00:00</field>
-    <field name="email" type="CharField"><None></None></field>
-    <field name="phone" type="CharField">76471432</field>
-    <field name="phone2" type="CharField">0</field>
-    <field name="project" rel="ManyToOneRel" to="desk.project">all</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:02.474912+00:00</field>
+    <field name="email" type="CharField">fatim50@gmail.com</field>
+    <field name="phone" type="CharField">76112822‬</field>
+    <field name="phone2" type="CharField"><None></None></field>
+    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-05-07T14:42:15+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:26.182240+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="5"></object></field>
-    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="120"></object><object pk="117"></object><object pk="118"></object><object pk="119"></object></field>
   </object>
   <object model="desk.provider" pk="fkante">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$2dNVu2xlmAAz$KFzg1KV/9SgevW4puXUm/aCBf8LncDX6gFRKSMdkrj8=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$fdj83htgPXkQ$1inmjoW3YbrlXE1fHBqjAmm1o+Xf2cK1ymxOTJi+WLo=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -121,20 +121,42 @@
     <field name="last_name" type="CharField">KANTE</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:27.925202+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.282688+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">66262567</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:15.665094+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:23.814208+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object></field>
   </object>
+  <object model="desk.provider" pk="ftraore">
+    <field name="password" type="CharField">pbkdf2_sha256$36000$Az2zWFJOcWNQ$ahopAOV2wWswXCEVrwfBVYVmf7m21SRv0RhdPZXFRlQ=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
+    <field name="is_superuser" type="BooleanField">False</field>
+    <field name="gender" type="CharField">unknown</field>
+    <field name="title" type="CharField"><None></None></field>
+    <field name="first_name" type="CharField">Faradji</field>
+    <field name="middle_name" type="CharField"><None></None></field>
+    <field name="last_name" type="CharField">TRAORE</field>
+    <field name="maiden_name" type="CharField"><None></None></field>
+    <field name="position" type="CharField"><None></None></field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.989085+00:00</field>
+    <field name="email" type="CharField">traorefaradji@gmail.com</field>
+    <field name="phone" type="CharField">78530528</field>
+    <field name="phone2" type="CharField"><None></None></field>
+    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
+    <field name="is_staff" type="BooleanField">False</field>
+    <field name="is_active" type="BooleanField">True</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.720987+00:00</field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="9"></object></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="118"></object></field>
+  </object>
   <object model="desk.provider" pk="hkebe">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$6MYLav4m8vyR$KtrBpIAmuuOG3c+pyCwSCDvht4pOZbCenGXLY+hbG3w=</field>
-    <field name="last_login" type="DateTimeField">2018-06-20T16:45:14.048355+00:00</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$KjPXYU7U3CTL$nmXBQ3iORygGaDCM6bh5R/B8FOEXKO5NWcEXY4ICT5M=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
     <field name="title" type="CharField"><None></None></field>
@@ -143,19 +165,41 @@
     <field name="last_name" type="CharField">KEBE</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.090412+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.459103+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">76023516</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:15.722157+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:23.982146+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="117"></object><object pk="118"></object><object pk="116"></object></field>
   </object>
+  <object model="desk.provider" pk="hmaiga">
+    <field name="password" type="CharField">pbkdf2_sha256$36000$83gwRIWQqEkP$fjb4h68lWvUk9H+r2Hq5rluDycNCMFJkG28+3BucPNQ=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
+    <field name="is_superuser" type="BooleanField">False</field>
+    <field name="gender" type="CharField">unknown</field>
+    <field name="title" type="CharField"><None></None></field>
+    <field name="first_name" type="CharField">Hama Abdoulaye</field>
+    <field name="middle_name" type="CharField"><None></None></field>
+    <field name="last_name" type="CharField">MAÏGA</field>
+    <field name="maiden_name" type="CharField"><None></None></field>
+    <field name="position" type="CharField"><None></None></field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:02.153732+00:00</field>
+    <field name="email" type="CharField"></field>
+    <field name="phone" type="CharField">76333986</field>
+    <field name="phone2" type="CharField"><None></None></field>
+    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
+    <field name="is_staff" type="BooleanField">False</field>
+    <field name="is_active" type="BooleanField">True</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.876085+00:00</field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="9"></object></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="118"></object></field>
+  </object>
   <object model="desk.provider" pk="ikamanta">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$lTPWPzDlyyeq$js0x5JsI7sB0fUjrSBQOGkUGT0ExqQKCDOy/CsJIOzY=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$B7w3wFIYpr0u$gcTOxAOyM+nwN90wk/JuoU7kDHdv2U1cJzFPITK/kt4=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -165,19 +209,19 @@
     <field name="last_name" type="CharField">KAMANTA</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:27.734609+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.104231+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">66690717</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:40:39.183355+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:23.613524+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object></field>
   </object>
   <object model="desk.provider" pk="mkonipo">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$A95AFh07wmwN$9VkzYAigD/zt8EGxWMZRpB44SbQpHUDILFAZUdcibtw=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$neHuLbmRXxcV$bG9e5OMMaY/WzfKRtn6XtHUv+nlrlnhG3zy+9sTftzE=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -187,19 +231,19 @@
     <field name="last_name" type="CharField">KONIPO</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.466486+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.831395+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">76035389</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:15.916750+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:24.450543+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object></field>
   </object>
   <object model="desk.provider" pk="rkeita">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$WiZIDchKc5tp$fgTX9TZemGlh5F46B3ZJLnytVQsO4zkGRLJlbjM0H10=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$F9lO3F4OquBP$Kd4eqtpP02RnzcvY7aT6ZeNlDOb20H0uiB5Td02clc8=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -209,15 +253,15 @@
     <field name="last_name" type="CharField">KEITA</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:29.323913+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.648998+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">76183897</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:16.467917+00:00</field>
-    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object></field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.369725+00:00</field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object><object pk="9"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="117"></object><object pk="118"></object><object pk="116"></object></field>
   </object>
   <object model="desk.provider" pk="root">
@@ -242,8 +286,30 @@
     <field name="groups" rel="ManyToManyRel" to="auth.group"></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
   </object>
+  <object model="desk.provider" pk="sberte">
+    <field name="password" type="CharField">pbkdf2_sha256$36000$4oyMxm2y5Xks$7pFCMAoDhDuK4OkTEMmpW86WM8tPnDPYqtC4RTmwrZc=</field>
+    <field name="last_login" type="DateTimeField"><None></None></field>
+    <field name="is_superuser" type="BooleanField">False</field>
+    <field name="gender" type="CharField">unknown</field>
+    <field name="title" type="CharField"><None></None></field>
+    <field name="first_name" type="CharField">Salimata</field>
+    <field name="middle_name" type="CharField"><None></None></field>
+    <field name="last_name" type="CharField">BERTÉ</field>
+    <field name="maiden_name" type="CharField"><None></None></field>
+    <field name="position" type="CharField"><None></None></field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:02.312606+00:00</field>
+    <field name="email" type="CharField">salimataberte11@gmail.com</field>
+    <field name="phone" type="CharField">76448006</field>
+    <field name="phone2" type="CharField"><None></None></field>
+    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
+    <field name="is_staff" type="BooleanField">False</field>
+    <field name="is_active" type="BooleanField">True</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:26.024367+00:00</field>
+    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="9"></object></field>
+    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="118"></object></field>
+  </object>
   <object model="desk.provider" pk="ssacko">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$pTQb1uHu4hyW$LGK9lQza30INm5aqOzc3ZjMEKNOvY0Jln5AnMgzRJUQ=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$SPAKzjTJSYHh$07o36WqS9ezqbvY0WXu1BPCbrmsmQaZ8qqSFFcwppNc=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -253,19 +319,19 @@
     <field name="last_name" type="CharField">SACKO</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:29.170226+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.490117+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">76334740</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:16.361047+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:25.206893+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="117"></object><object pk="118"></object><object pk="116"></object></field>
   </object>
   <object model="desk.provider" pk="ssidibe">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$TfNaKqrBS82O$7fDnweg9jFLK6tH1ln6jDFCzlxk4OD7uV34EZLeiOSI=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$deFklSmoz66h$Cfil2mFLjoGN1Vr6LBZKmk3Nhi/QnTqWfrMUu2pSoac=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
@@ -275,58 +341,36 @@
     <field name="last_name" type="CharField">SIDIBE</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.799492+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:01.132044+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">66721312</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:16.134185+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:03:24.780947+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object><object pk="117"></object><object pk="118"></object><object pk="116"></object></field>
   </object>
-  <object model="desk.provider" pk="sylla">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$NbalMQApJonX$szlaqfnUkvcHYBzpuQrjdA5fiuieas081TRX0V8jFC8=</field>
-    <field name="last_login" type="DateTimeField">2018-06-20T14:58:09.766136+00:00</field>
-    <field name="is_superuser" type="BooleanField">False</field>
-    <field name="gender" type="CharField">male</field>
-    <field name="title" type="CharField">mister</field>
-    <field name="first_name" type="CharField">Moussa</field>
-    <field name="middle_name" type="CharField"><None></None></field>
-    <field name="last_name" type="CharField">Sylla</field>
-    <field name="maiden_name" type="CharField"><None></None></field>
-    <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T15:31:13.669149+00:00</field>
-    <field name="email" type="CharField"><None></None></field>
-    <field name="phone" type="CharField">0</field>
-    <field name="phone2" type="CharField">0</field>
-    <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
-    <field name="is_staff" type="BooleanField">False</field>
-    <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-19T18:54:54.880299+00:00</field>
-    <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="4"></object></field>
-    <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"></field>
-  </object>
   <object model="desk.provider" pk="ttraore">
-    <field name="password" type="CharField">pbkdf2_sha256$36000$WVocrcGV8Fx5$Jef9b6z9oRL06FOHA7wtdwPl9/QYeDW8KxketqyXf8s=</field>
+    <field name="password" type="CharField">pbkdf2_sha256$36000$7H53WmC2SfuX$4R7IOe0WgzTwxupLRpa7nB93AwQvLX0gfEoOWGMVlKs=</field>
     <field name="last_login" type="DateTimeField"><None></None></field>
     <field name="is_superuser" type="BooleanField">False</field>
     <field name="gender" type="CharField">unknown</field>
     <field name="title" type="CharField"><None></None></field>
     <field name="first_name" type="CharField">Tiemoko</field>
     <field name="middle_name" type="CharField"><None></None></field>
-    <field name="last_name" type="CharField">TRAORE</field>
+    <field name="last_name" type="CharField">TRAORÉ</field>
     <field name="maiden_name" type="CharField"><None></None></field>
     <field name="position" type="CharField"><None></None></field>
-    <field name="access_since" type="DateTimeField">2018-06-20T16:44:28.629124+00:00</field>
+    <field name="access_since" type="DateTimeField">2018-06-22T19:08:00.980563+00:00</field>
     <field name="email" type="CharField"></field>
     <field name="phone" type="CharField">66987636</field>
     <field name="phone2" type="CharField"><None></None></field>
     <field name="project" rel="ManyToOneRel" to="desk.project">hcr</field>
     <field name="is_staff" type="BooleanField">False</field>
     <field name="is_active" type="BooleanField">True</field>
-    <field name="date_joined" type="DateTimeField">2018-06-20T15:23:16.014074+00:00</field>
+    <field name="date_joined" type="DateTimeField">2018-06-22T19:08:00.856742+00:00</field>
     <field name="groups" rel="ManyToManyRel" to="auth.group"><object pk="8"></object></field>
     <field name="user_permissions" rel="ManyToManyRel" to="auth.permission"><object pk="115"></object></field>
   </object>

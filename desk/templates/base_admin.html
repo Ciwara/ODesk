@@ -33,14 +33,14 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 
-            {% if user|has_role:'desk_admin,dnds_tech' %}
+            {% if user|has_role:'super_admin,dnds_tech' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
                 </a>
               </li>
             {% endif %}
-            {% if user|has_role:'agent_migant,gestion_migrant,desk_admin,dnds_tech' %}
+            {% if user|has_role:'agent_migant,admin_migration,super_admin,dnds_tech' %}
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rechercher un migrant">
                   <a class="nav-link" href="{% url 'find_mig' %}">
                         <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche</span>
@@ -52,31 +52,31 @@
                 <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Dashboard</span>
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
-                {% if user|has_role:'desk_controle,desk_assistant_admin,desk_admin,dnds_tech' %}
+                {% if user|has_role:'desk_controle,desk_assistant_admin,super_admin,dnds_tech' %}
                   <li> <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
                 {% endif %}
-                {% if user|has_role:'gestion_migrant,desk_admin,dnds_tech' %}
+                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
                   <li> <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
                 {% endif %}
-                {% if user|has_role:'desk_admin,dnds_tech' %}
+                {% if user|has_role:'super_admin,dnds_tech' %}
                   <li><a class="nav-link deactivate" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-chart"></i>PDIs (non activité)</a></li>
                 {% endif %}
               </ul>
             </li>
-              {% if user|has_role:'gestion_migrant,desk_assistant_admin,desk_admin,dnds_tech' %}
+              {% if user|has_role:'admin_migration,desk_assistant_admin,super_admin,dnds_tech' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
                   <i class="fa fa-fw fa fa-database"></i>
                   <span class="nav-link-text">Administration</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
-                {% if user|has_role:'desk_assistant_admin,desk_admin,dnds_tech' %}
+                {% if user|has_role:'desk_assistant_admin,super_admin,dnds_tech' %}
                   <li> <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
                 {% endif %}
-                {% if user|has_role:'gestion_migrant,desk_admin,dnds_tech' %}
+                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>
                 {% endif %}
-                {% if user|has_role:'desk_admin,dnds_tech' %}
+                {% if user|has_role:'super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-"></i>PDIs (non activité)</a></li>
                 {% endif %}
                 </ul>
