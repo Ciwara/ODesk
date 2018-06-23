@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object model="repatriate.registrationsiteprovider" pk="261">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">13</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="262">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">19</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="263">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">9</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="264">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">41</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="265">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">12</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="266">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">14</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="267">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">10</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="268">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ikamanta</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">42</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="269">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">fkante</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">16</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="270">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">fkante</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">37</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="271">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">fkante</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">2</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="272">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">fkante</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">40</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="273">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">10</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="274">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">42</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="275">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">20</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="276">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">38</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="277">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">11</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="278">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">39</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="279">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">15</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="280">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">44</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="281">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">17</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="282">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">28</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="283">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">hkebe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">24</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="284">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">bdiallo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">18</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="285">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">bdiallo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">5</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="286">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">bdiallo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">43</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="287">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">bdiallo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">36</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="288">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">mkonipo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">27</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="289">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">mkonipo</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">33</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="291">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">13</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="292">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">19</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="293">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">9</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="294">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">41</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="295">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">12</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="296">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">14</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="297">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">10</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="298">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">42</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="299">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">16</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="300">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">37</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="301">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">2</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="302">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssidibe</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">40</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="303">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">csylla</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">18</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="304">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">csylla</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">5</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="305">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">csylla</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">43</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="306">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">csylla</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">36</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="307">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssacko</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">27</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="308">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ssacko</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">33</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="309">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">rkeita</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">4</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+  <object model="repatriate.registrationsiteprovider" pk="310">
+    <field name="provider" rel="ManyToOneRel" to="desk.provider">ttraore</field>
+    <field name="site" rel="ManyToOneRel" to="repatriate.registrationsite">4</field>
+    <field name="role" type="CharField"><None></None></field>
+  </object>
+</django-objects>
