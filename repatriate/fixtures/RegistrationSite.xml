@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object model="repatriate.registrationsite" pk="1">
+    <field name="name" type="CharField">Aguelhoc</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">83001001</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="10">
+    <field name="name" type="CharField">Gossi 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">64019249</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="11">
+    <field name="name" type="CharField">Goundam 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">63091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="12">
+    <field name="name" type="CharField">N'Tillit</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">71037901</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="13">
+    <field name="name" type="CharField">Kidal centre </field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">81091841</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="14">
+    <field name="name" type="CharField">Labezanga</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">72037774</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="15">
+    <field name="name" type="CharField">lere</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">65045661</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="16">
+    <field name="name" type="CharField">Menaka 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">74045761</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="17">
+    <field name="name" type="CharField">Soumpi</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">65078856</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="18">
+    <field name="name" type="CharField">Tenenkou</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">57091001</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="19">
+    <field name="name" type="CharField">Tessalit</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">83030853</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="2">
+    <field name="name" type="CharField">Anderamboukane 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">74001000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="20">
+    <field name="name" type="CharField">Tombouctou 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">61091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="21">
+    <field name="name" type="CharField">youwarou</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">58073000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="24">
+    <field name="name" type="CharField">bambara Maoude</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">64001073</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="25">
+    <field name="name" type="CharField">Essakane</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">63026451</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="27">
+    <field name="name" type="CharField">Nampala</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">45029000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="28">
+    <field name="name" type="CharField">Gourma Rharous</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">64000000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="3">
+    <field name="name" type="CharField">Anefif</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">81001000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="33">
+    <field name="name" type="CharField">Niono</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">45036000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="35">
+    <field name="name" type="CharField">Ségou</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">41091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="36">
+    <field name="name" type="CharField">Douentza</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">55091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="37">
+    <field name="name" type="CharField">Menaka 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">74045761</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="38">
+    <field name="name" type="CharField">Tombouctou 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">61091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="39">
+    <field name="name" type="CharField">Goundam 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">63091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="4">
+    <field name="name" type="CharField">Bamako</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">91000000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="40">
+    <field name="name" type="CharField">Anderamboukane 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">74001000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="41">
+    <field name="name" type="CharField">Gao centre 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">71091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="42">
+    <field name="name" type="CharField">Gossi 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">64019249</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="43">
+    <field name="name" type="CharField">Boni 2</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">55031063</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="44">
+    <field name="name" type="CharField">Niafunké</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">65067628</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="5">
+    <field name="name" type="CharField">Boni 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">55031063</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="6">
+    <field name="name" type="CharField">Bourem</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">73091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="7">
+    <field name="name" type="CharField">Dire</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">62091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="8">
+    <field name="name" type="CharField">Djebock</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">71001105</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+  <object model="repatriate.registrationsite" pk="9">
+    <field name="name" type="CharField">Gao centre 1</field>
+    <field name="locality" rel="ManyToOneRel" to="desk.entity">71091000</field>
+    <field name="latitude" type="FloatField"><None></None></field>
+    <field name="longitude" type="FloatField"><None></None></field>
+    <field name="geometry" type="TextField"><None></None></field>
+    <field name="deactivate" type="BooleanField">False</field>
+    <field name="confirmed" type="BooleanField">True</field>
+  </object>
+</django-objects>
