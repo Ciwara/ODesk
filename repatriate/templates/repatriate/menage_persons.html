@@ -1,0 +1,39 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n %}
+{% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard_rep' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'repatriate_data'%}">Data</a>
+        </li>
+        <li class="breadcrumb-item active">Les membres du menage {{target}} retournés</li>
+      </ol>
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr class="thead-msah">
+            <th>ID</th> <th>Nom</th><th>Prénom</th><th>Sexe</th>
+            <th>Date de naissance</th>
+            <th>Age</th><th>Lien</th><th>Scolarité</th><th>Num progres individuel</th>
+        </tr>
+    </thead>
+    <tbody class="">
+        {% for p in persons %}
+        <tr>
+            <td><a href="{{p.person_url}}"> {{p.identifier}}</a></td>
+            <td>{{p.membre_nom }}</td>
+            <td>{{p.membre_prenom}}</td>
+            <td>{{p.membre_sexe}}</td>
+            <td>{{p.membre_ddn}}</td>
+            <td>{{p.membre_age}}</td>
+            <td>{{p.membre_lien}}</td>
+            <td>{{p.membre_scolaire}}</td>
+            <td>{{p.num_progres_individuel}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -374,7 +374,7 @@ class Target(models.Model):
                 self.is_no_doc_with_num_pm or
                 self.is_site_not_existe)
 
-    # def merge_manager_url(self):
+    # def self_url(self):
     #     return reverse('merge_manager', kwargs={'id': self.identifier})
 
     def get_absolute_url(self):
@@ -382,6 +382,9 @@ class Target(models.Model):
 
     def end_merge_url(self):
         return reverse('end_merge_target', kwargs={'id': self.identifier})
+
+    def persons_url(self):
+        return reverse('menage_persons', kwargs={'iid': self.identifier})
 
     @property
     def type_assistance(self):

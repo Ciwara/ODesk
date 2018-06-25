@@ -44,6 +44,28 @@ def desk_data(request):
 
 
 @login_required
+def menage_persons(request, *args, **kwargs):
+    iid = kwargs["iid"]
+
+    target = Target.active_objects.get(instance_id=iid)
+    persons = Person.active_objects.filter(target=target)
+    context = {"persons": persons, "target": target}
+    template = loader.get_template('repatriate/menage_persons.html')
+
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def person_detail(request, *args, **kwargs):
+    iid = kwargs["pk"]
+    person = Person.active_objects.get(identifier=iid)
+    context = {"person": person}
+    template = loader.get_template('repatriate/person_detail.html')
+
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
 def dashboard(request):
     # TODO Export xls pour le partage.
     srv = Target.objects.all()

@@ -260,6 +260,11 @@ class Person(models.Model):
         return "{}-{}-{}-{}".format(
             self.identifier, self.membre_nom, self.membre_prenom, self.membre_sexe)
 
+    def display_name(self):
+        return "{} {} {}".format(
+            "Mne." if self.membre_sexe == "feminin"else "M.",
+            self.membre_nom, self.membre_prenom.upper())
+
     def get_absolute_url(self):
         return reverse('correction_person', kwargs={'id': self.identifier})
 
@@ -268,6 +273,9 @@ class Person(models.Model):
 
     def add_person_url(self):
         return reverse('add_person_url', kwargs={'id': self.identifier})
+
+    def person_url(self):
+        return reverse('person_detail', kwargs={'pk': self.identifier})
 
     def les_temoins(self):
         return ContactTemoin.objects.filter(person=self).all()

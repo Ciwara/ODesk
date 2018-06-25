@@ -1,11 +1,18 @@
 {% extends "base_admin.html" %}
 {% load staticfiles i18n %}
 {% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard_rep' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Les informations des membres retournés</li>
+      </ol>
 <table class="table table-sm table-bordered">
     <thead>
         <tr class=thead-msah-title><th colspan="9">Les menages retournés</th></tr>
         <tr class="thead-msah">
-            <th>ID</th> <th>Teléphone</th><th>Nom agent</th><th>Numéro d'entregistrement</th>
+            <th>ID</th> <th>Teléphone</th><th>Nom agent</th><th>Numéro progress</th>
             <th>Site d'enregistrement</th>
             <th>Date d'arriver</th><th>Date d'entretien</th><th>pays d'asile</th><th>Camp d'asile</th>
         </tr>
@@ -13,7 +20,7 @@
     <tbody class="">
         {% for t in targets %}
         <tr>
-            <td>{{t.identifier}}</td>
+            <td><a href="{{t.persons_url}}"> {{t.identifier}}</a></td>
             <td>{{t.tel }}</td>
             <td>{{t.nom_agent}}</td>
             <td>{{t.num_enregistrement}}</td>

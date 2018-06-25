@@ -1,0 +1,53 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n humanize %}
+{% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
+{% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard_rep' %}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'repatriate_data'%}">Data</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{{person.target.persons_url}}">Menage</a>
+        </li>
+        <li class="breadcrumb-item active">Les informations du retourné {{person}}</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1><i class="fa fa-user"></i> {{ person.display_name }} </h1></div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
+              <tbody>
+                  <tr><th>ID </th><td>{{person.identifier}}</td></tr>
+                  <tr><th>Num progress </th><td>{{person.num_progres_individuel}}</td></tr>
+                  <tr><th>Prenoms </th><td>{{person.membre_prenom}}</td></tr>
+                  <tr><th>Nom </th><td>{{person.membre_nom}}</td></tr>
+                  <tr><th>Sexe </th><td>{{person.membre_sexe}}</td></tr>
+                  <tr><th>Annee naissance</th><td>{{person.membre_ddn}}</td></tr>
+                  <tr><th>Àge</th><td>{{person.membre_age}}</td></tr>
+                  <tr><th>Profession</th><td>{{person.profession}}</td></tr>
+                  <tr><th>Etat Civil</th><td>{{person.dispo_doc_etat_civil}}</td></tr>
+                  <tr><th>Lien</th><td>{{person.membre_lien}}</td></tr>
+                  <tr><th>Besoin Specifique</th><td>{{person.besoin_specifique}}</td></tr>
+                  <tr><th>Niveau Scolaire</th><td>{{person.membre_scolaire}}</td></tr>
+                  <tr><th>Document</th><td>{{person.document}}</td></tr>
+                  <tr><th>Num Doc</th><td>{{person.num_doc}}</td></tr>
+                  <tr><th>Nina</th><td>{{person.saisie_nina}}</td></tr>
+                  <tr><th>Biometric</th><td>{{person.saisie_passeport_biometric}}</td></tr>
+                  <tr><th>Saisie Biometric</th><td>{{person.saisie_biometric}}</td></tr>
+                  <tr><th>Num carte identite national</th><td>{{person.num_carte_identite_national}}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Mise à jour {{person.started_on|naturaltime}}</div>
+      </div>
+    </div>
+
+{% endblock %}
