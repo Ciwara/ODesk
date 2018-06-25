@@ -24,10 +24,9 @@ from repatriate.models import (Person, Target, DuplicateProgresMenage,
 
 @login_required
 def desk_data(request):
-    context = {"SI": "Sidibé"}
+    context = {}
     targets = Target.active_objects.all()
-    # person = Person.active_objects.all()
-    paginator = Paginator(targets, 10) # Show 25 contacts per page
+    paginator = Paginator(targets, 10)
 
     page = request.GET.get('page')
     try:

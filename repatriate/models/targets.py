@@ -237,7 +237,7 @@ class Target(models.Model):
 
     class Meta:
         unique_together = (('identifier'),)
-        ordering = ['-collect__started_on', 'identifier']
+        ordering = ['-date_entretien', 'identifier']
 
     # last time report was edited. Initialized with created_on
     modified_on = models.DateTimeField(default=timezone.now,

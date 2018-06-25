@@ -7,58 +7,39 @@
         <li class="breadcrumb-item">
           <a href="{% url 'dashboard_mig' %}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Tables</li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'survey_table' %}">Information général des ménages.</a>
+        </li>
+        <li class="breadcrumb-item active">Les membre du ménage {{survey.display_name}}</li>
       </ol>
-      <!-- Example DataTables Card-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Table Menage</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped" cellspacing="0">
+            <thead>
+              <tr class="thead-msah">
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>nationalite</th>
+                <th>Sexe</th>
+                <th>Àge</th>
+                <th>Etat civil</th>
+                <th>Profession</th>
+                <th>Lien</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for person in persons %}
                 <tr>
-                  <th>Nom</th>
-                  <th>Prénom</th>
-                  <th>nationalite</th>
-                  <th>Sexe</th>
-                  <th>Àge</th>
-                  <th>Etat civil</th>
-                  <th>Profession</th>
-                  <th>Lien</th>
+                  <td><a href="{{person.person_detail_url}}">{{ person.nom }}</a></td>
+                  <td>{{ person.prenoms }}</td>
+                  <td>{{ person.nationalite }}</td>
+                  <td>{{ person.gender }}</td>
+                  <td>{{ person.age }}</td>
+                  <td>{{ person.etat_civil }}</td>
+                  <td>{{ person.profession }}</td>
+                  <td>{{ person.lien }}</td>
                 </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Nom</th>
-                  <th>Prénom</th>
-                  <th>nationalite</th>
-                  <th>Sexe</th>
-                  <th>Àge</th>
-                  <th>Etat civil</th>
-                  <th>Profession</th>
-                  <th>Lien</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                {% for person in persons %}
-                  <tr>
-                    <td><a href="{{person.person_detail_url}}">{{ person.nom }}</a></td>
-                    <td>{{ person.prenoms }}</td>
-                    <td>{{ person.nationalite }}</td>
-                    <td>{{ person.gender }}</td>
-                    <td>{{ person.age }}</td>
-                    <td>{{ person.etat_civil }}</td>
-                    <td>{{ person.profession }}</td>
-                    <td>{{ person.lien }}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-      </div>
-    </div>
-
 {% endblock %}

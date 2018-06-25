@@ -6,6 +6,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # from django.shortcuts import redirect, render
 from migrants.models import Survey, Person
 # from desk.celery import app
@@ -86,15 +87,6 @@ def table(request):
     return HttpResponse(template.render(context, request))
 
 
-@login_required
-def survey_table(request):
-
-    surveys = Survey.objects.all()
-    context = {"surveys": surveys}
-    template = loader.get_template('migrants/survey_tables.html')
-
-    return HttpResponse(template.render(context, request))
-
 
 @login_required
 def database_mig(request):
@@ -115,12 +107,31 @@ def find_mig(request):
 
 
 @login_required
+def survey_table(request):
+
+    surveys = Survey.objects.all().order_by('-date_entretien')
+    paginator = Paginator(surveys, 10)
+
+    page = request.GET.get('page')
+    try:
+        surveys = paginator.page(page)
+    except PageNotAnInteger:
+        surveys = paginator.page(1)
+    except EmptyPage:
+        surveys = paginator.page(paginator.num_pages)
+    context = {"surveys": surveys}
+    template = loader.get_template('migrants/survey_tables.html')
+
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
 def person_table(request, *args, **kwargs):
     iid = kwargs["iid"]
 
     survey = Survey.objects.get(instance_id=iid)
     persons = Person.objects.filter(survey=survey)
-    context = {"persons": persons}
+    context = {"persons": persons, "survey": survey}
     template = loader.get_template('migrants/person_tables.html')
 
     return HttpResponse(template.render(context, request))

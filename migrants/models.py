@@ -176,6 +176,9 @@ class Survey(models.Model):
             instance_id=self.instance_id, nom_agent=self.nom_agent,
             lieu_region=self.adresse_mali_lieu_region)
 
+    def display_name(self):
+        return "{} {}".format(self.instance_id, self.cause)
+
     def person_url(self):
         return reverse("person_table", args=[self.instance_id])
 

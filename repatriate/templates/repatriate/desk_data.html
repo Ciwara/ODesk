@@ -12,21 +12,19 @@
     <thead>
         <tr class=thead-msah-title><th colspan="9">Les menages retournés</th></tr>
         <tr class="thead-msah">
-            <th>ID</th> <th>Teléphone</th><th>Nom agent</th><th>Numéro progress</th>
-            <th>Site d'enregistrement</th>
-            <th>Date d'arriver</th><th>Date d'entretien</th><th>pays d'asile</th><th>Camp d'asile</th>
+            <th>ID</th><th>Date d'entretien</th><th>Date d'arriver</th> <th>Teléphone</th><th>Nom agent</th><th>Numéro progress</th><th>Site d'enregistrement</th><th>pays d'asile</th><th>Camp d'asile</th>
         </tr>
     </thead>
     <tbody class="">
         {% for t in targets %}
         <tr>
             <td><a href="{{t.persons_url}}"> {{t.identifier}}</a></td>
+            <td>{{t.date_entretien}}</td>
+            <td>{{t.date_arrivee}}</td>
             <td>{{t.tel }}</td>
             <td>{{t.nom_agent}}</td>
-            <td>{{t.num_enregistrement}}</td>
+            <td>{{t.num_progres_menage}}</td>
             <td>{{t.site_engistrement}}</td>
-            <td>{{t.date_arrivee}}</td>
-            <td>{{t.date_entretien}}</td>
             <td>{{t.pays_asile}}</td>
             <td>{{t.camp}}</td>
         </tr>

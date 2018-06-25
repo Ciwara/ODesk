@@ -3,14 +3,18 @@
 {% block menu %} {% include 'migrants/_menu_admin.html' %} {% endblock %}
 {% block content %}
       <!-- Breadcrumbs-->
+
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="{% url 'dashboard_mig' %}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'dashboard_mig' %}">Menage</a>
+          <a href="{% url 'survey_table' %}">Information général des ménages.</a>
         </li>
-        <li class="breadcrumb-item active">Tables</li>
+        <li class="breadcrumb-item">
+          <a href="{{person.survey.person_url}}">Les membres du ménages</a>
+        </li>
+        <li class="breadcrumb-item active">Les membre du ménage {{person.survey.display_name}}</li>
       </ol>
       <!-- Example DataTables Card-->
       <div class="card mb-3">
