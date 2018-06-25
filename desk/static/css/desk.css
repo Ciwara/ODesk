@@ -19,6 +19,8 @@
     background-color: #0f7312;
 }
 .table .thead-msah-title th {
+
+    text-transform: uppercase;
     color: #FFF;
     background-color: #343a40;
 }

@@ -19,7 +19,7 @@ from repatriate import views
 urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard_rep'),
     url(r'^desk-controle$', views.desk_controle, name='controle'),
-    # url(r'^repatriate-data$', views.desk_data, name='repatriate_data'),
+    url(r'^repatriate-data$', views.desk_data, name='repatriate_data'),
     url(r'^target_validated/(?P<pk>.*)', views.target_validated, name='tvalidated'),
     url(r'^merge-update/(?P<id>.*)', views.merge_update, name='update_person_url'),
     url(r'^merge-add/(?P<id>.*)', views.merge_add, name='add_person_url'),

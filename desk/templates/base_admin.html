@@ -43,7 +43,7 @@
             {% if user|has_role:'agent_migant,admin_migration,super_admin,dnds_tech' %}
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rechercher un migrant">
                   <a class="nav-link" href="{% url 'find_mig' %}">
-                        <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche</span>
+                        <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span>
                   </a>
                 </li>
             {% endif %}
@@ -71,7 +71,7 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
                 {% if user|has_role:'desk_assistant_admin,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
+                  <li> <a class="nav-link" href="{% url 'repatriate_data' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
                 {% endif %}
                 {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>

@@ -9,6 +9,7 @@ from django.db.models import Count
 from django.template import loader
 from django.contrib import messages
 from django.utils import timezone
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from rolepermissions.checkers import has_role
 
@@ -19,6 +20,27 @@ from repatriate.forms import (SearchForm, SearchFormPerPeriod, TargetForm,
                               FixedPersonForm)
 from repatriate.models import (Person, Target, DuplicateProgresMenage,
                                RegistrationSiteProvider)
+
+
+@login_required
+def desk_data(request):
+    context = {"SI": "Sidibé"}
+    targets = Target.active_objects.all()
+    # person = Person.active_objects.all()
+    paginator = Paginator(targets, 10) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        targets = paginator.page(page)
+    except PageNotAnInteger:
+        targets = paginator.page(1)
+    except EmptyPage:
+        targets = paginator.page(paginator.num_pages)
+
+    context.update({"targets": targets})
+    template = loader.get_template('repatriate/desk_data.html')
+
+    return HttpResponse(template.render(context, request))
 
 
 @login_required
