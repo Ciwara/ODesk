@@ -87,7 +87,6 @@ def table(request):
     return HttpResponse(template.render(context, request))
 
 
-
 @login_required
 def database_mig(request):
     persons = Person.objects.all()

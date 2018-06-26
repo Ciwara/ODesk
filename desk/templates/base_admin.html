@@ -3,7 +3,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
-
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,17 +13,14 @@
         </title>
         <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
-        <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-        <!-- Page level plugin CSS -->
-        <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-        <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
-        <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="{% static 'css/sb-admin.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/desk.css' %}" rel="stylesheet">
         {% block extra_head %}
         {% endblock %}
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-msah fixed-top" id="mainNav">
-
       <div class="container-fluid">
         <a class="navbar-brand" href="/">DNDS/DNPSES</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +36,7 @@
                 </a>
               </li>
             {% endif %}
-            {% if user|has_role:'agent_migant,admin_migration,super_admin,dnds_tech' %}
+            {% if user|has_role:'gestion_migant,admin_migration,super_admin,dnds_tech' %}
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rechercher un migrant">
                   <a class="nav-link" href="{% url 'find_mig' %}">
                         <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span>

@@ -10,11 +10,12 @@
         <li class="breadcrumb-item">
           <a href="{% url 'survey_table' %}">Information général des ménages.</a>
         </li>
-        <li class="breadcrumb-item active">Les membre du ménage {{survey.display_name}}</li>
+        <li class="breadcrumb-item active">Les membres du ménage {{survey.display_name}}</li>
       </ol>
         <div class="table-responsive">
           <table class="table table-sm table-striped" cellspacing="0">
             <thead>
+              <tr class=thead-msah-title><th colspan="9">Les menages retournés</th></tr>
               <tr class="thead-msah">
                 <th>Nom</th>
                 <th>Prénom</th>

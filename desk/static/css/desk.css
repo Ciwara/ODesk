@@ -19,10 +19,10 @@
     background-color: #0f7312;
 }
 .table .thead-msah-title th {
-
+    text-align: center;
     text-transform: uppercase;
     color: #FFF;
-    background-color: #343a40;
+    background-color: #353a40;
 }
 .bg-msah {
     /*background-color: #033261!important;*/
@@ -39,8 +39,15 @@
 .button-manager {
     text-align: center;background-color: #868d96;font-size: 3em;
 }
+
 a {color: #000}
 a :hover {text-decoration:none;color: #eee}
+
+.table a {
+    color: green;
+    height: 2em;
+    text-decoration: none;
+}
 .table .thead-merge th {
     color: #fff;
     background-color: #8a8a8a;

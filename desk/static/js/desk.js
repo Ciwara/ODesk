@@ -4,7 +4,7 @@ function chartUpadteAfterRender(data, id) {
     var data1 = data['series'];
     var chart = Highcharts.chart(id, {
     title: {
-        text: data['text']
+        text: data[text]
     },
 
     subtitle: {
@@ -18,7 +18,7 @@ function chartUpadteAfterRender(data, id) {
     series: [{
         type: 'column',
         colorByPoint: true,
-        data: data['series'],
+        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
         showInLegend: false
     }]
 });
@@ -64,69 +64,70 @@ $('#polar').click(function () {
 function chartLine(data, id) {
 
     var data1 = data['series'];
-    Highcharts.chart(id, {
-        chart: {
-            type: 'column'
-        },
+Highcharts.chart(id, {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Stacked column chart'
+    },
+    xAxis: {
+        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+    },
+    yAxis: {
+        min: 0,
         title: {
-            text: 'Stacked column chart'
+            text: 'Total fruit consumption'
         },
-        xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Total fruit consumption'
-            },
-            stackLabels: {
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+        }
+    },
+    legend: {
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: 25,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
                 enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
             }
-        },
-        legend: {
-            align: 'right',
-            x: -30,
-            verticalAlign: 'top',
-            y: 25,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-            borderColor: '#CCC',
-            borderWidth: 1,
-            shadow: false
-        },
-        tooltip: {
-            headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-        },
-        plotOptions: {
-            column: {
-                stacking: 'normal',
-                dataLabels: {
-                    enabled: true,
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                }
-            }
-        },
-        series: [{
-            name: 'John',
-            data: [5, 3, 4, 7, 2]
-        }, {
-            name: 'Jane',
-            data: [2, 2, 3, 2, 1]
-        }, {
-            name: 'Joe',
-            data: [3, 4, 4, 2, 5]
-        }]
-    });
+        }
+    },
+    series: [{
+        name: 'John',
+        data: [5, 3, 4, 7, 2]
+    }, {
+        name: 'Jane',
+        data: [2, 2, 3, 2, 1]
+    }, {
+        name: 'Joe',
+        data: [3, 4, 4, 2, 5]
+    }]
+});
 }
 function chartLine(data, id) {
 
     var data1 = data['series'];
 
+    console.log(data1)
     Highcharts.chart(id, {
         chart: {type: data['type']},
         title: data["title"],
