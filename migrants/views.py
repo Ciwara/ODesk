@@ -26,34 +26,64 @@ def dashboard(request):
     per_adresse_mali_lieu_regions = Person.objects.values(
         "survey__adresse_mali_lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
-    total_person = Person.objects.all().count()
-    total_male = Person.objects.filter(gender=Person.MALE).count()
-    total_female = Person.objects.filter(gender=Person.FEMALE).count()
-    s = Survey.objects.values("menage_pays_provenance").annotate(
-        Count('instance_id')).order_by()
-    date_entre = Survey.objects.values("date_entretien").annotate(
-        Count('instance_id')).order_by("date_entretien")
+    persons = Person.objects.all()
+    persons_m = persons.filter(gender=Person.MALE)
+    persons_f = persons.filter(gender=Person.FEMALE)
 
+    total_person = persons.count()
+    total_male = persons_m.count()
+    total_female = persons_f.count()
+    persons_per_pprov = persons.values("survey__menage_pays_provenance").annotate(
+        Count('identifier')).order_by()
+    persons_per_pprov_m = persons_m.values("survey__menage_pays_provenance").annotate(
+        Count('identifier')).order_by()
+    persons_per_pprov_f = persons_f.values("survey__menage_pays_provenance").annotate(
+        Count('identifier')).order_by()
     per_adresse_mali_lieu_region = {
-        'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_adresse_mali_lieu_regions],
-        'label': "Région de retour",
-        'title': "",
-        'data': [i.get('id__count') for i in per_adresse_mali_lieu_regions]
+        'title': "Les migrants par région de retour.",
+        'name': "Région de retour",
+        'tooltip': "Nb. migrant",
+        'series': [[i.get('survey__adresse_mali_lieu_region').upper(),
+                    i.get('id__count')] for i in per_adresse_mali_lieu_regions]
     }
-    menage_per_prov = {
-        'labels': [i.get('menage_pays_provenance').title() for i in s],
+    persons_per_pprov_for_chart = {
+        'categories': [i.get('survey__menage_pays_provenance').title() for i in persons_per_pprov],
         'label': "Nombre de migrants",
         'title': "",
-        'data': [i.get('instance_id__count') for i in s]
+        'series': [
+            {'name': 'Total',
+             'data': [i.get('identifier__count') for i in persons_per_pprov]},
+            {'name': 'Total',
+             'data': [i.get('identifier__count') for i in persons_per_pprov_m]},
+            {'name': 'Total',
+             'data': [i.get('identifier__count') for i in persons_per_pprov_f]}
+        ]
     }
+
+    date_entre = Person.objects.values("survey__date_entretien").annotate(
+        Count('identifier')).order_by("survey__date_entretien")
+    date_entre_m = Person.objects.filter(
+        gender=Person.MALE).values("survey__date_entretien").annotate(
+        Count('identifier')).order_by()
+    date_entre_f = Person.objects.filter(
+        gender=Person.FEMALE).values("survey__date_entretien").annotate(
+        Count('identifier')).order_by()
     menage_per_date_entrtien = {
-        'labels': [i.get('date_entretien').strftime('%d-%b-%y') for i in date_entre],
-        'label': "Nombre de migrants",
-        'title': "",
-        'data': [i.get('instance_id__count') for i in date_entre]
+        'categories': [i.get('survey__date_entretien').strftime(
+            '%d-%b-%y') for i in date_entre],
+        'text': "Nombre de migrants",
+        'title': "Nombre total retourné par date arrivée.",
+        'type': "line",
+        'series': [
+            {"name": "Total", "data": [i.get(
+                'identifier__count') for i in date_entre]},
+            {"name": "Total homme", "data": [i.get(
+                'identifier__count') for i in date_entre_m]},
+            {"name": "Total femme", "data": [i.get(
+                'identifier__count') for i in date_entre_f]}]
     }
     context = {"srv": srv,
-               "menage_per_prov": menage_per_prov,
+               "persons_per_pprov_for_chart": persons_per_pprov_for_chart,
                "menage_per_date_entrtien": menage_per_date_entrtien,
                "total_survey": total_survey,
                "total_person": total_person,
@@ -63,27 +93,6 @@ def dashboard(request):
                "date_last_update": date_last_update
                }
 
-    return HttpResponse(template.render(context, request))
-
-
-@login_required
-def table(request):
-
-    srv = Survey.objects.all()
-    template = loader.get_template('migrants/tables.html')
-
-    per_adresse_mali_lieu_regions = Person.objects.values(
-        "survey__adresse_mali_lieu_region").annotate(Count("id")).order_by()
-    menage_per_prov = Survey.objects.values("menage_pays_provenance").annotate(
-        Count('instance_id')).order_by()
-    menage_per_date_entrtien = Survey.objects.values("date_entretien").annotate(
-        Count('instance_id')).order_by()
-
-    context = {"srv": srv,
-               "per_adresse_mali_lieu_regions": per_adresse_mali_lieu_regions,
-               "menage_per_prov": menage_per_prov,
-               "menage_per_date_entrtien": menage_per_date_entrtien,
-               }
     return HttpResponse(template.render(context, request))
 
 

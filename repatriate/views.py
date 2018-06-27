@@ -60,7 +60,6 @@ def person_detail(request, *args, **kwargs):
     person = Person.active_objects.get(identifier=iid)
     context = {"person": person}
     template = loader.get_template('repatriate/person_detail.html')
-
     return HttpResponse(template.render(context, request))
 
 

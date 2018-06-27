@@ -59,7 +59,7 @@
                 {% endif %}
               </ul>
             </li>
-              {% if user|has_role:'admin_migration,desk_assistant_admin,super_admin,dnds_tech' %}
+            {% if user|has_role:'admin_migration,desk_assistant_admin,super_admin,dnds_tech' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
                   <i class="fa fa-fw fa fa-database"></i>
@@ -110,7 +110,6 @@
             </div>
             <div id="footer">{% block footer %}{% endblock %}</div>
         </div>
-
         <!-- Logout Modal-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">

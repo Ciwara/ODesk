@@ -19,7 +19,7 @@ from migrants import views
 
 urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard_mig'),
-    url(r'^table$', views.table, name='table'),
+    # url(r'^table$', views.table, name='table'),
     url(r'^person/(?P<pk>.*)', views.person, name='person'),
     url(r'^person-table/(?P<iid>.*)', views.person_table, name='person_table'),
     url(r'^person-photo/(?P<key_odk>.*)', views.show_media, name='person_photo'),
