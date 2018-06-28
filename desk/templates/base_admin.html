@@ -8,9 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>
-          {% block title %} {% endblock %}
-        </title>
+        <title>{% block title %} {% endblock %}</title>
         <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -30,7 +28,7 @@
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 
             {% if user|has_role:'super_admin,dnds_tech' %}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gestion de Compte">
+              <li class="nav-item" data-toggle="tooltip" v-b-tooltip.hover.top="'ToolTip!'" data-placement="" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
                 </a>
@@ -143,6 +141,7 @@
           {% include "_tags_js.html" %}
           <script type="text/javascript">
               $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip({container: 'body'});
                   {% block onJQready %}{% endblock %}
               });
          </script>

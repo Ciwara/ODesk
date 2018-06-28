@@ -43,7 +43,7 @@
         <div class="card-header">
           <i class="fa fa-line-chart"></i> Nombre de migrants par date d'entretien</div>
         <div class="card-body">
-          <canvas id="chart-per-date-entretien" width="100%" height="50"></canvas>
+          <canvas id="chart-per-date-entretien"></canvas>
         </div>
         <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
       </div>
@@ -109,11 +109,10 @@
             <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
           </div>
         </div>
+        {{menage_per_date_entrtien}}
       </div>
 {% endblock %}
 
 {% block onJQready %}
   chartLine({{menage_per_date_entrtien|safe}}, "chart-per-date-entretien");
-  chartbar({{per_adresse_mali_lieu_region|safe}}, "container");
-  chartbarmulti({{persons_per_pprov_for_chart|safe}}, "migrant-per-prov");
 {% endblock %}

@@ -1,7 +1,7 @@
 
 function chartLine(data, id) {
 
-    Highcharts.chart(id, {
+    Highcharts.chart(data['id'], {
         chart: {type: data['type']},
         title: data["title"],
         xAxis: {
