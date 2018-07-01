@@ -49,7 +49,7 @@ class Command(BaseCommand):
             except Exception as e:
                 print(e)
             try:
-                r_site = RegistrationSite.objects.create(
+                r_site = RegistrationSite.objects.update_or_create(
                     slug=slug,
                     name=name,
                     locality=locality_,
@@ -57,6 +57,6 @@ class Command(BaseCommand):
                     # longitude=longitude,
                     # geometry=geometry,
                 )
+                print(r_site)
             except Exception as e:
                 print(e)
-            print(r_site)

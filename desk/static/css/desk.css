@@ -131,7 +131,6 @@ ul.c-controls li a:hover {
 }
 */
 .name {
-    font-size: 1.7em;
     font-weight: 700;
 }
 /*
@@ -143,12 +142,6 @@ ul.c-controls li a:hover {
     background-color: #fff!important;
     border-bottom: 1px solid #f50404;
 }
-
-
-/************************************************************
-*************************Footer******************************
-*************************************************************/
-
 @import url(http://fonts.googleapis.com/css?family=Fjalla+One);
 @import url(http://fonts.googleapis.com/css?family=Gudea);
 .footer1 {
@@ -160,8 +153,6 @@ ul.c-controls li a:hover {
     border-top-style: solid;
     border-top-color: #003;*/
 }
-
-
 
 .title-widget {
     color: #898989;
@@ -177,7 +168,6 @@ ul.c-controls li a:hover {
     margin-left: 0;
     padding-left: 28px;
 }
-
 .title-widget::before {
     background-color: #ea5644;
     content: "";
@@ -187,14 +177,10 @@ ul.c-controls li a:hover {
     top: -2px;
     width: 5px;
 }
-
-
-
 .widget_nav_menu ul {
     list-style: outside none none;
     padding-left: 0;
 }
-
 .widget_archive ul li {
     background-color: rgba(0, 0, 0, 0.3);
     content: "";
@@ -304,4 +290,8 @@ ul.c-controls li a:hover {
     color: #035417;
     padding-bottom: 1em;
     text-shadow: -5px 7px 40px #808080;
+}
+
+body.fixed-nav {
+    padding-top: 28px;
 }
