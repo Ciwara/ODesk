@@ -4,17 +4,15 @@
 
 {% block menu %} {% include 'repatriate/_menu_admin.html' %} {% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <form class="form-horizontal" method="post">{% csrf_token %}
-                <legend>Correction de l'enregistrement de l'agent <b>{{selected_person.target.nom_agent}}</b> du site <b>{{selected_person.target.site_engistrement}}</b></legend>
-                {{ person_form|as_bootstrap }}
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-info" name="_fixed_person">Corriger</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-        </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <form class="form-horizontal" method="post">{% csrf_token %}
+            <legend>Correction de l'enregistrement de l'agent <b>{{selected_person.target.nom_agent}}</b> du site <b>{{selected_person.target.site_engistrement}}</b></legend>
+            {{ person_form|as_bootstrap }}
+            <div class="form-actions">
+              <button type="submit" class="btn btn-info" name="_fixed_person">Corriger</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     </div>
 {% endblock %}

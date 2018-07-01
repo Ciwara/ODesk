@@ -11,12 +11,10 @@
         <title>
           {% block title %} {% endblock %}
         </title>
-        <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
         <link href="{% static 'css/sb-admin.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css/desk.css' %}" rel="stylesheet">
+        {% include '_base_css.html' %}
         {% block extra_head %}
         {% endblock %}
     </head>
@@ -37,15 +35,15 @@
               </li>
             {% endif %}
             {% if user|has_role:'gestion_migant,admin_migration,super_admin,dnds_tech' %}
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rechercher un migrant">
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottomright" title="Rechercher un migrant">
                   <a class="nav-link" href="{% url 'find_mig' %}">
                         <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span>
                   </a>
                 </li>
             {% endif %}
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tableau de Bord">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Dashboard</span>
+                <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Tableau de Bord</span>
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
                 {% if user|has_role:'desk_controle,desk_assistant_admin,super_admin,dnds_tech' %}
@@ -102,7 +100,7 @@
                     </ul>
                 {% endif %}
                 <div class="row">
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         {% block content %}
                         {% endblock %}
                     </div>
@@ -132,15 +130,24 @@
         <a class="scroll-to-top rounded" href="#page-top">
           <i class="fa fa-angle-up"></i>
         </a>
-        <!-- /.content-wrapper-->
-        <footer class="sticky-footer">
-          <div class="container">
-            <div class="text-center">
-              <small>Copyright © IBS-MAli SARL 2018</small>
-            </div>
-          </div>
-        </footer>
           {% include "_tags_js.html" %}
+        <!-- /.content-wrapper-->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="copyright">
+                            © IBS-MAli SARL 2018, All rights reserved
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="design">
+                          <a href="#">IBS-Mali SARL</a> |  <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
           <script type="text/javascript">
               $(document).ready(function(){
                   {% block onJQready %}{% endblock %}

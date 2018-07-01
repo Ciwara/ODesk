@@ -1,50 +1,61 @@
 {% extends "base_site.html" %}
 
-{% load i18n bootstrap_tags %}
+{% load staticfiles i18n %}
 
 {% block head_title %}Accueil{% endblock %}
 
 {% block banner %}
         {% include "_banner.html" %}
 {% endblock %}
-{% block content %}
-    <div class="row" id="index">
-        <div class="col-xs-8 col-md-8">
-            <!-- About Section -->
-            <h1 id="about">À propos</h1>
-            <h2>La Politique de Développement Social et de Solidarité</h2>
 
-            <h2>1. Rappel Historique</h2>
-            <p>Dans un souci constant de l’amélioration de la qualité et des conditions de vie des populations surtout les plus défavorisées, les politiques sociales ont subi au cours des cinquante dernières années une évolution significative et cela dans le but d’assurer un développement harmonieux et équitable.</p>
-            <p>Aux premières heures de l’indépendance, le social était basé sur une approche médico- social dans les années soixante dix le concept de développement communautaire faisant  son apparition.</p>
-            <p>Impliquant la participation des populations non seulement dans l’élaboration mais également dans la mise en œuvre  des programmes de développement.</p>
-            <p>En 1991, notre pays s’engage dans l’édification d’un état démocratique, avec l’élargissement des espaces de liberté et fondé sur l’égalité entre toutes les catégories  et la protection pour tous.</p>
-            <p>En 1993 le gouvernement constatant que les inégalités sociales s’accentuent, que la société se fragmente, que les groupes ont revenues faibles se popularisent, et que le degré d’envergure sociale donc d’intégration se trouve de plus en plus menacé avait allait adopter une politique naturelle de Développement Sociale et de solidarité.</p></div>
-            <h2 id=objectif>2. OBJECTIFS ET ORIENTATIONS DE LA POLITIQUE</h2>
-            <p>La finalité de la politique de développement social et de solidarité est de créer un environnement économique, politique, social, culturel, et juridique qui permette à tous de bénéficier du développement. Il s’agit  d’instaurer une société pour tous ou chaque individu, avec ses droit et ses responsabilités a un rôle actif à jouer.</p>
-            <h2>OBJECTIF DE LA POLITIQUE</h2>
-            <p>L’objectif majeur de la politique nationale de Développement Social et de Solidarité du Mali est d’assurer le bien être  des populations en réduisant les principales sources de détresse et d’instabilités sociales  en vue d’un développement humain durable.</p>
-            <h4>ORIENTATIONS DE LA POLITIQUE</h4>
-            <p>L’atteinte de l’objectif général de la politique nationale de Développement Social est d’assurée grâce à la mise en en œuvre de programmes articulés autour des orientations suivantes :</p>
-            <ul>
-                <li> Le renforcement de la solidarité et de la lutte contre l’exclusion ;</li>
-                <li> La lutte contre la pauvreté ;</li>
-                <li> Le renforcement de la protection civile.</li>
-            </ul>
-        <div class="col-xs-4 col-md-4">
+{% block content %}
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="img-fluid img-thumbnail img-prot">
+          <a href="{% static 'img/ministre.jpg' %}">
+            <img class="rounded float-left" src="{% static 'img/ministre.jpeg' %}" alt="Lights">
+          </a>
+            <div class="mnt">
+                <h6>M. Monsieur Hamadou KONATÉ</h6>
+              <p>Ministre de la Solidarité et de l’Action Humanitaire</p>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <!-- Contact Section -->
-        <div class="w3-container w3-padding-32" >
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <div class="form-actions">
-                  <button type="submit">Send</button>
-                </div>
-            </form>
-        </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <!-- About Section -->
+        <h1 id="about" class="msah-title" >À propos</h1>
+        <h4>La Politique de Développement Social et de Solidarité</h4>
+        <h4 class="msah-sub-title">1. Rappel Historique</h4>
+        <p>Dans un souci constant de l’amélioration de la qualité et des conditions de vie des populations surtout les plus défavorisées, les politiques sociales ont subi au cours des cinquante dernières années une évolution significative et cela dans le but d’assurer un développement harmonieux et équitable.</p>
+        <p>Aux premières heures de l’indépendance, le social était basé sur une approche médico- social dans les années soixante dix le concept de développement communautaire faisant  son apparition.</p>
+        <p>Impliquant la participation des populations non seulement dans l’élaboration mais également dans la mise en œuvre  des programmes de développement.</p>
+        <p>En 1991, notre pays s’engage dans l’édification d’un état démocratique, avec l’élargissement des espaces de liberté et fondé sur l’égalité entre toutes les catégories  et la protection pour tous.</p>
+        <p>En 1993 le gouvernement constatant que les inégalités sociales s’accentuent, que la société se fragmente, que les groupes ont revenues faibles se popularisent, et que le degré d’envergure sociale donc d’intégration se trouve de plus en plus menacé avait allait adopter une politique naturelle de Développement Sociale et de solidarité.</p>
+        <h4 class="msah-sub-title" id="objectif">2. OBJECTIFS ET ORIENTATIONS DE LA POLITIQUE</h4>
+        <p>La finalité de la politique de développement social et de solidarité est de créer un environnement économique, politique, social, culturel, et juridique qui permette à tous de bénéficier du développement. Il s’agit  d’instaurer une société pour tous ou chaque individu, avec ses droit et ses responsabilités a un rôle actif à jouer.</p>
+        <h4 class="msah-sub-title">OBJECTIF DE LA POLITIQUE</h4>
+        <p>L’objectif majeur de la politique nationale de Développement Social et de Solidarité du Mali est d’assurer le bien être  des populations en réduisant les principales sources de détresse et d’instabilités sociales  en vue d’un développement humain durable.</p>
+        <h4 class="msah-sub-title">ORIENTATIONS DE LA POLITIQUE</h4>
+        <p>L’atteinte de l’objectif général de la politique nationale de Développement Social est d’assurée grâce à la mise en en œuvre de programmes articulés autour des orientations suivantes :</p>
+        <ul>
+            <li> Le renforcement de la solidarité et de la lutte contre l’exclusion ;</li>
+            <li> La lutte contre la pauvreté ;</li>
+            <li> Le renforcement de la protection civile.</li>
+        </ul>
+    </div>
+
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="row">
+
+            <h2 class="msah-title"> Rapports </h2>
+            <ul>
+                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 14 janvier 2017 </a></li>
+                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 30 mai 2017</a></li>
+                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 05 juin 2018</a></li>
+            </ul>
+        </div><!--
+        <div class="row">
+            <h2 class="msah-title">Activites </h2>
+        </div> -->
     </div>
 {% endblock %}
 

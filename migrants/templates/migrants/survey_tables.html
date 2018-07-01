@@ -5,9 +5,9 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'dashboard_mig' %}">Dashboard</a>
+          <a href="{% url 'dashboard_mig' %}">Tableau de bord</a>
         </li>
-        <li class="breadcrumb-item active">Informations général des migrants de retour au Mali.</li>
+        <li class="breadcrumb-item active">Informations générales des migrants de retour au Mali.</li>
       </ol>
           <div class="table-responsive">
             <table class="table table-sm table-striped" cellspacing="0">
@@ -41,24 +41,24 @@
                 {% endfor %}
               </tbody>
             </table>
-        <div class="card-footer small text-muted">
+        <div class="small">
           <nav aria-label="...">
             <ul class="pagination">
               {% if surveys.has_previous %}
                   <li class="page-item">
-                      <a class="page-link" href="?page=1">&laquo; Première page</a>
+                      <a class="page-link" href="?page=1">&laquo; Première page 1</a>
                   </li>
                   <li class="page-item">
-                      <a class="page-link" href="?page={{ surveys.previous_page_number }}">Précedente</a>
+                      <a class="page-link" href="?page={{ surveys.previous_page_number }}">&laquo; Précedente</a>
                   </li>
               {% endif %}
               <li class="page-item active">
                 <span class="page-link">
-                  Page {{ surveys.number }} <span class="sr-only">(current)</span>
+                  Page {{ surveys.number }} / {{ surveys.paginator.num_pages }} <span class="sr-only">(current)</span>
                 </span>
               </li>
                   {% if surveys.has_next %}
-                      <li class="page-item"> <a class="page-link" href="?page={{ surveys.next_page_number }}">Suivante</a></li>
+                      <li class="page-item"> <a class="page-link" href="?page={{ surveys.next_page_number }}">Suivante &raquo;</a></li>
                       <li class="page-item"><a class="page-link" href="?page={{ surveys.paginator.num_pages }}">Dernière page &raquo;</a></li>
                   {% endif %}
               </li>
