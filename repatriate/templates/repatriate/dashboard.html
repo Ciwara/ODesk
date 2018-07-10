@@ -9,11 +9,6 @@
       <h1> Retournés </h1>
       <!-- Area Chart Example-->
       <div class="row">
-        <div class="col-12">
-          <div id="container3" style="margin: 0 auto"></div>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-lg-12">
           <!-- Example Bar Chart Card-->
           <div class="card mb-3">
@@ -22,7 +17,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-10 my-auto">
-                  <div id="container" style="margin: 0 auto"></div>
+                  <div id="per-entretien" style="margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-2 text-center my-auto">
                   <div class="h4 mb-0 text-primary">{{total_person}}</div>
@@ -43,24 +38,23 @@
           </div>
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> N</div>
+              <i class="fa fa-bar-chart"></i>Nombre de retournés enregistre par point d'enregistrement.</div>
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-10 my-auto">
-                  <div id="container1" style="margin: 0 auto"></div>
+                <div class="col-sm-12 my-auto">
+                  <div id="menage_per_prov" style="margin: 0 auto"></div>
                 </div>
-                <div class="col-sm-2 text-center my-auto">
-                  <div class="h4 mb-0 text-primary">{{total_person}}</div>
-                  <div class="small text-muted">Total retournés</div>
-                  <hr>
-                  <div class="h4 mb-0 text-success">{{total_female}}</div>
-                  <div class="small text-muted">Total femme</div>
-                  <hr>
-                  <div class="h4 mb-0">{{total_male}}</div>
-                  <div class="small text-muted">Total homme</div>
-                  <hr>
-                  <div class="h4 mb-0 ">{{total_survey}}</div>
-                  <div class="small text-muted">Total questionnaire</div>
+              </div>
+            </div>
+            <div class="card-footer small text-muted">Mise à jour le 14 avril 2018</div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fa fa-bar-chart"></i></div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12 my-auto">
+                  <div id="per-region" style="margin: 0 auto"></div>
                 </div>
               </div>
             </div>
@@ -71,7 +65,7 @@
 {% endblock %}
 
 {% block onJQready %}
-  chartLine({{menage_per_date_entrtien|safe}}, "container");
-  chartLine({{per_lieu_region|safe}}, "container1");
-  chartUpadteAfterRender({{per_lieu_region|safe}}, "container3");
+  hchartLine({{menage_per_date_entrtien|safe}}, "per-entretien");
+  hchartbar({{menage_per_prov|safe}}, "menage_per_prov");
+  hchartbar({{per_lieu_region|safe}}, "per-region");
 {% endblock %}

@@ -8,11 +8,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # from django.shortcuts import redirect, render
-from migrants.models import Survey, Person
 # from desk.celery import app
 from django.db.models import Count
 from django.template import loader
+from django.db.models.functions import TruncMonth
+from django.db.models import Sum, Count
 
+from migrants.models import Survey, Person
 from odkextractor.models import FormID
 # from migrants.forms import (UserCreationForm, UserChangeForm)
 
@@ -34,6 +36,21 @@ def dashboard(request):
     date_entre = Survey.objects.values("date_entretien").annotate(
         Count('instance_id')).order_by("date_entretien")
 
+    p = Person.objects.annotate(
+        month=TruncMonth('survey__date_entretien')).values('month').annotate(
+        c=Count('identifier')).order_by('survey__date_entretien')
+    per_month = {
+        'categories': [i.get('month').strftime('%d %b %Y') for i in p],
+        'label': "",
+        'title': "Nombre de retourné",
+        'series':
+            [{"name": "Total retournés", "data": [i.get('c') for i in p]},
+            # {"name": "Homme", "data": [i.get('gm') for i in p]},
+            # {"name": "Femme", "data": [i.get('gf') for i in p]},
+            ],
+    }
+    # import ipdb; ipdb.set_trace()
+
     per_adresse_mali_lieu_region = {
         'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_adresse_mali_lieu_regions],
         'label': "Région de retour",
@@ -42,17 +59,18 @@ def dashboard(request):
     }
     menage_per_prov = {
         'labels': [i.get('menage_pays_provenance').title() for i in s],
-        'label': "Nombre de migrants",
+        'label': "Nombre total migrant",
         'title': "",
         'data': [i.get('instance_id__count') for i in s]
     }
     menage_per_date_entrtien = {
         'labels': [i.get('date_entretien').strftime('%d-%b-%y') for i in date_entre],
-        'label': "Nombre de migrants",
+        'label': "Nombre total migrant",
         'title': "",
         'data': [i.get('instance_id__count') for i in date_entre]
     }
     context = {"srv": srv,
+               "per_month": per_month,
                "menage_per_prov": menage_per_prov,
                "menage_per_date_entrtien": menage_per_date_entrtien,
                "total_survey": total_survey,
@@ -77,7 +95,7 @@ def database_mig(request):
 @login_required
 def find_mig(request):
 
-    surveys = Survey.objects.all()
+    surveys = Survey.objects.all().order_by('-date_entretien')
     context = {"surveys": surveys}
     template = loader.get_template('migrants/survey_tables.html')
 

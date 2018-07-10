@@ -105,48 +105,29 @@
                     </div>
                 </div>
             </div>
-            <div id="footer">{% block footer %}{% endblock %}</div>
-        </div>
-        <!-- Logout Modal-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                </button>
+            <div id="footer">
+              <div class="footer-bottom">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <div class="copyright">
+                                  © IBS-MAli SARL 2018, All rights reserved
+                              </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <div class="design">
+                                   <a href="#">IBS-Mali SARL</a> |  <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="modal-body">Select "Déconnexion" est vous sûr de fermer cette sesion.</div>
-              <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Déconnexion</a>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <a class="scroll-to-top rounded" style="bottom: 3em;" href="#page-top">
           <i class="fa fa-angle-up"></i>
         </a>
           {% include "_tags_js.html" %}
-        <!-- /.content-wrapper-->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <div class="copyright">
-                            © IBS-MAli SARL 2018, All rights reserved
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <div class="design">
-                          <a href="#">IBS-Mali SARL</a> |  <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
           <script type="text/javascript">
               $(document).ready(function(){
                   {% block onJQready %}{% endblock %}

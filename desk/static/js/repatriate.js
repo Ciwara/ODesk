@@ -1,5 +1,55 @@
 
-function chartLine(data, id) {
+function h_chartLine(data, id) {
+    var data = data['series'];
+    console.log(data);
+/*
+    Highcharts.chart(id, {
+
+        title: {
+            text: 'Solar Employment Growth by Sector, 2010-2016'
+        },
+
+        subtitle: {
+            text: 'Source: thesolarfoundation.com'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Number of Employees'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                pointStart: 2010
+            }
+        },
+        series: data["series"]
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+    });*/
+}
+
+function hchartLine(data, id) {
 
     Highcharts.chart(id, {
         chart: {type: data['type']},
@@ -33,97 +83,43 @@ function chartLine(data, id) {
     });
 }
 
-function chartbar(data, id) {
+function hchartbar(data, id) {
 
-    var data1 = data['series'];
-
-    console.log(data1)
-    Highcharts.chart(data['id'], {
-        chart: {
-            type: 'column'
-        },
+    Highcharts.chart(id, {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: data['label']
+    },
+    subtitle: {
+        text: data['subtitle']
+    },
+    xAxis: {
+        categories: data['categories'],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
         title: {
-            text: "<span style='color:green'>" + data['title'] +"</span>"
-        },
-        subtitle: {
-            text: data['subtitle']
-        },
-        xAxis: {
-            type: 'category',
-            labels: {
-                rotation: -45,
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Population (millions)'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: data['tooltip']
-        },
-        series: [{
-            name: '',
-            data: data['series'],
-            dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:.1f}', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }]
-    });
-}
+            text: data['title']
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
 
-function chartbarmulti(data, id) {
-    Highcharts.chart(data['id'], {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Monthly Average Rainfall'
-        },
-        subtitle: {
-            text: 'Source: WorldClimate.com'
-        },
-        xAxis: {
-            categories: data['categories'],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Rainfall (mm)'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
         series: data['series']
-    });
+});
 }

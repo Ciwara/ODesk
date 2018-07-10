@@ -75,7 +75,7 @@ def home(request, *args, **kwargs):
     context = {}
     prov = Provider.objects.get(username=request.user.username)
     if has_role(prov, [SuperAdmin, DNDSTech]):
-        return render(request, 'home.html', context)
+        return redirect("dashboard_mig")
     if has_role(prov, [DeskAssistantAdmin]):
         return redirect("controle")
     if prov.project.slug == "hcr":

@@ -44,8 +44,8 @@ a {color: #000}
 a :hover {text-decoration:none;color: #eee}
 
 .table a {
-    color: green;
-    height: 2em;
+   /* color: green;
+    height: 2em;*/
     text-decoration: none;
 }
 .table .thead-merge th {
@@ -294,4 +294,11 @@ ul.c-controls li a:hover {
 
 body.fixed-nav {
     padding-top: 28px;
+}
+#footer .footer-bottom {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    position: absolute;
+    bottom: 0;
+    left: 1px;
 }
