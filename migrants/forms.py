@@ -23,5 +23,5 @@ class SearchFormPerPeriod(forms.Form):
 class SearchMigrantForm(forms.Form):
 
     migrant = forms.CharField(
-        label="Search", max_length=200, required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'recherche par numéro'}),)
+        label="Recherche", max_length=200, required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'rechercher par numéro'}),)

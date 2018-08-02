@@ -143,6 +143,7 @@ def manager_mig(request):
 def find_mig(request):
 
     template = loader.get_template('migrants/find_migrants.html')
+    context = {}
     if request.method == 'POST' and 'search' in request.POST:
         search_migrant_form = SearchMigrantForm(request.POST or None)
         search_text = request.POST.get('migrant')
@@ -151,10 +152,10 @@ def find_mig(request):
             Q(nom__icontains=search_text) |
             Q(survey__tel__icontains=search_text)
         ).order_by('-survey__date_entretien')
-        context = {"persons": persons, }
+        context.update({"persons": persons, })
     else:
         search_migrant_form = SearchMigrantForm()
-    context = {"search_migrant_form": search_migrant_form}
+    context.update({"search_migrant_form": search_migrant_form})
 
     return HttpResponse(template.render(context, request))
 
