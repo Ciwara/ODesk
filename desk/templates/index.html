@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% load staticfiles i18n %}
+{% load staticfiles i18n humanize %}
 
 {% block head_title %}Accueil{% endblock %}
 
@@ -22,7 +22,7 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <!-- About Section -->
-        <h1 id="about" class="msah-title" >À propos</h1>
+        <h2 id="about" class="msah-title" >À propos</h2>
         <h4>La Politique de Développement Social et de Solidarité</h4>
         <h4 class="msah-sub-title">1. Rappel Historique</h4>
         <p>Dans un souci constant de l’amélioration de la qualité et des conditions de vie des populations surtout les plus défavorisées, les politiques sociales ont subi au cours des cinquante dernières années une évolution significative et cela dans le but d’assurer un développement harmonieux et équitable.</p>
@@ -44,18 +44,28 @@
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <div class="row">
-            <h2 class="msah-title"> Rapports </h2>
-            <ul>
-                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 14 janvier 2017 </a></li>
-                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 30 mai 2017</a></li>
-                <li><a  href="#"><i class="fa fa-file-text"></i> Rapport DTM du 05 juin 2018</a></li>
-            </ul>
-        </div><!--
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2 class="msah-title"> Rapports </h2>
+                <ul id="rep">
+                    <h1>GG</h1>
+                    {% for p in reports %}
+                    <hr>
+                        <a  href="media/{{p.doc_file.name}}"><li><i class="fa fa-file-pdf-o "></i> {{p.name}}<br> <span class="badge badge-dark"> {{p.category}}</span> <span class="badge badge-light">Date de production : {{p.create_date|naturalday}} </span></li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         <div class="row">
-            <h2 class="msah-title">Activites </h2>
-        </div> -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><!--
+                <h2 class="msah-title">Activites </h2> -->
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block footer %}
     {% include '_footer.html' %}
+{% endblock %}
+
+{% block onJQready %}
+    setInterval(function(){startRefresh_el("rep")}, 3000);
 {% endblock %}

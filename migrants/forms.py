@@ -5,25 +5,23 @@
 from django import forms
 # from django.contrib.admin import widgets
 
-from migrants.models import Person, Survey
+# from migrants.models import Person, Survey
 
 
 class SearchFormPerPeriod(forms.Form):
-    star_date = forms.DateField()
-    end_date = forms.DateField()
-    # widgets = forms.DateInput(attrs={'class': 'datepicker'}),
+
+    start_date = forms.DateField(
+        label="Date de debut",
+        widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control', 'size': '5'}))
+    end_date = forms.DateField(
+        label="Date de fin",
+        widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control', 'size': '5'}))
 
 
-class SearchForm(forms.Form):
+class SearchMigrantForm(forms.Form):
 
-    num_progres_individuel = forms.CharField(
-        label="Numéro de progres individuel", max_length=200, required=True,
+    migrant = forms.CharField(
+        label="Search", max_length=200, required=True,
         widget=forms.TextInput(attrs={'placeholder': 'recherche par numéro'}),)
-
-    def get_result(self, required):
-        try:
-            result = Person.objects.get(
-                num_progres_individuel=self.cleaned_data.get('num_progres_individuel'))
-        except Exception:
-            result = None
-        return result

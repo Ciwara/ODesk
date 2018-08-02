@@ -1,0 +1,97 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n bootstrap_tags humanize %}
+{% block menu %} {% include 'migrants/_menu_admin.html' %} {% endblock %}
+{% block content %}
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+  <!-- Breadcrumbs-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{% url 'dashboard_mig' %}">Tableau de bord</a>
+    </li>
+    <li class="breadcrumb-item active">Gestion des données des migrants</li>
+  </ol>
+  <hr>
+  <div class="row">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <form class="form-vertical" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <legend>Choisissez une période</legend>
+             {{ period_form|as_bootstrap_inline }}
+            <button type="submit" name="_per_Date" class="btn-primary btn-sm"><i class="fa fa-filter"></i> {% trans "filtrer" %}</button>
+            <button class="btn-primary btn-sm" style="float: right;" type="submit" name="export_per_date">
+            <i class="fa fa-file-excel-o"></i> Exporter</button>
+        </form>
+    </div>
+</form>
+  </div>
+  <hr>
+      <!-- Example DataTables Card-->
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-table"></i> Résultats de recherche : <b>{{nb_person}}</b> personne / F : <b>{{nb_person_f}}</b> / M : <b>{{nb_person_m}}</b></div>
+      <div class="card-body">
+          <div class="table-responsive">
+            <table class="table-sm table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>DATE ENTRETIEN</th>
+                  <th>DATE ARRIVEE</th>
+                  <th>PROVENANCE DU MIGRANT</th>
+                  <th>PRENOMS</th>
+                  <th>NOM</th>
+                  <th>SEXE</th>
+                  <th>DATE DE NAISSANCE</th>
+                  <th>AGE</th>
+                  <th>PROFESSION</th>
+                  <th>ETAT CIVIL</th>
+                  <th>LIEN</th>
+                  <th>REGION</th>
+                  <th>CERCLE</th>
+                  <th>COMMUNE</th>
+                  <th>VILLAGE</th><!--
+                  <th>TEL</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                {% for person in persons %}
+                  <tr>
+                    <td>{{person.survey.date_entretien}}</td>
+                    <td>{{person.survey.date_arrivee}}</td>
+                    <td>{{person.survey.menage_pays_provenance.name }}</td>
+                    <td>{{person.prenoms }}</td>
+                    <td>{{person.nom }}</td>
+                    <td>{{person.gender}}</td>
+                    <td>{{person.ddn}}</td>
+                    <td>{{person.age }}</td>
+                    <td>{{person.profession }}</td>
+                    <td>{{person.etat_civil }}</td>
+                    <td>{{person.lien }}</td>
+                    <td>{{person.survey.adresse_mali_lieu_region }}</td>
+                    <td>{{person.survey.adresse_mali_lieu_cercle }}</td>
+                    <td>{{person.survey.adresse_mali_lieu_commune }}</td>
+                    <td>{{person.survey.adresse_mali_lieu_village_autre }}</td>
+                    <!-- <td>{{person.survey.tel }}</td> -->
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+      {% include '_pagination.html' with page=persons %}
+      </div>
+      <div class="card-footer small text-muted">Nombre total person {{nb_person}} / F {{nb_person_f}} / M {{nb_person_m}}</div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block onJQready %}
+  $('.datepicker').datepicker({
+      weekStart: 1,
+      daysOfWeekHighlighted: "6,0",
+      autoclose: true,
+      todayHighlight: true,
+      format: "dd/mm/yyyy",
+      language: "fr"
+  });
+  <!-- $('.datepicker').datepicker("setDate", new Date()); -->
+{% endblock %}

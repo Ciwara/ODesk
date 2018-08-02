@@ -13,6 +13,7 @@
                     <li class="nav-item"><a class="nav-link" href="#objectif">Objectif</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 {% else %}
+                    <a class="nav-link" href="{% url 'home' %}"><button class="tn btn-secondary btn-sm"><i class="fa fa-home"></i> Home</button></a>
                     {% include "repatriate/_menu.html" %}
                     {% include "migrants/_menu.html" %}
                 {% endif %}

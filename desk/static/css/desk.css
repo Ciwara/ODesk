@@ -39,9 +39,9 @@
 .button-manager {
     text-align: center;background-color: #868d96;font-size: 3em;
 }
-
+/*
 a {color: #000}
-a :hover {text-decoration:none;color: #eee}
+a :hover {text-decoration:none;color: #eee}*/
 
 .table a {
    /* color: green;
@@ -280,11 +280,24 @@ ul.c-controls li a:hover {
     max-width: 100%;
 }
 .msah-title {
-    color: #035417;
+    color: #ffffff;
     text-align: left;
-    border-bottom: 1px solid #000200;
-    padding-bottom: 30px;
-    text-shadow: -5px 7px 40px #808080;
+    border-bottom: 1px solid #09f177;
+    /* padding-bottom: 30px; */
+    /* text-shadow: -5px 7px 40px #808080; */
+    background: #00660e;
+    padding-left: 12px;
+}
+.h2, h2 {
+    font-size: 2rem;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: .5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+}
 }
 .msah-sub-title {
     color: #035417;

@@ -8,14 +8,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>
-          {% block title %} {% endblock %}
-        </title>
+        <title> {% block title %} {% endblock %} </title>
         <!-- Bootstrap core CSS-->
         <link href="{% static 'css/sb-admin.min.css' %}" rel="stylesheet">
         {% include '_base_css.html' %}
-        {% block extra_head %}
-        {% endblock %}
+        {% block extra_head %} {% endblock %}
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-msah fixed-top" id="mainNav">
       <div class="container-fluid">
@@ -25,19 +22,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-
             {% if user|has_role:'super_admin,dnds_tech' %}
+              <li class="nav-item" data-toggle="tooltip" data-placement="" title="Publication de rapport">
+                <a class="nav-link" href="{% url 'report_form' %}">
+                  <i class="fa fa-file-text"></i> <span class="nav-link-text">Publication de rapport</span>
+                </a>
+              </li>
               <li class="nav-item" data-toggle="tooltip" data-placement="" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
                 </a>
               </li>
             {% endif %}
-            {% if user|has_role:'gestion_migant,admin_migration,super_admin,dnds_tech' %}
+            {% if user|has_role:'migration_agent,migration_admin,super_admin,dnds_tech' %}
                 <li class="nav-item" data-toggle="tooltip" data-placement="mright" title="Rechercher un migrant">
-                  <a class="nav-link" href="{% url 'find_mig' %}">
-                        <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span>
-                  </a>
+                  <a class="nav-link" href="{% url 'find_mig' %}"><i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span></a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="mright" title="Rechercher un migrant">
+                  <a class="nav-link" href="{% url 'manager_mig' %}"><i class="fa fa-list-alt"></i> <span class="nav-link-text">Gestion doonnées migrant</span></a>
                 </li>
             {% endif %}
             <li class="nav-item" data-toggle="tooltip" data-placement="" title="Tableau de Bord">
@@ -46,27 +48,26 @@
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
                 {% if user|has_role:'desk_controle,desk_assistant_admin,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
+                  <li><a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
                 {% endif %}
-                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
+                {% if user|has_role:'migration_agent,migration_admin,super_admin,dnds_tech' %}
+                  <li><a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
                 {% endif %}
                 {% if user|has_role:'super_admin,dnds_tech' %}
                   <li><a class="nav-link deactivate" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-chart"></i>PDIs (non activité)</a></li>
                 {% endif %}
               </ul>
             </li>
-            {% if user|has_role:'admin_migration,desk_assistant_admin,super_admin,dnds_tech' %}
+            {% if user|has_role:'migration_admin,desk_assistant_admin,super_admin,dnds_tech' %}
               <li class="nav-item" data-toggle="tooltip" data-placement="" title="Administration">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa fa-database"></i>
-                  <span class="nav-link-text">Administration</span>
+                  <i class="fa fa-fw fa fa-database"></i> <span class="nav-link-text">Administration</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
                 {% if user|has_role:'desk_assistant_admin,super_admin,dnds_tech' %}
                   <li> <a class="nav-link" href="{% url 'repatriate_data' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
                 {% endif %}
-                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
+                {% if user|has_role:'migration_admin,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>
                 {% endif %}
                 {% if user|has_role:'super_admin,dnds_tech' %}
@@ -116,7 +117,7 @@
                           </div>
                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                               <div class="design">
-                                   <a href="#">IBS-Mali SARL</a> |  <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
+                                   <a href="#">IBS-Mali SARL</a> | <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
                               </div>
                           </div>
                       </div>

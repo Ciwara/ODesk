@@ -1,0 +1,79 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n bootstrap_tags %}
+{% block menu %} {% include 'migrants/_menu_admin.html' %} {% endblock %}
+{% block content %}
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'dashboard_mig' %}">Tableau de bord</a>
+        </li>
+        <li class="breadcrumb-item active">.</li>
+      </ol>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <form class="form-vertical" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <!-- <legend class="msah-sub-title">Search</legend> -->
+                {{ search_migrant_form|as_bootstrap_inline }}
+                <div class="form-actions">
+                  <button type="submit" name="search" class="btn btn-primary">{% trans "search" %}</button>
+                </div>
+            </form>
+        </div>
+      <!-- Example DataTables Card-->
+      <hr>
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-table"></i> Résultats de recherche</div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>TEL</th>
+                <th>DATE ENTRETIEN</th>
+                <th>DATE ARRIVEE</th>
+                <th>PROVENANCE DU MIGRANT</th>
+                <th>PRENOMS</th>
+                <th>NOM</th>
+                <th>SEXE</th>
+                <th>DATE DE NAISSANCE</th>
+                <th>AGE</th>
+                <th>PROFESSION</th>
+                <th>ETAT CIVIL</th>
+                <th>LIEN</th>
+                <th>REGION</th>
+                <th>CERCLE</th>
+                <th>COMMUNE</th>
+                <th>VILLAGE</th><!--
+                <th>TEL</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              {% for person in persons %}
+                <tr>
+                  <td>{{person.survey.tel}}</td>
+                  <td>{{person.survey.date_entretien}}</td>
+                  <td>{{person.survey.date_arrivee}}</td>
+                  <td>{{person.survey.menage_pays_provenance.name }}</td>
+                  <td>{{person.prenoms }}</td>
+                  <td>{{person.nom }}</td>
+                  <td>{{person.gender}}</td>
+                  <td>{{person.ddn}}</td>
+                  <td>{{person.age }}</td>
+                  <td>{{person.profession }}</td>
+                  <td>{{person.etat_civil }}</td>
+                  <td>{{person.lien }}</td>
+                  <td>{{person.survey.adresse_mali_lieu_region }}</td>
+                  <td>{{person.survey.adresse_mali_lieu_cercle }}</td>
+                  <td>{{person.survey.adresse_mali_lieu_commune }}</td>
+                  <td>{{person.survey.adresse_mali_lieu_village_autre }}</td>
+                  <!-- <td>{{person.survey.tel }}</td> -->
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

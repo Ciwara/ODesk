@@ -4,23 +4,21 @@
 
 from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
-
+# import os
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.core.mail import send_mail, BadHeaderError
+from django.conf import settings
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 # from django.shortcuts import render, redirect
 from rolepermissions.checkers import has_role
 
-from desk.models import Entity, Provider, EntityProvider
+from desk.models import Report, Provider, EntityProvider
 from repatriate.models import Target, Person, RegistrationSiteProvider
-# from django.core.mail import send_mail
-from django.conf import settings
-from desk.forms import ContactForm
+from desk.forms import ContactForm, ReportForm
 from OIMDesk.roles import (
-    DeskAssistantAdmin, DNDSTech, SuperAdmin, DeskControle)
+    DeskAssistantAdmin, DNDSTech, SuperAdmin, DeskControle, MigrationAdmin,
+    MigrationAgent)
 
 
 def success_view(request):
@@ -52,6 +50,7 @@ def contacts(request):
 
 def index(request):
     context = {'page_slug': 'index'}
+    reports = Report.objects.all().order_by("-publish_date")
 
     if request.method == 'GET':
         form = ContactForm()
@@ -62,17 +61,30 @@ def index(request):
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
             try:
-                send_mail(subject, message, from_email, [settings.EMAIL_HOST_USER, 'ibfadiga@gmail.com'])
+                send_mail(subject, message, from_email, [
+                    settings.EMAIL_HOST_USER, 'ibfadiga@gmail.com'])
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect('success')
-    context.update({"form": form})
+    context.update({"form": form, "reports": reports})
     return render(request, 'index.html', context)
 
 
 @login_required
+def new_report(request):
+    cxt = {}
+    if request.method == 'GET':
+        rep_form = ReportForm()
+    else:
+        rep_form = ReportForm(request.POST, request.FILES)
+        if rep_form.is_valid():
+            rep_form.save()
+    cxt.update({"rep_form": rep_form})
+    return render(request, 'report_form.html', cxt)
+
+
+@login_required
 def home(request, *args, **kwargs):
-    context = {}
     prov = Provider.objects.get(username=request.user.username)
     if has_role(prov, [SuperAdmin, DNDSTech]):
         return redirect("dashboard_mig")
@@ -80,10 +92,10 @@ def home(request, *args, **kwargs):
         return redirect("controle")
     if prov.project.slug == "hcr":
         return redirect("dashboard_rep")
-    if prov.project.slug == "oim":
+    if prov.project.slug == "oim" or has_role(prov, [MigrationAgent]):
         return redirect("dashboard_mig")
     if prov.project.slug == "all":
-        return render(request, 'home.html', context)
+        return render(request, 'home.html', {})
     else:
         return redirect("/")
 
