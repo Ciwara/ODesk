@@ -1,21 +1,20 @@
 {% extends "base_admin.html" %}
 {% load staticfiles i18n humanize %}
 {% block content %}
-
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="https://code.highcharts.com/modules/export-data.js"></script>
-  <script src="{% static 'js/repatriate.js' %}"></script>
-
-      <h1>Migrants</h1>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="{% static 'js/desk.js' %}"></script>
+    <script src="{% static 'js/repatriate.js' %}"></script>
       <div class="row">
+        <h1>Tableau de bord des migrants de retour.</h1>
         <div class="col-lg-12">
           <!-- Example Bar Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Nombre de migrants par pays de provinance</div>
+              <i class="fa fa-bar-chart"></i> Nombre de migrants de retour par pays provenance.</div>
             <div class="card-body">
-              <div class="row">
+              <div class="row" id="page">
                 <div class="col-sm-10 my-auto">
                   <canvas id="barChart" width="100%" height="50"></canvas>
                 </div>
@@ -41,18 +40,27 @@
       <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-line-chart"></i> Nombre de migrants par date d'entretien</div>
+          <i class="fa fa-line-chart"></i> Nombre de migrants de retour par mois.</div>
         <div class="card-body">
-          <canvas id="chart-per-date-entretien"></canvas>
+          <div id="per-month" width="100%" height="50"></div>
         </div>
         <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
       </div>
       <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-bar-chart"></i> Nombre de migrants par région de retour</div>
+          <i class="fa fa-line-chart"></i> Nombre de migrants de retour par date d'entretien.</div>
         <div class="card-body">
-            <div id="container" ></div>
+          <canvas id="lineChart" width="100%" height="50"></canvas>
+        </div>
+        <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
+      </div>
+      <!-- Area Chart Example-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-bar-chart"></i> Nombre de migrants de retour par région.</div>
+        <div class="card-body">
+          <canvas id="barChart2" width="100%" height="50"></canvas>
         </div>
         <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
       </div>
@@ -61,7 +69,7 @@
           <!-- Example Pie Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-pie-chart"></i> Nombre de migrants par pays provinace </div>
+              <i class="fa fa-pie-chart"></i> Nombre de migrants par pays</div>
             <div class="card-body">
               <canvas id="pieChart" width="100%" height="100"></canvas>
             </div>
@@ -76,7 +84,7 @@
             <div class="list-group list-group-flush small">
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                  <img class="d-flex mr-3 rounded-circle" src="#" alt="">
                   <div class="media-body">
                     <h4>Migration </h4> Arrivé de 120 migrants de la libye. <br/>
                     <strong>Abdramane Niama Togora</strong>
@@ -86,7 +94,7 @@
               </a>
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                  <img class="d-flex mr-3 rounded-circle" src="#" alt="">
                   <div class="media-body">
                     <h4>Formation </h4>Formation sur le nouveau formulaire demain à 10h. <br/>
                     <strong>Alou Dolo </strong>
@@ -96,7 +104,7 @@
               </a>
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                  <img class="d-flex mr-3 rounded-circle" src="#" alt="">
                   <div class="media-body">
                     <h4>Réunion</h4> Rencontre OIM et DNDS <br/>
                     <strong>Abdramane Niama Togora</strong>.
@@ -109,10 +117,16 @@
             <div class="card-footer small text-muted">Mise à jour {{date_last_update|naturaltime}}</div>
           </div>
         </div>
-        {{menage_per_date_entrtien}}
       </div>
+          <head>
 {% endblock %}
 
 {% block onJQready %}
-  chartLine({{menage_per_date_entrtien|safe}}, "chart-per-date-entretien");
+    chartbarData({{menage_per_prov|safe}}, "barChart");
+    chartbarData({{per_adresse_mali_lieu_region|safe}}, "barChart2");
+    chartlineData({{menage_per_date_entrtien|safe}}, "lineChart");
+    chartpieData({{menage_per_prov|safe}});
+    hchartLine({{per_month|safe}}, "per-month");
+    setInterval(function(){startRefresh_el("barChart")}, 3000);
+    //setInterval(function(){startRefresh('{% url "dashboard_mig" %}', "#barChart")}, 30000);
 {% endblock %}

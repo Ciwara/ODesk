@@ -5,13 +5,13 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="{% url 'dashboard_rep' %}">Dashboard</a>
+          <a href="{% url 'dashboard_rep' %}">Tableau de bord</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'repatriate_data'%}">Data</a>
+          <a href="{% url 'repatriate_data'%}">Informations générales des ménages</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{person.target.persons_url}}">Menage</a>
+          <a href="{{person.target.persons_url}}">Les membres du menage {{person.target}} retournés</a>
         </li>
         <li class="breadcrumb-item active">Les informations du retourné {{person}}</li>
       </ol>

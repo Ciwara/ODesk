@@ -40,11 +40,11 @@ urlpatterns = [
     url(r'^migrants/', include('migrants.urls')),
     url(r'^repatriate/', include('repatriate.urls')),
     url(r'^password/$', provider.change_password, name='change_password'),
-    url(r'^login/$',
-        auth_views.login, {'template_name': 'login.html'}, name='login'),
+    url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
     url('success/', home.success_view, name='success'),
     url('contacts/', home.contacts, name='contacts'),
+    url('report-form', home.new_report, name='report_form'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [

@@ -1,4 +1,4 @@
-/*// Chart.js scripts
+// Chart.js scripts
 // -- Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
@@ -285,5 +285,5 @@ $('.datepicker').datepicker({
     format: "dd/mm/yyyy",
     language: "fr"
 });
-/*$('.datepicker').datepicker("setDate", new Date());*/
+/*$('.datepicker').datepicker("setDate", new Date());
 */

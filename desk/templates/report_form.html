@@ -1,0 +1,15 @@
+{% extends "base_admin.html" %}
+{% load staticfiles i18n widget_tweaks bootstrap_tags %}
+{% block content %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    {% include "_message.html" with msg=rep_form.errors %}
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <form class="form-vertical" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <legend class="msah-sub-title">Ajout de rapport</legend>
+            {{ rep_form|as_bootstrap_inline }}
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

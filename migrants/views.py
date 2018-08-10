@@ -1,20 +1,23 @@
 # from django.shortcuts import render
-
-
 import xlwt
 from datetime import datetime
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-# from django.shortcuts import redirect, render
-from migrants.models import Survey, Person
+# from django.shortcuts import redirect
 # from desk.celery import app
 from django.db.models import Count
 from django.template import loader
+from django.db.models.functions import TruncMonth
+from django.db.models import Q
+# from django.db.models import Sum, Count
 
+from migrants.models import Survey, Person
 from odkextractor.models import FormID
-# from migrants.forms import (UserCreationForm, UserChangeForm)
+from migrants.forms import (SearchFormPerPeriod, SearchMigrantForm)
+
+from desk.tools import str_to_date
 
 
 @login_required
@@ -26,64 +29,49 @@ def dashboard(request):
     per_adresse_mali_lieu_regions = Person.objects.values(
         "survey__adresse_mali_lieu_region").annotate(Count("id")).order_by()
     total_survey = Survey.objects.all().count()
-    persons = Person.objects.all()
-    persons_m = persons.filter(gender=Person.MALE)
-    persons_f = persons.filter(gender=Person.FEMALE)
+    total_person = Person.objects.all().count()
+    total_male = Person.objects.filter(gender=Person.MALE).count()
+    total_female = Person.objects.filter(gender=Person.FEMALE).count()
+    s = Survey.objects.values("menage_pays_provenance").annotate(
+        Count('instance_id')).order_by()
+    date_entre = Survey.objects.values("date_entretien").annotate(
+        Count('instance_id')).order_by("date_entretien")
 
-    total_person = persons.count()
-    total_male = persons_m.count()
-    total_female = persons_f.count()
-    persons_per_pprov = persons.values("survey__menage_pays_provenance").annotate(
-        Count('identifier')).order_by()
-    persons_per_pprov_m = persons_m.values("survey__menage_pays_provenance").annotate(
-        Count('identifier')).order_by()
-    persons_per_pprov_f = persons_f.values("survey__menage_pays_provenance").annotate(
-        Count('identifier')).order_by()
+    p = Person.objects.annotate(
+        month=TruncMonth('survey__date_entretien')).values('month').annotate(
+        c=Count('identifier')).order_by('survey__date_entretien')
+    per_month = {
+        'categories': [i.get('month').strftime('%d %b %Y') for i in p],
+        'label': "",
+        'title': "Nombre de retourné",
+        'series':
+            [{"name": "Total retournés", "data": [i.get('c') for i in p]},
+            # {"name": "Homme", "data": [i.get('gm') for i in p]},
+            # {"name": "Femme", "data": [i.get('gf') for i in p]},
+            ],
+    }
+
     per_adresse_mali_lieu_region = {
-        'title': "Les migrants par région de retour.",
-        'name': "Région de retour",
-        'tooltip': "Nb. migrant",
-        'series': [[i.get('survey__adresse_mali_lieu_region').upper(),
-                    i.get('id__count')] for i in per_adresse_mali_lieu_regions]
-    }
-    persons_per_pprov_for_chart = {
-        'categories': [i.get('survey__menage_pays_provenance').title() for i in persons_per_pprov],
-        'label': "Nombre de migrants",
+        'labels': [i.get('survey__adresse_mali_lieu_region').title() for i in per_adresse_mali_lieu_regions],
+        'label': "Région de retour",
         'title': "",
-        'series': [
-            {'name': 'Total',
-             'data': [i.get('identifier__count') for i in persons_per_pprov]},
-            {'name': 'Total',
-             'data': [i.get('identifier__count') for i in persons_per_pprov_m]},
-            {'name': 'Total',
-             'data': [i.get('identifier__count') for i in persons_per_pprov_f]}
-        ]
+        'data': [i.get('id__count') for i in per_adresse_mali_lieu_regions]
     }
-
-    date_entre = Person.objects.values("survey__date_entretien").annotate(
-        Count('identifier')).order_by("survey__date_entretien")
-    date_entre_m = Person.objects.filter(
-        gender=Person.MALE).values("survey__date_entretien").annotate(
-        Count('identifier')).order_by()
-    date_entre_f = Person.objects.filter(
-        gender=Person.FEMALE).values("survey__date_entretien").annotate(
-        Count('identifier')).order_by()
+    menage_per_prov = {
+        'labels': [i.get('menage_pays_provenance').title() for i in s],
+        'label': "Nombre total migrant",
+        'title': "",
+        'data': [i.get('instance_id__count') for i in s]
+    }
     menage_per_date_entrtien = {
-        'categories': [i.get('survey__date_entretien').strftime(
-            '%d-%b-%y') for i in date_entre],
-        'text': "Nombre de migrants",
-        'title': "Nombre total retourné par date arrivée.",
-        'type': "line",
-        'series': [
-            {"name": "Total", "data": [i.get(
-                'identifier__count') for i in date_entre]},
-            {"name": "Total homme", "data": [i.get(
-                'identifier__count') for i in date_entre_m]},
-            {"name": "Total femme", "data": [i.get(
-                'identifier__count') for i in date_entre_f]}]
+        'labels': [i.get('date_entretien').strftime('%d-%b-%y') for i in date_entre],
+        'label': "Nombre total migrant",
+        'title': "",
+        'data': [i.get('instance_id__count') for i in date_entre]
     }
     context = {"srv": srv,
-               "persons_per_pprov_for_chart": persons_per_pprov_for_chart,
+               "per_month": per_month,
+               "menage_per_prov": menage_per_prov,
                "menage_per_date_entrtien": menage_per_date_entrtien,
                "total_survey": total_survey,
                "total_person": total_person,
@@ -105,11 +93,69 @@ def database_mig(request):
 
 
 @login_required
+def manager_mig(request):
+
+    template = loader.get_template('migrants/manager_data_migrantion.html')
+    context = {}
+
+    date_last_update = FormID.objects.order_by().first().last_update
+    if request.method == 'POST':
+        period_form = SearchFormPerPeriod(request.POST or None)
+        date_s = str_to_date(request.POST.get('start_date'))
+        date_e = str_to_date(request.POST.get('end_date'))
+        persons = Person.objects.filter(
+            survey__date_entretien__gte=date_s,
+            survey__date_entretien__lte=date_e
+        ).order_by('-survey__date_entretien')
+        nb_person = persons.count()
+        nb_person_f = persons.filter(gender=Person.FEMALE).count()
+        nb_person_m = persons.filter(gender=Person.MALE).count()
+        if 'export_per_date' in request.POST:
+            file_name = "personne-{}-{} ".format(date_s, date_e)
+            return export_users_xls(file_name, persons)
+        # return redirect("export-xls/{start}/{end}".format(
+        #     start=date_s, end=date_e))
+    else:
+        persons = Person.objects.all().order_by('-survey__date_entretien')[:100]
+        nb_person = 0
+        nb_person_f = 0
+        nb_person_m = 0
+        period_form = SearchFormPerPeriod()
+
+    # paginator = Paginator(persons, 10)
+    # page = request.GET.get('page')
+    # try:
+    #     persons = paginator.page(page)
+    # except PageNotAnInteger:
+    #     persons = paginator.page(1)
+    # except EmptyPage:
+    #     persons = paginator.page(paginator.num_pages)
+    context.update({
+        "persons": persons})
+    context.update({"date_last_update": date_last_update,
+                    "period_form": period_form, "nb_person": nb_person,
+                    "nb_person_m": nb_person_m, "nb_person_f": nb_person_f})
+
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
 def find_mig(request):
 
-    surveys = Survey.objects.all()
-    context = {"surveys": surveys}
-    template = loader.get_template('migrants/survey_tables.html')
+    template = loader.get_template('migrants/find_migrants.html')
+    context = {}
+    if request.method == 'POST' and 'search' in request.POST:
+        search_migrant_form = SearchMigrantForm(request.POST or None)
+        search_text = request.POST.get('migrant')
+        persons = Person.objects.filter(
+            Q(prenoms__icontains=search_text) |
+            Q(nom__icontains=search_text) |
+            Q(survey__tel__icontains=search_text)
+        ).order_by('-survey__date_entretien')
+        context.update({"persons": persons, })
+    else:
+        search_migrant_form = SearchMigrantForm()
+    context.update({"search_migrant_form": search_migrant_form})
 
     return HttpResponse(template.render(context, request))
 
@@ -119,7 +165,6 @@ def survey_table(request):
 
     surveys = Survey.objects.all().order_by('-date_entretien')
     paginator = Paginator(surveys, 10)
-
     page = request.GET.get('page')
     try:
         surveys = paginator.page(page)
@@ -136,7 +181,6 @@ def survey_table(request):
 @login_required
 def person_table(request, *args, **kwargs):
     iid = kwargs["iid"]
-
     survey = Survey.objects.get(instance_id=iid)
     persons = Person.objects.filter(survey=survey)
     context = {"persons": persons, "survey": survey}
@@ -185,18 +229,12 @@ def date_format(strdate):
     return datetime.strptime(strdate, '%d-%m-%Y')
 
 
-@login_required
-# @app.task
-def export_migrants_xls(request, *args, **kwargs):
-
-    start_date = date_format(kwargs["start"])
-    end_date = date_format(kwargs["end"])
-    print(start_date)
+def export_users_xls(file_name, persons):
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="migrant_data.xls"'
+    response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(file_name)
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Users')
+    ws = wb.add_sheet('persons')
 
     # Sheet header, first row
     row_num = 0
@@ -204,9 +242,9 @@ def export_migrants_xls(request, *args, **kwargs):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ["ID ", "DATE ENTRETIEN", "DATE ARRIVEE", "AGENT", "PROVENANCE DU MIGRANT",
+    columns = ["ID ", "DATE ENTRETIEN", "DATE ARRIVEE", "PROVENANCE DU MIGRANT",
                "PRENOMS", "NOM", "SEXE", "DATE DE NAISSANCE", "AGE",
-               "PROFESSION", "ETAT CIVIL", "LIEN", "VULNERABILITE",
+               "PROFESSION", "ETAT CIVIL", "LIEN",
                "REGION", "CERCLE", "COMMUNE", "VILLAGE", "TEL"]
 
     for col_num in range(len(columns)):
@@ -215,48 +253,105 @@ def export_migrants_xls(request, *args, **kwargs):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    for row in Person.objects.filter(survey__date_entretien__gte=start_date,
-                                     survey__date_entretien__lte=end_date):
+    rows = persons.values_list(
+            'survey__instance_id',
+            'survey__date_entretien',
+            'survey__date_arrivee',
+            'survey__menage_pays_provenance',
+            'prenoms',
+            'nom',
+            'gender',
+            'ddn',
+            'age',
+            'profession',
+            'etat_civil',
+            'lien',
+            'survey__adresse_mali_lieu_region',
+            'survey__adresse_mali_lieu_cercle',
+            'survey__adresse_mali_lieu_commune',
+            'survey__adresse_mali_lieu_village_autre',
+            'survey__tel',)
+    for row in rows:
         row_num += 1
-        col_num = 0
-        ws.write(row_num, col_num, row.survey.instance_id, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, get_date(row.survey.date_entretien), font_style)
-        col_num += 1
-        ws.write(row_num, col_num, get_date(row.survey.date_arrivee), font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.nom_agent, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.menage_pays_provenance.name, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.prenoms, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.nom, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, get_sex(row.gender), font_style)
-        col_num += 1
-        ws.write(row_num, col_num, get_date(row.ddn), font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.age, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.profession, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.etat_civil, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.lien, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, "", font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.adresse_mali_lieu_region, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.adresse_mali_lieu_cercle, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.adresse_mali_lieu_commune, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.adresse_mali_lieu_village_autre, font_style)
-        col_num += 1
-        ws.write(row_num, col_num, row.survey.tel, font_style)
-        # break
-    wb.save(response)
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
 
+    wb.save(response)
     return response
+
+
+# @login_required
+# # @app.task
+# def export_migrants_xls(request, *args, **kwargs):
+
+#     start_date = date_format(kwargs["start"])
+#     end_date = date_format(kwargs["end"])
+#     # print(start_date)
+#     response = HttpResponse(content_type='application/ms-excel')
+#     response['Content-Disposition'] = 'attachment; filename="migrant_data.xls"'
+
+#     wb = xlwt.Workbook(encoding='utf-8')
+#     ws = wb.add_sheet('Users')
+
+#     # Sheet header, first row
+#     row_num = 0
+
+#     font_style = xlwt.XFStyle()
+#     font_style.font.bold = True
+
+#     columns = ["ID ", "DATE ENTRETIEN", "DATE ARRIVEE", "AGENT", "PROVENANCE DU MIGRANT",
+#                "PRENOMS", "NOM", "SEXE", "DATE DE NAISSANCE", "AGE",
+#                "PROFESSION", "ETAT CIVIL", "LIEN", "VULNERABILITE",
+#                "REGION", "CERCLE", "COMMUNE", "VILLAGE", "TEL"]
+
+#     for col_num in range(len(columns)):
+#         ws.write(row_num, col_num, columns[col_num], font_style)
+
+#     # Sheet body, remaining rows
+#     font_style = xlwt.XFStyle()
+
+#     for row in Person.objects.filter(survey__date_entretien__gte=start_date,
+#                                      survey__date_entretien__lte=end_date):
+#         row_num += 1
+#         col_num = 0
+#         ws.write(row_num, col_num, row.survey.instance_id, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, get_date(row.survey.date_entretien), font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, get_date(row.survey.date_arrivee), font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.nom_agent, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.menage_pays_provenance.name, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.prenoms, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.nom, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, get_sex(row.gender), font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, get_date(row.ddn), font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.age, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.profession, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.etat_civil, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.lien, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, "", font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.adresse_mali_lieu_region, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.adresse_mali_lieu_cercle, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.adresse_mali_lieu_commune, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.adresse_mali_lieu_village_autre, font_style)
+#         col_num += 1
+#         ws.write(row_num, col_num, row.survey.tel, font_style)
+#         # break
+#     wb.save(response)
+
+#     return response

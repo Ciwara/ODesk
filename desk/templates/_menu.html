@@ -1,19 +1,19 @@
 {% load staticfiles i18n permission_tags %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">DNDS / DNPSES</a>
+        <a class="navbar-brand" href="/"><img src="{% static 'img/favicon.svg'%}" style="max-height: 36px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
-          <a href="/fr/"><img rel="image_src" alt="" src="/img/favicon.svg"></a>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="nav navbar-nav ml-auto">
-                {% if user.is_anonymous %}
-                    <li class="nav-item active"><a class="nav-link" href="/">Accueil<span class="sr-only">(current)</span></a></li>
+                {% if user.is_anonymous %}<!--
+                    <li class="nav-item active"><a class="nav-link" href="/">Accueil<span class="sr-only">(current)</span></a></li> -->
                     <li class="nav-item"><a class="nav-link" href="#about">À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#objectif">Objectif</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 {% else %}
+                    <a class="nav-link" href="{% url 'home' %}"><button class="tn btn-secondary btn-sm"><i class="fa fa-home"></i> Home</button></a>
                     {% include "repatriate/_menu.html" %}
                     {% include "migrants/_menu.html" %}
                 {% endif %}

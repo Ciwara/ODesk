@@ -5,12 +5,12 @@ import xlwt
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.db.models import Count
 from django.template import loader
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
+from django.db.models.functions import TruncMonth
+from django.db.models import Sum, Count
 from rolepermissions.checkers import has_role
 
 from OIMDesk.roles import (
@@ -70,6 +70,10 @@ def dashboard(request):
     template = loader.get_template('repatriate/dashboard.html')
     per_lieu_regions = Person.objects.values(
         "target__lieu_region").annotate(Count("identifier")).order_by()
+    p = Person.objects.annotate(
+        month=TruncMonth('target__date_entretien')).values('month').annotate(
+        c=Count('identifier')).annotate(gf=Count('membre_sexe'==Person.FEMALE)).order_by()
+    # print(p)
     total_target = Target.objects.all().count()
     total_person = Person.objects.all().count()
     total_male = Person.objects.filter(membre_sexe=Person.MALE).count()
@@ -86,17 +90,23 @@ def dashboard(request):
         Count('identifier')).order_by()
 
     per_lieu_region = {
-        'labels': [i.get('target__lieu_region') for i in per_lieu_regions],
-        'label': "Région de retour",
-        'title': "",
-        'data': [i.get('id__count') for i in per_lieu_regions]
+        'categories': [i.get('month').strftime('%d %b %Y') for i in p],
+        'label': "",
+        'title': "Nombre de retourné",
+        'series':
+            [{"name": "Total retournés", "data": [i.get('c') for i in p]},
+            # {"name": "Homme", "data": [i.get('gm') for i in p]},
+            # {"name": "Femme", "data": [i.get('gf') for i in p]},
+            ],
     }
 
     menage_per_prov = {
-        'labels': [i.get('point_de_entree').title() for i in s],
-        'label': "Nombre de retourné",
-        'title': "",
-        'data': [i.get('instance_id__count') for i in s]
+        'categories': [i.get('point_de_entree').title() for i in s],
+        'text': "Nombre de retourné",
+        'title': "Nombre de retourné",
+        'type': "line",
+        'series':
+            [{"name": "Nombre de retourné", "data": [i.get('instance_id__count') for i in s]}]
     }
     menage_per_date_entrtien = {
         'categories': [i.get('target__date_entretien').strftime(

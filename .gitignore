@@ -8,6 +8,7 @@ OIMDesk/settings_local.py
 deployment.fad
 desk/fixtures/settings.json
 data/*
+media/reports/
 resources/*
 installation.md
 *.jar

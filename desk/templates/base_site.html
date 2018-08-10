@@ -9,13 +9,9 @@
     <meta name="author" content="">
     <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
     <!-- Custom styles for this template -->
     <link href="{% static 'css/full-slider.css' %}" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <link href="{% static 'css/desk.css' %}" rel="stylesheet">
+        {% include '_base_css.html' %}
     {% block extra_head %}
 
     {% endblock %}
@@ -26,19 +22,14 @@
     {% block banner %} {% endblock %}
     <!-- Page Content -->
     <section class="py-5">
-      <div class="container page" id="{% block page-id %}{% endblock %}">
-        {% block content  %}
-        {% endblock %}
-      </div>
-    </section>
-    <!-- /.content-wrapper-->
-    <footer class="sticky-footer">
-      <div class="container-fluid">
-        <div class="text-center">
-          <small>Copyright © IBS-MAli SARL 2018</small>
+      <div class="container-fluid page" id="{% block page-id %}{% endblock %}">
+        <div class="row">
+          {% block content  %}
+          {% endblock %}
         </div>
       </div>
-    </footer>
+    </section>
+          {% block footer %}  {% endblock %}
       {% include "_tags_js.html" %}
       <script type="text/javascript">
           $(document).ready(function(){

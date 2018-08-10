@@ -8,66 +8,64 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>{% block title %} {% endblock %}</title>
+        <title>
+          {% block title %} {% endblock %}
+        </title>
         <link href="{% static 'img/favicon.svg' %}" rel="icon" type="image/x-icon" />
         <!-- Bootstrap core CSS-->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="{% static 'css/sb-admin.min.css' %}" rel="stylesheet">
-        <link href="{% static 'css/desk.css' %}" rel="stylesheet">
-        {% block extra_head %}
-        {% endblock %}
+        {% include '_base_css.html' %}
+        {% block extra_head %} {% endblock %}
     </head>
     <nav class="navbar navbar-expand-lg navbar-dark bg-msah fixed-top" id="mainNav">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">DNDS/DNPSES</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-
             {% if user|has_role:'super_admin,dnds_tech' %}
-              <li class="nav-item" data-toggle="tooltip" v-b-tooltip.hover.top="'ToolTip!'" data-placement="" title="Gestion de Compte">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
                 </a>
               </li>
             {% endif %}
-            {% if user|has_role:'gestion_migant,admin_migration,super_admin,dnds_tech' %}
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rechercher un migrant">
-                  <a class="nav-link" href="{% url 'find_mig' %}">
-                        <i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span>
-                  </a>
+            {% if user|has_role:'migration_agent,migration_admin,super_admin,dnds_tech' %}
+                <li class="nav-item" data-toggle="tooltip" data-placement="mright" title="Rechercher un migrant">
+                  <a class="nav-link" href="{% url 'find_mig' %}"><i class="fa fa-binoculars"></i> <span class="nav-link-text">Recherche de migrant</span></a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="mright" title="Rechercher un migrant">
+                  <a class="nav-link" href="{% url 'manager_mig' %}"><i class="fa fa-list-alt"></i> <span class="nav-link-text">Gestion doonnées migrant</span></a>
                 </li>
             {% endif %}
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+            <li class="nav-item" data-toggle="tooltip" data-placement="" title="Tableau de Bord">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Dashboard</span>
+                <i class="fa fa-fw fa-dashboard"></i> <span class="nav-link-text">Tableau de Bord</span>
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
                 {% if user|has_role:'desk_controle,desk_assistant_admin,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
+                  <li><a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
                 {% endif %}
-                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
+                {% if user|has_role:'migration_agent,migration_admin,super_admin,dnds_tech' %}
+                  <li><a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
                 {% endif %}
                 {% if user|has_role:'super_admin,dnds_tech' %}
                   <li><a class="nav-link deactivate" href="#" data-toggle="tooltip"><i class="fa fa-fw fa-area-chart"></i>PDIs (non activité)</a></li>
                 {% endif %}
               </ul>
             </li>
-            {% if user|has_role:'admin_migration,desk_assistant_admin,super_admin,dnds_tech' %}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administration">
+            {% if user|has_role:'migration_admin,desk_assistant_admin,super_admin,dnds_tech' %}
+              <li class="nav-item" data-toggle="tooltip" data-placement="" title="Administration">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMultiAdmin" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa fa-database"></i>
-                  <span class="nav-link-text">Administration</span>
+                  <i class="fa fa-fw fa fa-database"></i> <span class="nav-link-text">Administration</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
                 {% if user|has_role:'desk_assistant_admin,super_admin,dnds_tech' %}
                   <li> <a class="nav-link" href="{% url 'repatriate_data' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
                 {% endif %}
-                {% if user|has_role:'admin_migration,super_admin,dnds_tech' %}
+                {% if user|has_role:'migration_admin,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>
                 {% endif %}
                 {% if user|has_role:'super_admin,dnds_tech' %}
@@ -100,44 +98,34 @@
                     </ul>
                 {% endif %}
                 <div class="row">
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         {% block content %}
                         {% endblock %}
                     </div>
                 </div>
             </div>
-            <div id="footer">{% block footer %}{% endblock %}</div>
-        </div>
-        <!-- Logout Modal-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
-                </button>
+            <div id="footer">
+              <div class="footer-bottom">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <div class="copyright">
+                                  © IBS-MAli SARL 2018, All rights reserved
+                              </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <div class="design">
+                                   <a href="#">IBS-Mali SARL</a> | <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="modal-body">Select "Déconnexion" est vous sûr de fermer cette sesion.</div>
-              <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Déconnexion</a>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <a class="scroll-to-top rounded" style="bottom: 3em;" href="#page-top">
           <i class="fa fa-angle-up"></i>
         </a>
-        <!-- /.content-wrapper-->
-        <footer class="sticky-footer">
-          <div class="container">
-            <div class="text-center">
-              <small>Copyright © IBS-MAli SARL 2018</small>
-            </div>
-          </div>
-        </footer>
           {% include "_tags_js.html" %}
           <script type="text/javascript">
               $(document).ready(function(){

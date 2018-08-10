@@ -137,7 +137,7 @@ class Command(BaseCommand):
                     'adresse_mali_lieu_region': sv.get("adresse-mali-lieu_region"),
                     'adresse_mali_lieu_cercle': sv.get("adresse-mali-lieu_cercle"),
                     'adresse_mali_lieu_commune': sv.get("adresse-mali-lieu_commune"),
-                    'adresse_mali_lieu_village_autre': sv.get("lieu_village_autre"),
+                    'adresse_mali_lieu_village_autre': sv.get("adresse-mali-lieu_village_autre"),
                     'rue': str(sv.get("adresse-mali-rue")),
                     'porte': str(sv.get("adresse-mali-porte")),
                     'tel': sv.get("adresse-mali-tel"),

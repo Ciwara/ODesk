@@ -3,7 +3,20 @@ from django.utils.translation import ugettext_lazy as _
 # from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from desk.models import (
-    Entity, EntityType, Provider, DictLabel, Project, EntityProvider)
+    Entity, EntityType, Provider, DictLabel, Project, EntityProvider, Report,
+    Email)
+
+
+@admin.register(Email)
+class EmailAdmin(admin.ModelAdmin):
+
+    list_display = ('mail', 'name', 'group',)
+
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+
+    list_display = ('name', 'category')
 
 
 @admin.register(EntityProvider)

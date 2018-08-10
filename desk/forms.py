@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 # from django.contrib.auth.models import Group
 
-from desk.models import (Provider)
+from desk.models import (Provider, Report)
 
 
 class ContactForm(forms.Form):
@@ -77,6 +77,18 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class ReportForm(forms.ModelForm):
+
+    create_date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control', 'size': '10'}))
+
+    class Meta:
+        model = Report
+        fields = ('category', 'name', 'description', 'create_date', 'doc_file',)
+        # exclude = []
 
 
 class UserChangeForm(forms.ModelForm):
