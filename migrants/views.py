@@ -272,7 +272,6 @@ def export_users_xls(file_name, persons):
             'survey__adresse_mali_lieu_village_autre',
             'survey__tel',)
     for row in rows:
-        print(row)
         row_num += 1
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
