@@ -6,6 +6,8 @@ from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
 
 import pytz
+import kronos
+
 from django.utils import timezone
 from django.core.management.base import BaseCommand
 
@@ -19,6 +21,7 @@ from repatriate.models import RegistrationSite
 OTHER = "other"
 
 
+@kronos.register('5 * * * * *')
 class Command(BaseCommand):
 
     def add_arguments(self, parser):

@@ -18,7 +18,7 @@ from odkextractor.models import FormID
 from odkextractor.commons import date_format, datetime_format
 
 
-@kronos.register('* * * * * *')
+@kronos.register('30 * * * * *')
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
