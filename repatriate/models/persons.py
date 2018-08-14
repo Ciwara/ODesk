@@ -285,6 +285,7 @@ class Person(models.Model):
         return VulnerabilityPerson.objects.all(person=self).all()
 
     def create_identifier(self):
+        d = self.target.date_entretien.split('-')
         try:
             p_lastest = Person.objects.filter(
                 target__site_engistrement=self.target.site_engistrement
@@ -295,7 +296,7 @@ class Person(models.Model):
             identifier = "0000"
         return "S{s}{d}{id}".format(
             s=self.target.site_engistrement.slug,
-            d=self.target.date_entretien.strftime("%Y%m"),
+            d="{}{}".format(d[0], d[1]),
             id=self.add(identifier, "1"))
 
     def add(self, x, y):

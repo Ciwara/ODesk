@@ -76,6 +76,9 @@ class Command(BaseCommand):
                 site_engistrement.name = site_engist
                 site_engistrement.confirmed = False
                 site_engistrement.save()
+
+            # print(targ.get("info-generales-generales/date_entretien"))
+
             t_data = {
                 "collect": collect,
                 "duration": targ.get("_duration"),
@@ -84,7 +87,7 @@ class Command(BaseCommand):
                 "debut": targ.get("debut"),
                 "fin": targ.get("fin"),
                 "nom_agent": targ.get("info-generales-generales/nom_agent"),
-                "num_enregistrement": targ.get("info-generales-generales/nu_enregistrement"),
+                "num_enregistrement": targ.get("info-generales-generales/num_enregistrement"),
                 "site_engistrement": site_engistrement,
                 "date_arrivee": targ.get("info-generales-generales/date_arrivee"),
                 "date_entretien": targ.get("info-generales-generales/date_entretien"),
@@ -158,7 +161,7 @@ class Command(BaseCommand):
                 instance_id=targ.get("meta/instanceID"), defaults=t_data)
             if not ok:
                 continue
-
+            # print(t_data)
             if t_data.get("beneficiez_lassistance"):
                 for typ_assis in targ.get('info-generales-manage/assistance/type_assistance').split():
                     data = {
@@ -176,7 +179,6 @@ class Command(BaseCommand):
             if not data_members:
                 continue
             for person in data_members:
-                print(person.get("info-generale-membres/membres/membre_prenom"))
                 p_data = {
                     "target": target,
                     "form_dataset": person,
@@ -232,14 +234,14 @@ class Command(BaseCommand):
                 try:
                     pn, ok = Person.objects.update_or_create(**p_data)
                 except Exception as e:
-                    print(e)
+                    print("pn : ", e)
                     continue
                 les_contacts = person.get('info-generale-membres/membres/etat-civil-non-dispo/les-temoins')
                 if les_contacts:
                     for ctt in les_contacts:
                         data = {
                             "contact": ctt.get(
-                                'info-generale-membres/membres/etat-civil-non-dispo/les_contacts/contact_temoins'),
+                                'info-generale-membres/membres/etat-civil-non-dispo/les-temoins/contact_temoins'),
                             "person": pn,
                         }
                         contact_t, ok = ContactTemoin.objects.update_or_create(**data)
