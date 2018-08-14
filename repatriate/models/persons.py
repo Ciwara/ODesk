@@ -292,7 +292,7 @@ class Person(models.Model):
             ).latest("started_on")
             identifier = p_lastest.identifier[-4:]
         except Exception as e:
-            print(e)
+            # print("p_lastest", e)
             identifier = "0000"
         return "S{s}{d}{id}".format(
             s=self.target.site_engistrement.slug,

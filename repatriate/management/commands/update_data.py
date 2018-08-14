@@ -5,9 +5,8 @@
 from __future__ import (unicode_literals, absolute_import,
                         division, print_function)
 
-# from optparse import make_option
-# import glob
-# import json
+import pytz
+from django.utils import timezone
 from django.core.management.base import BaseCommand
 
 from desk.ona import get_form_data
@@ -62,7 +61,6 @@ class Command(BaseCommand):
         self.get_save_target()
 
     def get_save_target(self):
-
         collect = Collect.objects.get(name="Formulaire rapatiment")
         rdata = get_form_data(collect.ona_form_pk)
         for targ in rdata:
@@ -77,12 +75,13 @@ class Command(BaseCommand):
                 site_engistrement.confirmed = False
                 site_engistrement.save()
 
-            # print(targ.get("info-generales-generales/date_entretien"))
-
+            submission_time = timezone.datetime.strptime(
+                targ.get("_submission_time"), "%Y-%m-%dT%H:%M:%S")
+            # print(submission_time)
             t_data = {
                 "collect": collect,
                 "duration": targ.get("_duration"),
-                "submission_time": targ.get("_submission_time"),
+                "submission_time": pytz.utc.localize(submission_time),
                 "date": targ.get("date"),
                 "debut": targ.get("debut"),
                 "fin": targ.get("fin"),
@@ -116,13 +115,11 @@ class Command(BaseCommand):
                 "porte": targ.get("adresse-mali/porte"),
                 "tel": targ.get("adresse-mali/tel"),
                 "tel2": targ.get("adresse-mali/tel2"),
-
                 "abris": self.get_bol(targ.get("hebergement/abris")),
                 "nature_construction": targ.get("hebergement/nature_construction"),
                 "nature_construction_other": targ.get("hebergement/nature_construction_other"),
                 "type_hebergement": targ.get("hebergement/type_hebergement"),
                 "type_hebergement_other": targ.get("hebergement/type_hebergement_other"),
-
                 "membre_pays": self.get_bol(targ.get("info-generale-membres/membre_pays")),
                 # "membres_count": targ.get("info-generale-membres/membres_count'"),
                 "nb_membre": targ.get("info-generale-membres/nb_membre"),
@@ -135,13 +132,11 @@ class Command(BaseCommand):
                 "type_aigue_other": targ.get("sante-appuipyschosocial/type_aigue_other"),
                 "prise_medicament": targ.get("sante-appuipyschosocial/prise_medicament"),
                 "type_medicaments": targ.get("sante-appuipyschosocial/type_medicaments"),
-
                 "suivi_formation": self.get_bol(targ.get("formation-experience/suivi_formation")),
                 "domaine_formation": targ.get("formation-experience/domaine_formation"),
                 "metier_pays_prove": self.get_bol(targ.get("formation-experience/metier_pays_prove")),
                 "exercice_secteur": targ.get("formation-experience/exercice_secteur"),
                 "exercice_secteur_other": targ.get("formation-experience/exercice_secteur_other"),
-
                 "formation_socio_prof": self.get_bol(targ.get("reinsertion-prof/formation_socio_prof")),
                 "secteur_prof": targ.get("reinsertion-prof/secteur_prof"),
                 "secteur_prof_other": targ.get("reinsertion-prof/secteur_prof_other"),
@@ -161,7 +156,6 @@ class Command(BaseCommand):
                 instance_id=targ.get("meta/instanceID"), defaults=t_data)
             if not ok:
                 continue
-            # print(t_data)
             if t_data.get("beneficiez_lassistance"):
                 for typ_assis in targ.get('info-generales-manage/assistance/type_assistance').split():
                     data = {
