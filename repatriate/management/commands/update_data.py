@@ -83,7 +83,7 @@ class Command(BaseCommand):
             # print(submission_time)
             t_data = {
                 "collect": collect,
-                "duration": targ.get("_duration"),
+                "duration": "{}".format(targ.get("_duration")),
                 "submission_time": pytz.utc.localize(submission_time),
                 "date": targ.get("date"),
                 "debut": targ.get("debut"),
@@ -157,6 +157,7 @@ class Command(BaseCommand):
             }
             target, ok = Target.objects.get_or_create(
                 instance_id=targ.get("meta/instanceID"), defaults=t_data)
+            # print(target, 'duration : ', type(target.duration), " : ", target.duration)
             if not ok:
                 continue
             if t_data.get("beneficiez_lassistance"):
@@ -230,6 +231,7 @@ class Command(BaseCommand):
                 }
                 try:
                     pn, ok = Person.objects.update_or_create(**p_data)
+                    print(pn)
                 except Exception as e:
                     print("pn : ", e)
                     continue

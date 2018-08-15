@@ -255,7 +255,7 @@ class Target(models.Model):
     validated_by = models.ForeignKey(
         Provider, null=True, blank=True, verbose_name=_("Validated By"),
         related_name='repat_own_validated_reports')
-    duration = models.IntegerField(default=0)
+    duration = models.CharField(max_length=100, null=True, blank=True)
     submission_time = models.DateTimeField("Date de soumission", null=True, blank=True)
     identifier = models.CharField(max_length=100, primary_key=True)
     collect = models.ForeignKey('Collect', related_name='targets')
