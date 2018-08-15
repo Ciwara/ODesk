@@ -231,7 +231,7 @@ class Command(BaseCommand):
                 }
                 try:
                     pn, ok = Person.objects.update_or_create(**p_data)
-                    print(pn)
+                    # print(pn)
                 except Exception as e:
                     print("pn : ", e)
                     continue
