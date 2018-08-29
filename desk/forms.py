@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # vim: ai ts=4 sts=4 et sw=4 nu
-
+from datetime import date
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -16,24 +16,24 @@ class ContactForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea, required=True)
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=255, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
+# class LoginForm(forms.Form):
+#     username = forms.CharField(max_length=255, required=True)
+#     password = forms.CharField(widget=forms.PasswordInput, required=True)
 
-    def clean(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if not user or not user.is_active:
-            raise forms.ValidationError(
-                "Sorry, that login was invalid. Please try again.")
-        return self.cleaned_data
+#     def clean(self):
+#         username = self.cleaned_data.get('username')
+#         password = self.cleaned_data.get('password')
+#         user = authenticate(username=username, password=password)
+#         if not user or not user.is_active:
+#             raise forms.ValidationError(
+#                 "Sorry, that login was invalid. Please try again.")
+#         return self.cleaned_data
 
-    def login(self, request):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        return user
+#     def login(self, request):
+#         username = self.cleaned_data.get('username')
+#         password = self.cleaned_data.get('password')
+#         user = authenticate(username=username, password=password)
+#         return user
 
 
 class UserCreationForm(forms.ModelForm):
@@ -81,14 +81,22 @@ class UserCreationForm(forms.ModelForm):
 
 class ReportForm(forms.ModelForm):
 
-    create_date = forms.DateField(
-        widget=forms.DateInput(
-            attrs={'class': 'datepicker form-control', 'size': '10'}))
+    create_date = forms.DateField(initial=date.today,
+        input_formats=["%d %m %Y"], widget=forms.DateInput(
+            attrs={'class': 'datepicker form-control'}))
 
     class Meta:
         model = Report
-        fields = ('category', 'name', 'description', 'create_date', 'doc_file',)
+        fields = [
+            'category', 'name', 'create_date', 'description', 'doc_file',
+        ]
         # exclude = []
+
+    def clean_create_date(self):
+        print("EEE : ", self.cleaned_data['create_date'])
+        # d, m, y = self.cleaned_data.get('create_date').split("-")
+        # create_date = date(y, m, d)
+        return self.cleaned_data['create_date']
 
 
 class UserChangeForm(forms.ModelForm):

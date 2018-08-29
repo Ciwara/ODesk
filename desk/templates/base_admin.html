@@ -26,9 +26,14 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             {% if user|has_role:'super_admin,dnds_tech' %}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Gestion de Compte">
+              <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Gestion de Compte">
                 <a class="nav-link" href="{% url 'user_manager' %}">
                   <i class="fa fa-users"></i> <span class="nav-link-text">Gestion de Compte</span>
+                </a>
+              </li>
+              <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Publication de rapport">
+                <a class="nav-link" href="{% url 'report_form' %}">
+                  <i class="fa fa-file"></i> <span class="nav-link-text">Publication de rapport</span>
                 </a>
               </li>
             {% endif %}
@@ -46,7 +51,7 @@
               </a>
               <ul class="sidenav-second-level collapse" id="collapseMulti">
                 {% if user|has_role:'desk_controle,desk_assistant_admin,super_admin,dnds_tech' %}
-                  <li><a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Retournés</a></li>
+                  <li><a class="nav-link" href="{% url 'dashboard_rep' %}"><i class="fa fa-fw fa-area-chart"></i>Rapatriés</a></li>
                 {% endif %}
                 {% if user|has_role:'migration_agent,migration_admin,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'dashboard_mig' %}"><i class="fa fa-fw fa-area-chart"></i>Migrants</a></li>
@@ -63,7 +68,7 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMultiAdmin">
                 {% if user|has_role:'desk_assistant_admin,super_admin,dnds_tech' %}
-                  <li> <a class="nav-link" href="{% url 'repatriate_data' %}"><i class="fa fa-fw fa-area-"></i>Données Retournés</a> </li>
+                  <li> <a class="nav-link" href="{% url 'repatriate_data' %}"><i class="fa fa-fw fa-area-"></i>Données Rapatriés</a> </li>
                 {% endif %}
                 {% if user|has_role:'migration_admin,super_admin,dnds_tech' %}
                   <li><a class="nav-link" href="{% url 'survey_table' %}"><i class="fa fa-fw fa-area-"></i>Données Migrants</a></li>
@@ -115,7 +120,7 @@
                           </div>
                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                               <div class="design">
-                                   <a href="#">IBS-Mali SARL</a> | <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
+                                   <a href="http://ibsmali.ml">IBS-Mali SARL</a> | <a target="_blank" href="http://ibsmali.ml">Web Design & Development by IBS-Mali SARL</a>
                               </div>
                           </div>
                       </div>

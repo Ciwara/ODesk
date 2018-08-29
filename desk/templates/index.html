@@ -47,10 +47,8 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h2 class="msah-title"> Rapports </h2>
                 <ul id="rep">
-                    <h1>GG</h1>
                     {% for p in reports %}
-                    <hr>
-                        <a  href="media/{{p.doc_file.name}}"><li><i class="fa fa-file-pdf-o "></i> {{p.name}}<br> <span class="badge badge-dark"> {{p.category}}</span> <span class="badge badge-light">Date de production : {{p.create_date|naturalday}} </span></li></a>
+                    <a  href="media/{{p.doc_file.name}}"><li><span class="badge badge-dark"> <i class="fa fa-file-pdf-o "></i> {{p.category}} {{p.name}}</span> <br> <span class="badge badge-light">Date de production : {{p.create_date|naturalday}} </span></li></a><hr>
                     {% endfor %}
                 </ul>
             </div>

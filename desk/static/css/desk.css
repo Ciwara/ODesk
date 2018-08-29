@@ -315,3 +315,6 @@ body.fixed-nav {
     bottom: 0;
     left: 1px;
 }
+.mnt p {
+    font-size: 9px;
+}

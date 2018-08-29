@@ -32,8 +32,7 @@ class Report(models.Model):
         verbose_name="Catégorie", max_length=10, choices=TYPE_REPORT.items())
     description = models.TextField(
         verbose_name="Description", max_length=100, null=True, blank=True)
-    publish_date = models.DateTimeField(
-        verbose_name="Date de publication", default=timezone.now)
+    publish_date = models.DateTimeField("Date de publication", default=timezone.now)
     create_date = models.DateField(verbose_name="Date du rapport")
     doc_file = models.FileField(upload_to='reports/')
 
